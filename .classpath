@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="heimlich und co/JAM Final/src"/>
+	<classpathentry kind="src" path="heimlich und co/src"/>
+	<classpathentry kind="lib" path="heimlich und co/JAM Final/lib/Game Server JAM.jar"/>
+	<classpathentry kind="lib" path="heimlich und co/JAM Final/lib/gson-2.2.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="heimlich und co/JAM Final/lib/gson-2.2.4-sources.jar"/>
+	<classpathentry kind="lib" path="heimlich und co/JAM Final/lib/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="heimlich und co/JAM Final/lib/guava-14.0.1.jar"/>
+	<classpathentry kind="lib" path="heimlich und co/JAM Final/lib/xstream-1.4.4.jar"/>
+	<classpathentry kind="output" path="heimlich und co/JAM Final/bin"/>
+</classpath>
