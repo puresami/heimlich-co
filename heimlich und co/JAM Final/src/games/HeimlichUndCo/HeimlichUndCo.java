@@ -22,7 +22,7 @@
 		
 		public void initializeGame() {
 			setSafePosition(7);
-		
+		agentList=null;
 			//TODO Agentenanzahl +2 Agenten bei 5 oder weniger Spielern
 			if (playerList.size() <=5) {
 				agentList.add(takeCard());
