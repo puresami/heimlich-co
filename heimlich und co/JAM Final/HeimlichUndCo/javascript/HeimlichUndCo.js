@@ -37,3 +37,26 @@ addListener('PLAYERLEFT', function(event){
 addListener('CLOSE', function(event){
 	document.getElementById("Player").innerHTML = "Spiel wurde vom Host beendet!";
 });
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+   ev.target.appendChild(document.getElementById(data));
+}
+
+function rollDice(){
+    var die1 = document.getElementById("die1");
+    
+    var status = document.getElementById("status");
+    var d1 = Math.floor(Math.random() * 6) + 1;
+    document.getElementById("rollimg").src = "wurfel_"+d1+".png"
+    var diceTotal = d1;
+    die1.innerHTML = d1;
+}
