@@ -49,6 +49,7 @@ import userManagement.User;
 			agentList.add(takeCard());
 			agentList.add(takeCard());
 			agentList.add(takeCard());
+			break;
 		}
 		case 4: {
 			agentList.add(takeCard());
@@ -57,6 +58,7 @@ import userManagement.User;
 			agentList.add(takeCard());
 			agentList.add(takeCard());
 			agentList.add(takeCard());
+			break;
 		}
 		case 3: {
 			agentList.add(takeCard());
@@ -64,12 +66,14 @@ import userManagement.User;
 			agentList.add(takeCard());
 			agentList.add(takeCard());
 			agentList.add(takeCard());
+			break;
 		}
 		case 2: {
 			agentList.add(takeCard());
 			agentList.add(takeCard());
 			agentList.add(takeCard());
 			agentList.add(takeCard());
+			break;
 		}
 		default:{
 			throw new IllegalArgumentException("Ungültige Spieleranzahl!");
@@ -78,53 +82,70 @@ import userManagement.User;
 	}
 		
 		
-		public void AITurn() {
-			//TODO
-			/*Random Agent
-			 * über (Random) Teilzahl des gewürfelten bewegen
-			 * wenn was übrig: wiederholen
-			 */
-			Random agent =new Random();
-			int agentToMove=agent.nextInt(agentList.size());
-			Random fields = new Random();
-			int fieldsToGo= fields.nextInt(6)+1;
-			Random fieldsgone = new Random();
-			int fieldsGone =fieldsgone.nextInt(Math.abs(rollDice()-fieldsToGo)); //besser nochmal logik dahinter prüfen
-			
-			switch(agentToMove) {
-			case 0:{
+	public void AITurn() {
+
+		Random agent = new Random();
+		int fieldsToGo = rollDice();
+		Random fieldsgone = new Random();
+
+		// yellow=0,red=1,purple=2,blue=3,green=4,orange=5,grey=6
+		while (fieldsToGo > 0) {
+			int fieldsGone = fieldsgone.nextInt(6) + 1;
+			int agentToMove = agent.nextInt(agentList.size());
+			if (fieldsGone > fieldsToGo) {
+				fieldsGone = Math.abs(fieldsGone - fieldsToGo);
+			}
+			switch (agentToMove) {
+			case 0: {
 				System.out.println("Move Yellow Agent");
-				agentList.get(0).setAgentPosition(agentList.get(0).getAgentPosition()+fieldsGone);
+				agentList.get(0).setAgentPosition(agentList.get(0).getAgentPosition() + fieldsGone);
+				fieldsToGo -= fieldsGone;
+				break;
 			}
-			case 1:{
-				
+			case 1: {
+				System.out.println("Move red agent");
+				agentList.get(1).setAgentPosition(agentList.get(1).getAgentPosition() + fieldsGone);
+				fieldsToGo -= fieldsGone;
+				break;
 			}
-			case 2:{
-				
+			case 2: {
+				System.out.println("Move purple agent");
+				agentList.get(2).setAgentPosition(agentList.get(2).getAgentPosition() + fieldsGone);
+				fieldsToGo -= fieldsGone;
+				break;
 			}
-			case 3:{
-				
+			case 3: {
+				System.out.println("Move blue agent");
+				agentList.get(3).setAgentPosition(agentList.get(3).getAgentPosition() + fieldsGone);
+				fieldsToGo -= fieldsGone;
+				break;
 			}
-			case 4:{
-				
+			case 4: {
+				System.out.println("Move green agent");
+				agentList.get(4).setAgentPosition(agentList.get(4).getAgentPosition() + fieldsGone);
+				fieldsToGo -= fieldsGone;
+				break;
 			}
-			case 5:{
-				
+			case 5: {
+				System.out.println("Move orange agent");
+				agentList.get(5).setAgentPosition(agentList.get(5).getAgentPosition() + fieldsGone);
+				fieldsToGo -= fieldsGone;
+				break;
 			}
-			case 6:{
-				
+			case 6: {
+				System.out.println("Move grey agent");
+				agentList.get(6).setAgentPosition(agentList.get(6).getAgentPosition() + fieldsGone);
+				fieldsToGo -= fieldsGone;
+				break;
 			}
-			default:{
-				
+			default: {
+				throw new IllegalArgumentException("Error while AI-Turn");
 			}
-			}
-			System.out.println();
-			
-			for (int i=0;i<agentList.size();i++) {
-				agentList.get(i).setAgentPosition(agentList.get(i).getAgentPosition());
 			}
 		}
-		
+
+	}
+
 		public void turn() {
 			//moveAgents(); von javascript irgendwie übernehmen(?)
 			for(int i=0;i<agentList.size();i++) {
@@ -201,24 +222,6 @@ import userManagement.User;
 			return numberRolled;
 		}
 		
-		/* Nur Versuche
-		 *  private void moveAgents() {
-			int fieldsToGo=rollDice();
-			int fieldsMoved=0;
-			
-			currentAgent.setAgentPosition(currentAgent.getAgentPosition() + moveCurrentAgentBy() );
-			if(rollDice()>= fieldsMoved) {
-				System.out.println("Incomplete turn. Make " + fieldsToGo + "steps to continue.");
-			}
-			if(rollDice()<= fieldsMoved) {
-				System.out.println("Too many steps.");
-			}
-		}
-		
-		public void moveCurrentAgentBy(int steps) {
-			agentList.get(index)
-		}
-		*/
 		private void scoring() {
 
 			for (int i = 0; i < agentList.size(); i++) {
@@ -534,3 +537,4 @@ import userManagement.User;
 		}
 	}
 	*/
+	
