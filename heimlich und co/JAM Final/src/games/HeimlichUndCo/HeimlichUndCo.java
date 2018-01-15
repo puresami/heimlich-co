@@ -2,61 +2,128 @@
 
 	import java.io.IOException;
 	import java.util.ArrayList;
-	import java.util.Collections;
-	import java.util.Random;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Random;
 
 	import gameClasses.Game;
 	import gameClasses.GameState;
 	import global.FileHelper;
-	import userManagement.User;
+
+import userManagement.User;
 
 	public class HeimlichUndCo extends Game {
 		private int safePosition;
 		//private int houseNumber; //0=Church, 1-10=houses, 11=ruin
 		private ArrayList<User> playerList = new ArrayList<User>();
 		private ArrayList<User> spectatorList = new ArrayList<User>();
-		private ArrayList<Agent> agentList;
+		private ArrayList<Agent> agentList =new ArrayList<Agent>();
 		private String playerLeft=null;
 		private User playerTurn= null;
 		Random card= new Random();
 		
+		private static HeimlichUndCo instance;
+		
+		public static HeimlichUndCo getInstance() {
+			if (instance == null) 
+			{
+				instance = new HeimlichUndCo();
+			}
+			return instance;
+		}
+		
 		public void initializeGame() {
 			setSafePosition(7);
 		agentList=null;
-			//TODO Agentenanzahl +2 Agenten bei 5 oder weniger Spielern
-			if (playerList.size() <=5) {
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
+		
+		switch (playerList.size()) {
+		case 5:
+		case 6:
+		case 7: {
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+		}
+		case 4: {
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+		}
+		case 3: {
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+		}
+		case 2: {
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+			agentList.add(takeCard());
+		}
+		default:{
+			throw new IllegalArgumentException("Ungültige Spieleranzahl!");
+		}
+		}
+	}
+		
+		
+		public void AITurn() {
+			//TODO
+			/*Random Agent
+			 * über (Random) Teilzahl des gewürfelten bewegen
+			 * wenn was übrig: wiederholen
+			 */
+			Random agent =new Random();
+			int agentToMove=agent.nextInt(agentList.size());
+			Random fields = new Random();
+			int fieldsToGo= fields.nextInt(6)+1;
+			Random fieldsgone = new Random();
+			int fieldsGone =fieldsgone.nextInt(Math.abs(rollDice()-fieldsToGo)); //besser nochmal logik dahinter prüfen
+			
+			switch(agentToMove) {
+			case 0:{
+				System.out.println("Move Yellow Agent");
+				agentList.get(0).setAgentPosition(agentList.get(0).getAgentPosition()+fieldsGone);
 			}
-			if (playerList.size()==4) {
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
+			case 1:{
+				
 			}
-			if (playerList.size()==3) {
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
+			case 2:{
+				
 			}
-			if (playerList.size()==2) {
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
-				agentList.add(takeCard());
+			case 3:{
+				
+			}
+			case 4:{
+				
+			}
+			case 5:{
+				
+			}
+			case 6:{
+				
+			}
+			default:{
+				
+			}
+			}
+			System.out.println();
+			
+			for (int i=0;i<agentList.size();i++) {
+				agentList.get(i).setAgentPosition(agentList.get(i).getAgentPosition());
 			}
 		}
-
-		
 		
 		public void turn() {
 			//moveAgents(); von javascript irgendwie übernehmen(?)
@@ -329,12 +396,12 @@
 			}
 		}
 
-		@Override //von TicTacToe übernommen
+		@Override 
 		public void addSpectator(User user) {
 			this.spectatorList.add(user);
 		}
 
-		@Override//von TicTacToe übernommen
+		@Override
 		public boolean isJoinable() {
 			if (playerList.size() < 7) {
 				return true;
@@ -355,15 +422,72 @@
 		public GameState getGameState() {
 			return this.gState;
 		}
-		//von TicTacToe übernommen, zu gebrauchen für irgendwas? 
-		/*private String isHost(User user) {
+		
+		private String isHost(User user) {
 			if(user==creator) return ",HOST";
 			else return ",NOTTHEHOST";
 		}
-		*/
+		
+		
+	@Override
+	public void execute(User user, String gsonString) {
+		if (this.gState == GameState.CLOSED)
+			return;
+
+		if (gsonString.equals("CLOSE")) {
+			sendGameDataToClients("CLOSE");
+			closeGame();
+			return;
+		}
+
+		if (gsonString.equals("RESTART")) {
+			initializeGame();
+			this.gState = GameState.RUNNING;
+			sendGameDataToClients("standardEvent");
+			return;
+		}
+		if (gState != GameState.RUNNING) {
+			return;
+		}
+
+		/*
+		 * String[] strArray = gsonString.split(","); int[] receivedArray = new int[9];
+		 * for (int i = 0; i < 9; i++) { receivedArray[i] =
+		 * Integer.parseInt(strArray[i]); } int[] gridStatus = getGridStatus();
+		 */
+		ArrayList<Agent> actualAgentList = new ArrayList<Agent>();
+
+		boolean changed = false;
+
+		if (!actualAgentList.equals(agentList)) {
+			changed = true;
+		}
+		// TODO abgleich von erhaltenem string mit zurzeit gezeigten spieldaten
+
+		if (changed == true) {
+			Iterator<User> it = playerList.iterator();
+			// playerTurn um eins nach vorn verschieben
+
+			if (it.hasNext()) {
+				setPlayerTurn(it.next());
+			} else // wenn playerlist durchlaufen wieder bei 0 beginnen
+				it = playerList.iterator();
+			setPlayerTurn(it.next());
+
+			for (int i = 0; i < agentList.size(); i++) {
+				agentList.get(i).setAgentPosition(actualAgentList.get(i).getAgentPosition());
+				agentList.get(i).setMarkerPosition(actualAgentList.get(i).getMarkerPosition());
+			}
+		}
+		if (gameOver()) {
+			this.gState = GameState.FINISHED;
+		}
+
+		sendGameDataToClients("standardEvent");
+	}
+
 		@Override
 		public String getGameData(String eventName, User user) {
-			// TODO Auto-generated method stub
 			
 			String gameData = "";
 			if(eventName.equals("PLAYERLEFT")){
@@ -372,29 +496,41 @@
 			if(eventName.equals("CLOSE")){
 				return "CLOSE";
 			}
+			if(playerList.size()<2){
+				gameData += "Warte auf 2ten Spieler oder KI-Spieler...";
+				gameData += isHost(user);
+				return gameData;
+			}
 			if (this.gState == GameState.FINISHED) {
+				//Ausgabe, welcher Agent auf welchem Platz ist
+				Collections.sort(agentList);
+				for(Agent a: agentList)
+			     System.out.print(a.getColourString() +"  : "+
+			     a.getMarkerPosition() + ", ");
+				for (int i=0;i<agentList.size();i++) {
+					gameData+= agentList.get(i)+" ist mit " 
+							+ agentList.get(i).getMarkerPosition()+ " Punkten auf Platz " 
+							+ (agentList.indexOf(agentList.get(i))+1);
+				}
+				//TODO PlayerList / AgentList, wer ist wer
 				
 			}
+			else if (playerTurn.equals(user)) {
+				gameData += "Du bist dran!";
+			} else
+				gameData += playerTurn.getName() + " ist dran!";
 			return gameData;
 		}
-		
-		@Override
-		public void execute(User user, String gsonString) {
-			// TODO Auto-generated method stub
-			if(this.gState==GameState.CLOSED) return;
-			
-			if(gsonString.equals("CLOSE")){
-				sendGameDataToClients("CLOSE");
-				closeGame();
-				return;
-			}
-			
-			if (gsonString.equals("RESTART")) {
-				/*
-				 * Restart muss noch implementiert werden	todo
-				 * 
-				 */
-			}
-		}
-
 	}
+	/*for (int i=0;i<agentList.size();i++) {
+		if (eventName.equals("EVENTNAME")) {
+			
+		}
+		else if (eventName.equals("")) {
+			
+		}
+		else {
+			throw new ILLegalArgumentException("Ungültiger Eventname")
+		}
+	}
+	*/
