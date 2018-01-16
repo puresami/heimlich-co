@@ -56,3 +56,5 @@
 [2018-01-08 16:49:48.318] [IP: /10.7.214.25] [REGISTER] Registering user "jsch" succeeded
 [2018-01-08 16:50:14.142] [IP: /10.7.214.25] [LOGIN] Logging in user "jsch" succeeded
 [2018-01-15 16:01:25.778] [IP: /10.7.168.145] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-15 16:26:41.088] [IP: /10.7.185.128] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-15 22:30:28.86] [IP: /192.168.2.105] [LOGIN] Logging in user "jsch" succeeded

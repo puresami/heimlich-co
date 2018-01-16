@@ -1,22 +1,21 @@
 	package games.HeimlichUndCo;
 
-	import java.io.IOException;
-	import java.util.ArrayList;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-	import gameClasses.Game;
-	import gameClasses.GameState;
-	import global.FileHelper;
+import gameClasses.Game;
+import gameClasses.GameState;
+import global.FileHelper;
 
 import userManagement.User;
 
 	public class HeimlichUndCo extends Game {
 		private int safePosition;
-		//private int houseNumber; //0=Church, 1-10=houses, 11=ruin
 		private ArrayList<User> playerList = new ArrayList<User>();
 		private ArrayList<User> spectatorList = new ArrayList<User>();
 		private ArrayList<Agent> agentList =new ArrayList<Agent>();
@@ -146,18 +145,6 @@ import userManagement.User;
 
 	}
 
-		public void turn() {
-			//moveAgents(); von javascript irgendwie übernehmen(?)
-			for(int i=0;i<agentList.size();i++) {
-				if (agentList.get(i).getAgentPosition()==getSafePosition()) {
-				scoring();
-				}
-			}
-			if (gameOver()) {
-			System.out.println("The game is over!");
-			//TODO
-			}
-		}
 		public Agent takeCard() {
 
 			int cardTaken = -1;
@@ -324,13 +311,6 @@ import userManagement.User;
 			this.agentList = agentList;
 		}
 
-		/*public int getHouseNumber() {
-			return houseNumber;
-		}
-
-		public void setHouseNumber(int houseNumber) {
-			this.houseNumber = houseNumber;
-		}*/
 		public User getPlayerTurn() {
 			return playerTurn;
 		}
@@ -418,7 +398,7 @@ import userManagement.User;
 			playerList.remove(user);
 			setPlayerLeft(user.getName());
 			sendGameDataToClients("PLAYERLEFT");
-			//TODO javascript-listener, siehe seite 44 in der entwicklerdokumentation
+			//javascript-listener,seite 44 in der Entwicklerdokumentation
 		}
 
 		@Override
@@ -453,11 +433,11 @@ import userManagement.User;
 			return;
 		}
 
-		/*
-		 * String[] strArray = gsonString.split(","); int[] receivedArray = new int[9];
-		 * for (int i = 0; i < 9; i++) { receivedArray[i] =
-		 * Integer.parseInt(strArray[i]); } int[] gridStatus = getGridStatus();
-		 */
+		for(int i=0;i<agentList.size();i++) {
+			if (agentList.get(i).getAgentPosition()==getSafePosition()) {
+			scoring();
+			}
+		}
 		ArrayList<Agent> actualAgentList = new ArrayList<Agent>();
 
 		boolean changed = false;
@@ -483,6 +463,7 @@ import userManagement.User;
 			}
 		}
 		if (gameOver()) {
+			System.out.println("The game is over.");
 			this.gState = GameState.FINISHED;
 		}
 
@@ -537,4 +518,4 @@ import userManagement.User;
 		}
 	}
 	*/
-	
+	//TODO 
