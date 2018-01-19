@@ -2,10 +2,11 @@
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import gameClasses.Game;
@@ -15,6 +16,9 @@ import global.FileHelper;
 import userManagement.User;
 
 	public class HeimlichUndCo extends Game {
+		/*
+		 * dataArray contains the gameData
+		 */
 		private int safePosition;
 		private ArrayList<User> playerList = new ArrayList<User>();
 		private ArrayList<User> spectatorList = new ArrayList<User>();
@@ -22,6 +26,12 @@ import userManagement.User;
 		private String playerLeft=null;
 		private User playerTurn= null;
 		Random card= new Random();
+		private int[] dataArray;
+		/*
+		 * arraylist mit farben
+		 * 
+		 */
+		
 		
 		private static HeimlichUndCo instance;
 		
@@ -34,10 +44,12 @@ import userManagement.User;
 		}
 		
 		public void initializeGame() {
-			setSafePosition(7);
+			
 		agentList=null;
-		
-		switch (playerList.size()) {
+		int [] dataArr={-1,-1,-1,-1,-1,-1,-1,7,0,0,0,0,0,0,0};
+		setDataArray(dataArr);
+		setSafePosition(7);
+		/*switch (playerList.size()) {
 		case 5:
 		case 6:
 		case 7: {
@@ -77,7 +89,7 @@ import userManagement.User;
 		default:{
 			throw new IllegalArgumentException("Ungültige Spieleranzahl!");
 		}
-		}
+		}*/
 	}
 		
 		
@@ -85,67 +97,135 @@ import userManagement.User;
 
 		Random agent = new Random();
 		int fieldsToGo = rollDice();
+		int rolled=fieldsToGo;
 		Random fieldsgone = new Random();
 
 		// yellow=0,red=1,purple=2,blue=3,green=4,orange=5,grey=6
 		while (fieldsToGo > 0) {
 			int fieldsGone = fieldsgone.nextInt(6) + 1;
 			int agentToMove = agent.nextInt(agentList.size());
+			
 			if (fieldsGone > fieldsToGo) {
 				fieldsGone = Math.abs(fieldsGone - fieldsToGo);
 			}
-			switch (agentToMove) {
-			case 0: {
-				System.out.println("Move Yellow Agent");
-				agentList.get(0).setAgentPosition(agentList.get(0).getAgentPosition() + fieldsGone);
-				fieldsToGo -= fieldsGone;
-				break;
+			
+			if (rolled<fieldsToGo) {
+				switch (agentToMove) {
+				case 0: {
+					System.out.println("Move Yellow Agent");
+					agentList.get(0).setAgentPosition(agentList.get(0).getAgentPosition() + fieldsGone);
+					fieldsToGo -= fieldsGone;
+					break;
+				}
+				case 1: {
+					System.out.println("Move red agent");
+					agentList.get(1).setAgentPosition(agentList.get(1).getAgentPosition() + fieldsGone);
+					fieldsToGo -= fieldsGone;
+					break;
+				}
+				case 2: {
+					System.out.println("Move purple agent");
+					agentList.get(2).setAgentPosition(agentList.get(2).getAgentPosition() + fieldsGone);
+					fieldsToGo -= fieldsGone;
+					break;
+				}
+				case 3: {
+					System.out.println("Move blue agent");
+					agentList.get(3).setAgentPosition(agentList.get(3).getAgentPosition() + fieldsGone);
+					fieldsToGo -= fieldsGone;
+					break;
+				}
+				case 4: {
+					System.out.println("Move green agent");
+					agentList.get(4).setAgentPosition(agentList.get(4).getAgentPosition() + fieldsGone);
+					fieldsToGo -= fieldsGone;
+					break;
+				}
+				case 5: {
+					System.out.println("Move orange agent");
+					agentList.get(5).setAgentPosition(agentList.get(5).getAgentPosition() + fieldsGone);
+					fieldsToGo -= fieldsGone;
+					break;
+				}
+				case 6: {
+					System.out.println("Move grey agent");
+					agentList.get(6).setAgentPosition(agentList.get(6).getAgentPosition() + fieldsGone);
+					fieldsToGo -= fieldsGone;
+					break;
+				}
+				default: {
+					throw new IllegalArgumentException("Error while AI-Turn");
+				}
+				}
+				
 			}
-			case 1: {
-				System.out.println("Move red agent");
-				agentList.get(1).setAgentPosition(agentList.get(1).getAgentPosition() + fieldsGone);
-				fieldsToGo -= fieldsGone;
-				break;
+			else {
+				agentList.get(agentToMove).setAgentPosition(agentList.get(agentToMove).getAgentPosition()+rolled);
 			}
-			case 2: {
-				System.out.println("Move purple agent");
-				agentList.get(2).setAgentPosition(agentList.get(2).getAgentPosition() + fieldsGone);
-				fieldsToGo -= fieldsGone;
-				break;
-			}
-			case 3: {
-				System.out.println("Move blue agent");
-				agentList.get(3).setAgentPosition(agentList.get(3).getAgentPosition() + fieldsGone);
-				fieldsToGo -= fieldsGone;
-				break;
-			}
-			case 4: {
-				System.out.println("Move green agent");
-				agentList.get(4).setAgentPosition(agentList.get(4).getAgentPosition() + fieldsGone);
-				fieldsToGo -= fieldsGone;
-				break;
-			}
-			case 5: {
-				System.out.println("Move orange agent");
-				agentList.get(5).setAgentPosition(agentList.get(5).getAgentPosition() + fieldsGone);
-				fieldsToGo -= fieldsGone;
-				break;
-			}
-			case 6: {
-				System.out.println("Move grey agent");
-				agentList.get(6).setAgentPosition(agentList.get(6).getAgentPosition() + fieldsGone);
-				fieldsToGo -= fieldsGone;
-				break;
-			}
-			default: {
-				throw new IllegalArgumentException("Error while AI-Turn");
-			}
-			}
+			//punktearray überarbeiten
+			//wertung, ...
+			
 		}
 
 	}
-
-		public Agent takeCard() {
+	
+	
+	public ArrayList<Agent> instantiateAgents(String gsonString) {
+		String[]strArray = gsonString.split(",");
+		int[] receivedDataArray=new int [17];
+		for (int i = 0; i < 17; i++) {
+			receivedDataArray[i] = Integer.parseInt(strArray[i]);
+		}
+		ArrayList<Agent> newAgentList=new ArrayList<Agent>();
+		
+		for (int i=0;i<7;i++) {
+			if (receivedDataArray[i]!=-1) {
+				switch(i) {
+				case 0:{
+					Agent yellowAgent=new Agent(0);
+					newAgentList.add(yellowAgent);
+					break;
+				}
+				case 1:{
+					Agent redAgent=new Agent(1);
+					newAgentList.add(redAgent);
+					break;
+				}
+				case 2:{
+					Agent purpleAgent=new Agent(2);
+					newAgentList.add(purpleAgent);
+					break;
+				}
+				case 3:{
+					Agent blueAgent=new Agent(3);
+					newAgentList.add(blueAgent);
+					break;
+				}
+				case 4:{
+					Agent greenAgent=new Agent(4);
+					newAgentList.add(greenAgent);
+					break;
+				}
+				case 5:{
+					Agent orangeAgent=new Agent(5);
+					newAgentList.add(orangeAgent);
+					break;
+				}
+				case 6:{
+					Agent greyAgent=new Agent(6);
+					newAgentList.add(greyAgent);
+					break;
+				}
+				default:{
+					System.out.println("No Agents instantiated");
+				}
+				}
+			}
+		}
+		setAgentList(newAgentList);
+		return agentList;
+	}
+	/*	public Agent takeCard() {
 
 			int cardTaken = -1;
 			// yellow=0,red=1,purple=2,blue=3,green=4,orange=5,grey=6
@@ -198,6 +278,7 @@ import userManagement.User;
 			}
 			return takeCard();
 		}
+		*/
 		public int rollDice(){
 
 			Random dice = new Random();
@@ -209,7 +290,7 @@ import userManagement.User;
 			return numberRolled;
 		}
 		
-		private void scoring() {
+		public void scoring() {
 
 			for (int i = 0; i < agentList.size(); i++) {
 				switch (agentList.get(i).getAgentPosition()) {
@@ -257,7 +338,9 @@ import userManagement.User;
 					break;
 				}
 				case 11: {
+					if (agentList.get(i).getMarkerPosition()>=3) {
 					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() -3);
+					}
 					break;
 				}
 				default: {
@@ -269,12 +352,64 @@ import userManagement.User;
 		}
 
 		public boolean gameOver() {
+			boolean gameOver=false;
 			for (int i = 0; i < agentList.size(); i++) {
 				if (agentList.get(i).getMarkerPosition() >= 42) {
-					return true;
+					gameOver=true;
 				}
 			}
-			return false;
+			return gameOver;
+		}
+		
+		public HashMap<String,String> assignColour() {
+			HashMap<String,String> hash= new HashMap<String,String>(agentList.size());
+			ArrayList<Integer> colourList= new ArrayList<Integer>(7);
+			for (int i=0;i<7;i++) {
+			colourList.add(i);
+			}
+			Collections.shuffle(colourList);
+			
+			for(int i=1;i<=playerList.size();i++) {
+				//TODO zwei zusätzliche agenten ins spiel bringen,generell Agenten erstellen
+				String name=playerList.get(i).getName();
+				int colourInt=colourList.get(i);
+				String colour;
+				switch(colourInt) {
+				case 0:
+					colour = "yellow";
+				case 1:
+					colour = "red";
+				case 2:
+					colour = "purple";
+				case 3:
+					colour = "blue";
+				case 4:
+					colour = "green";
+				case 5:
+					colour = "orange";
+				case 6:
+					colour = "grey";
+				default: 
+					colour="Error while getting a String of the colour";
+				}
+				
+				hash.put(name, colour);
+			}
+			return hash;			
+		}
+	
+		public String[] hashmapToStringArray(HashMap <String,String> hashmap) {
+			String[]hashToString = null;
+			for(int i=0;i<hashmap.size();i++) {
+				for(Entry<String,String> entry: hashmap.entrySet()) {
+					String key=entry.getKey();
+					String value=entry.getValue();
+					hashToString[i]=key+value;
+					}
+			}
+			
+			return hashToString;
+			
 		}
 		
 		@Override
@@ -300,6 +435,7 @@ import userManagement.User;
 					throw new IllegalArgumentException("Invalid Position");
 				}
 				else this.safePosition = safePosition;
+					dataArray[7]= safePosition;
 			}
 		}
 
@@ -371,7 +507,7 @@ import userManagement.User;
 				if (playerTurn == null) {
 					playerTurn = user;
 				}
-				sendGameDataToClients("START");
+				//sendGameDataToClients("START");
 			}
 			if (playerList.size() == 7) {
 				this.gState = GameState.RUNNING;
@@ -406,6 +542,14 @@ import userManagement.User;
 			return this.gState;
 		}
 		
+		public int[] getDataArray() {
+			return dataArray;
+		}
+
+		public void setDataArray(int[] dataArray) {
+			this.dataArray = dataArray;
+		}
+		
 		private String isHost(User user) {
 			if(user==creator) return ",HOST";
 			else return ",NOTTHEHOST";
@@ -425,54 +569,67 @@ import userManagement.User;
 
 		if (gsonString.equals("RESTART")) {
 			initializeGame();
+			playerTurn=getGameCreator();
 			this.gState = GameState.RUNNING;
 			sendGameDataToClients("standardEvent");
 			return;
 		}
+		
 		if (gState != GameState.RUNNING) {
 			return;
 		}
-
-		for(int i=0;i<agentList.size();i++) {
-			if (agentList.get(i).getAgentPosition()==getSafePosition()) {
-			scoring();
-			}
+		
+		if (!user.equals(playerTurn)) {
+			return;
 		}
-		ArrayList<Agent> actualAgentList = new ArrayList<Agent>();
-
-		boolean changed = false;
-
-		if (!actualAgentList.equals(agentList)) {
-			changed = true;
+		
+		String[]strArray = gsonString.split(",");
+		int[] receiveddataArray=new int [17];
+		for (int i = 0; i < 17; i++) {
+			receiveddataArray[i] = Integer.parseInt(strArray[i]);
 		}
-		// TODO abgleich von erhaltenem string mit zurzeit gezeigten spieldaten
-
+		boolean changed=false;
+		int[] actualdataArray=getDataArray();
+		
+		if (!actualdataArray.equals(receiveddataArray)) {
+			changed=true;	
+		}
+		
 		if (changed == true) {
-			Iterator<User> it = playerList.iterator();
+			for (int i = 0; i < 7; i++) {
+					agentList.get(i).setAgentPosition(receiveddataArray[i]);
+					agentList.get(i).setMarkerPosition(receiveddataArray[i+8]);
+			}
+		
+			for(int i=0;i<agentList.size();i++) {
+				if (agentList.get(i).getAgentPosition()==getSafePosition()) {
+				scoring();
+				}
+			}
+
+			if (gameOver()) {
+				System.out.println("The game is over.");
+				this.gState = GameState.FINISHED;
+			}
 			// playerTurn um eins nach vorn verschieben
 
+			Iterator<User> it = playerList.iterator();
+			
 			if (it.hasNext()) {
 				setPlayerTurn(it.next());
-			} else // wenn playerlist durchlaufen wieder bei 0 beginnen
+			} else {// wenn playerlist durchlaufen wieder bei 0 beginnen
 				it = playerList.iterator();
 			setPlayerTurn(it.next());
-
-			for (int i = 0; i < agentList.size(); i++) {
-				agentList.get(i).setAgentPosition(actualAgentList.get(i).getAgentPosition());
-				agentList.get(i).setMarkerPosition(actualAgentList.get(i).getMarkerPosition());
 			}
+			
+			setDataArray(actualdataArray);
+			
+			sendGameDataToClients("standardEvent");
 		}
-		if (gameOver()) {
-			System.out.println("The game is over.");
-			this.gState = GameState.FINISHED;
-		}
-
-		sendGameDataToClients("standardEvent");
 	}
 
 		@Override
 		public String getGameData(String eventName, User user) {
-			
 			String gameData = "";
 			if(eventName.equals("PLAYERLEFT")){
 				return playerLeft + " hat das Spiel verlassen!";
@@ -480,9 +637,20 @@ import userManagement.User;
 			if(eventName.equals("CLOSE")){
 				return "CLOSE";
 			}
+			if (eventName.equals("START")) {
+				return assignColour().toString();
+				//TODO stimmt kommunikation so oder besser anders?
+			}
+			
+			int[] actualDataArray=getDataArray();
+			for (int i=0;i<15;i++) {
+				gameData+=String.valueOf(actualDataArray[i]);
+				gameData+=",";
+			}
+			
 			if(playerList.size()<2){
-				gameData += "Warte auf 2ten Spieler oder KI-Spieler...";
-				gameData += isHost(user);
+				gameData += "Warte auf 2ten Spieler oder KI-Spieler..."; //Arrayelem 15
+				gameData += isHost(user); //Arrayelem16
 				return gameData;
 			}
 			if (this.gState == GameState.FINISHED) {
@@ -494,28 +662,28 @@ import userManagement.User;
 				for (int i=0;i<agentList.size();i++) {
 					gameData+= agentList.get(i)+" ist mit " 
 							+ agentList.get(i).getMarkerPosition()+ " Punkten auf Platz " 
-							+ (agentList.indexOf(agentList.get(i))+1);
+							+ (agentList.indexOf(agentList.get(i))+1)
+							+"\n";// Arrayelem 15
 				}
-				//TODO PlayerList / AgentList, wer ist wer
 				
 			}
 			else if (playerTurn.equals(user)) {
-				gameData += "Du bist dran!";
+				gameData += "Du bist dran!"; //arrayelem 15
 			} else
-				gameData += playerTurn.getName() + " ist dran!";
+				gameData += playerTurn.getName() + " ist dran!";//arrayelem 15
+			
+			gameData+= isHost(user);//Arrayelem16
+			
 			return gameData;
 		}
 	}
-	/*for (int i=0;i<agentList.size();i++) {
-		if (eventName.equals("EVENTNAME")) {
-			
-		}
-		else if (eventName.equals("")) {
-			
-		}
-		else {
-			throw new ILLegalArgumentException("Ungültiger Eventname")
-		}
-	}
-	*/
-	//TODO schnittstellen
+
+	/*
+	 * TODO schnittstellen
+	 * HashMap name,colour übergeben an javascript(wie?)
+	 * Spieleranzahl: durch elemente !=-1 im dataArray von 0 bis 6
+	 * playerturn nachvollziehen , initialisieren
+	 * werden position und punkte richtig überarbeitet?
+	 */
+	
+
