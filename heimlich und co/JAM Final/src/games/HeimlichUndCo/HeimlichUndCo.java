@@ -2,7 +2,7 @@
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,14 +25,8 @@ import userManagement.User;
 		private ArrayList<Agent> agentList =new ArrayList<Agent>();
 		private String playerLeft=null;
 		private User playerTurn= null;
-		Random card= new Random();
 		private int[] dataArray;
-		/*
-		 * arraylist mit farben
-		 * 
-		 */
-		
-		
+			
 		private static HeimlichUndCo instance;
 		
 		public static HeimlichUndCo getInstance() {
@@ -48,7 +42,8 @@ import userManagement.User;
 		agentList=null;
 		int [] dataArr={-1,-1,-1,-1,-1,-1,-1,7,0,0,0,0,0,0,0};
 		setDataArray(dataArr);
-		setSafePosition(7);
+		instantiateAgents();
+		playerTurn=getGameCreator();
 		/*switch (playerList.size()) {
 		case 5:
 		case 6:
@@ -226,7 +221,7 @@ import userManagement.User;
 		return agentList;
 	}
 	/*	public Agent takeCard() {
-
+			Random card =new Random();
 			int cardTaken = -1;
 			// yellow=0,red=1,purple=2,blue=3,green=4,orange=5,grey=6
 			cardTaken = card.nextInt(7);
@@ -362,7 +357,7 @@ import userManagement.User;
 		}
 		
 		public HashMap<String,String> assignColour() {
-			HashMap<String,String> hash= new HashMap<String,String>(agentList.size());
+			HashMap<String,String> hash= new HashMap<String,String>(7);
 			ArrayList<Integer> colourList= new ArrayList<Integer>(7);
 			for (int i=0;i<7;i++) {
 			colourList.add(i);
@@ -370,7 +365,7 @@ import userManagement.User;
 			Collections.shuffle(colourList);
 			
 			for(int i=1;i<=playerList.size();i++) {
-				//TODO zwei zusätzliche agenten ins spiel bringen,generell Agenten erstellen
+				//TODO zwei zusätzliche agenten ins spiel bringen
 				String name=playerList.get(i).getName();
 				int colourInt=colourList.get(i);
 				String colour;
@@ -397,6 +392,12 @@ import userManagement.User;
 			}
 			return hash;			
 		}
+		
+		public String intArrayToString(int[] intArr) {
+			String data= Arrays.toString(intArr);//.replaceAll("\\[|\\]|,|\\s", ""); für andere form, nötig?
+			return data;
+			
+		}
 	
 		public String[] hashmapToStringArray(HashMap <String,String> hashmap) {
 			String[]hashToString = null;
@@ -412,149 +413,148 @@ import userManagement.User;
 			
 		}
 		
-		@Override
-		public int getMaxPlayerAmount() {
-			return 7;
-		}
+	@Override
+	public int getMaxPlayerAmount() {
+		return 7;
+	}
 
-		@Override
-		public int getCurrentPlayerAmount() {
-			return playerList.size();
-		}
+	@Override
+	public int getCurrentPlayerAmount() {
+		return playerList.size();
+	}
 
-		public int getSafePosition() {
-			return safePosition;
-		}
+	public int getSafePosition() {
+		return safePosition;
+	}
 
-		public void setSafePosition(int safePosition) {
-			for(int i=0;i<agentList.size();i++ ) {
-				if (agentList.get(i).getAgentPosition()==this.safePosition) {
-					throw new IllegalArgumentException("House is already occupied. Choose another one.");
-				}
-				else if(safePosition<0 || safePosition >=12) {
-					throw new IllegalArgumentException("Invalid Position");
-				}
-				else this.safePosition = safePosition;
-					dataArray[7]= safePosition;
-			}
+	public void setSafePosition(int safePosition) {
+		for (int i = 0; i < agentList.size(); i++) {
+			if (agentList.get(i).getAgentPosition() == this.safePosition) {
+				throw new IllegalArgumentException("House is already occupied. Choose another one.");
+			} else if (safePosition < 0 || safePosition >= 12) {
+				throw new IllegalArgumentException("Invalid Position");
+			} else
+				this.safePosition = safePosition;
+			dataArray[7] = safePosition;
 		}
+	}
 
-		public ArrayList<Agent> getAgentList() {
-			return agentList;
-		}
+	public ArrayList<Agent> getAgentList() {
+		return agentList;
+	}
 
-		public void setAgentList(ArrayList<Agent> agentList) {
-			this.agentList = agentList;
-		}
+	public void setAgentList(ArrayList<Agent> agentList) {
+		this.agentList = agentList;
+	}
 
-		public User getPlayerTurn() {
-			return playerTurn;
-		}
+	public User getPlayerTurn() {
+		return playerTurn;
+	}
 
-		public void setPlayerTurn(User playerTurn) {
-			this.playerTurn = playerTurn;
-		}
-		
-		public String getPlayerLeft() {
-			return playerLeft;
-		}
+	public void setPlayerTurn(User playerTurn) {
+		this.playerTurn = playerTurn;
+	}
 
-		public void setPlayerLeft(String playerLeft) {
-			this.playerLeft = playerLeft;
-		}
-		
-		@Override
-		public String getSite() {
-			try {
-				return FileHelper.getFile("HeimlichUndCo/HeimlichUndCo.html");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return null;
-		}
+	public String getPlayerLeft() {
+		return playerLeft;
+	}
 
-		@Override //von TicTacToe übernommen
-		public String getCSS() {
-			try {
-				return global.FileHelper.getFile("HeimlichUndCo/css/HeimlichUndCo.css");
-			} catch (IOException e) {
-				System.err
-						.println("Loading of file HeimlichUndCo/css/HeimlichUndCo.css failed");
-			}
-			return null;
-		}
+	public void setPlayerLeft(String playerLeft) {
+		this.playerLeft = playerLeft;
+	}
 
-		@Override
-		public String getJavaScript() {
-			return "<script src=\"javascript/HeimlichUndCo.js\"></script>";
+	@Override
+	public String getSite() {
+		try {
+			return FileHelper.getFile("HeimlichUndCo/HeimlichUndCo.html");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		return null;
+	}
 
-		@Override
-		public ArrayList<User> getPlayerList() {
-			return this.playerList;
+	@Override 
+	public String getCSS() {
+		try {
+			return global.FileHelper.getFile("HeimlichUndCo/css/HeimlichUndCo.css");
+		} catch (IOException e) {
+			System.err.println("Loading of file HeimlichUndCo/css/HeimlichUndCo.css failed");
 		}
+		return null;
+	}
 
-		@Override
-		public ArrayList<User> getSpectatorList() {
-			return this.spectatorList;
-		}
+	@Override
+	public String getJavaScript() {
+		return "<script src=\"javascript/HeimlichUndCo.js\"></script>";
+	}
 
-		@Override //von TicTacToe übernommen, javascript-listener fehlen noch
-		public void addUser(User user) {
-			if (playerList.size() < 7 && !playerList.contains(user)) {
-				playerList.add(user);
+	@Override
+	public ArrayList<User> getPlayerList() {
+		return this.playerList;
+	}
 
-				if (playerTurn == null) {
-					playerTurn = user;
-				}
-				//sendGameDataToClients("START");
-			}
-			if (playerList.size() == 7) {
-				this.gState = GameState.RUNNING;
-				sendGameDataToClients("START");
-			}
-		}
+	@Override
+	public ArrayList<User> getSpectatorList() {
+		return this.spectatorList;
+	}
 
-		@Override 
-		public void addSpectator(User user) {
-			this.spectatorList.add(user);
-		}
+	@Override
+	public void addUser(User user) {
+		if (playerList.size() < 7 && !playerList.contains(user)) {
+			playerList.add(user);
 
-		@Override
-		public boolean isJoinable() {
-			if (playerList.size() < 7) {
-				return true;
-			} else {
-				return false;
-			}
+		/*	if (playerTurn == null) {
+				playerTurn = user;
+			}*/
+			// sendGameDataToClients("START");
 		}
+		if (playerList.size() == 7) {
+			this.gState = GameState.RUNNING;
+			sendGameDataToClients("START");
+		}
+	}
 
-		@Override//von TicTacToe übernommen
-		public void playerLeft(User user) {
-			playerList.remove(user);
-			setPlayerLeft(user.getName());
-			sendGameDataToClients("PLAYERLEFT");
-			//javascript-listener,seite 44 in der Entwicklerdokumentation
-		}
+	@Override
+	public void addSpectator(User user) {
+		this.spectatorList.add(user);
+	}
 
-		@Override
-		public GameState getGameState() {
-			return this.gState;
+	@Override
+	public boolean isJoinable() {
+		if (playerList.size() < 7) {
+			return true;
+		} else {
+			return false;
 		}
-		
-		public int[] getDataArray() {
-			return dataArray;
-		}
+	}
 
-		public void setDataArray(int[] dataArray) {
-			this.dataArray = dataArray;
-		}
-		
-		private String isHost(User user) {
-			if(user==creator) return ",HOST";
-			else return ",NOTTHEHOST";
-		}
-		
+	@Override // von TicTacToe übernommen
+	public void playerLeft(User user) {
+		playerList.remove(user);
+		setPlayerLeft(user.getName());
+		sendGameDataToClients("PLAYERLEFT");
+		// javascript-listener,seite 44 in der Entwicklerdokumentation
+	}
+
+	@Override
+	public GameState getGameState() {
+		return this.gState;
+	}
+
+	public int[] getDataArray() {
+		return dataArray;
+	}
+
+	public void setDataArray(int[] dataArray) {
+		this.dataArray = dataArray;
+	}
+
+	private String isHost(User user) {
+		if (user == creator)
+			return ",HOST";
+		else
+			return ",NOTTHEHOST";
+	}
 		
 	@Override
 	public void execute(User user, String gsonString) {
@@ -569,41 +569,40 @@ import userManagement.User;
 
 		if (gsonString.equals("RESTART")) {
 			initializeGame();
-			playerTurn=getGameCreator();
 			this.gState = GameState.RUNNING;
 			sendGameDataToClients("standardEvent");
 			return;
 		}
-		
+
 		if (gState != GameState.RUNNING) {
 			return;
 		}
-		
+
 		if (!user.equals(playerTurn)) {
 			return;
 		}
-		
-		String[]strArray = gsonString.split(",");
-		int[] receiveddataArray=new int [17];
+
+		String[] strArray = gsonString.split(",");
+		int[] receiveddataArray = new int[17];
 		for (int i = 0; i < 17; i++) {
 			receiveddataArray[i] = Integer.parseInt(strArray[i]);
 		}
-		boolean changed=false;
-		int[] actualdataArray=getDataArray();
-		
+		boolean changed = false;
+		int[] actualdataArray = getDataArray();
+
 		if (!actualdataArray.equals(receiveddataArray)) {
-			changed=true;	
+			changed = true;
 		}
-		
+
 		if (changed == true) {
 			for (int i = 0; i < 7; i++) {
-					agentList.get(i).setAgentPosition(receiveddataArray[i]);
-					agentList.get(i).setMarkerPosition(receiveddataArray[i+8]);
+				agentList.get(i).setAgentPosition(receiveddataArray[i]);
+				agentList.get(i).setMarkerPosition(receiveddataArray[i + 8]);
 			}
-		
-			for(int i=0;i<agentList.size();i++) {
-				if (agentList.get(i).getAgentPosition()==getSafePosition()) {
-				scoring();
+
+			for (int i = 0; i < agentList.size(); i++) {
+				if (agentList.get(i).getAgentPosition() == getSafePosition()) {
+					scoring();
 				}
 			}
 
@@ -614,16 +613,16 @@ import userManagement.User;
 			// playerTurn um eins nach vorn verschieben
 
 			Iterator<User> it = playerList.iterator();
-			
+
 			if (it.hasNext()) {
 				setPlayerTurn(it.next());
 			} else {// wenn playerlist durchlaufen wieder bei 0 beginnen
 				it = playerList.iterator();
-			setPlayerTurn(it.next());
+				setPlayerTurn(it.next());
 			}
-			
+
 			setDataArray(actualdataArray);
-			
+
 			sendGameDataToClients("standardEvent");
 		}
 	}
