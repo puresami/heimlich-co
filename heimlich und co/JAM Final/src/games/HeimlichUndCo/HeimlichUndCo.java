@@ -1,4 +1,4 @@
-	package games.HeimlichUndCo;
+package games.HeimlichUndCo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,96 +15,68 @@ import global.FileHelper;
 
 import userManagement.User;
 
-	public class HeimlichUndCo extends Game {
-		/*
-		 * dataArray contains the gameData
-		 */
-		private int safePosition;
-		private ArrayList<User> playerList = new ArrayList<User>();
-		private ArrayList<User> spectatorList = new ArrayList<User>();
-		private ArrayList<Agent> agentList =new ArrayList<Agent>();
-		private String playerLeft=null;
-		private User playerTurn= null;
-		private int[] dataArray;
-			
-		private static HeimlichUndCo instance;
-		
-		public static HeimlichUndCo getInstance() {
-			if (instance == null) 
-			{
-				instance = new HeimlichUndCo();
-			}
-			return instance;
+public class HeimlichUndCo extends Game {
+	/*
+	 * dataArray contains the gameData
+	 */
+	private int safePosition;
+	private ArrayList<User> playerList = new ArrayList<User>();
+	private ArrayList<User> spectatorList = new ArrayList<User>();
+	private ArrayList<Agent> agentList = new ArrayList<Agent>();
+	private String playerLeft = null;
+	private User playerTurn = null;
+	private int[] dataArray;
+
+	private static HeimlichUndCo instance;
+
+	public static HeimlichUndCo getInstance() {
+		if (instance == null) {
+			instance = new HeimlichUndCo();
 		}
-		
-		public void initializeGame() {
-			
-		agentList=null;
-		int [] dataArr={-1,-1,-1,-1,-1,-1,-1,7,0,0,0,0,0,0,0};
-		setDataArray(dataArr);
-		instantiateAgents();
-		playerTurn=getGameCreator();
-		/*switch (playerList.size()) {
-		case 5:
-		case 6:
-		case 7: {
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			break;
-		}
-		case 4: {
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			break;
-		}
-		case 3: {
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			break;
-		}
-		case 2: {
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			agentList.add(takeCard());
-			break;
-		}
-		default:{
-			throw new IllegalArgumentException("Ungültige Spieleranzahl!");
-		}
-		}*/
+		return instance;
 	}
-		
-		
+
+	public void initializeGame() {
+		Random Agent = new Random();
+		agentList = null;
+		int agent = 0;
+		int[] dataArr = { -1, -1, -1, -1, -1, -1, -1, 7, 0, 0, 0, 0, 0, 0, 0 };
+
+		for (int i = 0; i < 7; i++) {
+			if (getCurrentPlayerAmount() >= 5) {
+				dataArr[i] = 0;
+			} else {
+				while (getSum(dataArr) < getCurrentPlayerAmount() - 5) { // Spieleranzahl bestimmt die Arraysumme, da -1
+																			// oder 0
+					agent = Agent.nextInt(getCurrentPlayerAmount() + 2);
+					if (dataArr[agent] == -1) {
+						dataArr[agent] = 0;
+					}
+				}
+			}
+		}
+		setDataArray(dataArr);
+		instantiateAgents(dataArr);
+		playerTurn = getGameCreator();
+	}
+
 	public void AITurn() {
 
 		Random agent = new Random();
 		int fieldsToGo = rollDice();
-		int rolled=fieldsToGo;
+		int rolled = fieldsToGo;
 		Random fieldsgone = new Random();
 
 		// yellow=0,red=1,purple=2,blue=3,green=4,orange=5,grey=6
 		while (fieldsToGo > 0) {
 			int fieldsGone = fieldsgone.nextInt(6) + 1;
 			int agentToMove = agent.nextInt(agentList.size());
-			
+
 			if (fieldsGone > fieldsToGo) {
 				fieldsGone = Math.abs(fieldsGone - fieldsToGo);
 			}
-			
-			if (rolled<fieldsToGo) {
+
+			if (rolled < fieldsToGo) {
 				switch (agentToMove) {
 				case 0: {
 					System.out.println("Move Yellow Agent");
@@ -152,66 +124,65 @@ import userManagement.User;
 					throw new IllegalArgumentException("Error while AI-Turn");
 				}
 				}
-				
-			}
-			else {
-				agentList.get(agentToMove).setAgentPosition(agentList.get(agentToMove).getAgentPosition()+rolled);
-			}
-			//punktearray überarbeiten
-			//wertung, ...
-			
-		}
 
-	}
-	
-	
-	public ArrayList<Agent> instantiateAgents(String gsonString) {
-		String[]strArray = gsonString.split(",");
-		int[] receivedDataArray=new int [17];
-		for (int i = 0; i < 17; i++) {
-			receivedDataArray[i] = Integer.parseInt(strArray[i]);
+			} else {
+				agentList.get(agentToMove).setAgentPosition(agentList.get(agentToMove).getAgentPosition() + rolled);
+			}
+			// punktearray überarbeiten
+			// wertung, ...
+
 		}
-		ArrayList<Agent> newAgentList=new ArrayList<Agent>();
 		
-		for (int i=0;i<7;i++) {
-			if (receivedDataArray[i]!=-1) {
-				switch(i) {
-				case 0:{
-					Agent yellowAgent=new Agent(0);
+	}
+
+	public ArrayList<Agent> instantiateAgents(int[] data) {
+		// falls Parameter als String übergeben wird:
+		/*
+		 * String[]strArray = gsonString.split(","); int[] receivedDataArray=new int
+		 * [17]; for (int i = 0; i < 17; i++) { receivedDataArray[i] =
+		 * Integer.parseInt(strArray[i]); }
+		 */
+		ArrayList<Agent> newAgentList = new ArrayList<Agent>();
+
+		for (int i = 0; i < 7; i++) {
+			if (data[i] != -1) {
+				switch (i) {
+				case 0: {
+					Agent yellowAgent = new Agent(0);
 					newAgentList.add(yellowAgent);
 					break;
 				}
-				case 1:{
-					Agent redAgent=new Agent(1);
+				case 1: {
+					Agent redAgent = new Agent(1);
 					newAgentList.add(redAgent);
 					break;
 				}
-				case 2:{
-					Agent purpleAgent=new Agent(2);
+				case 2: {
+					Agent purpleAgent = new Agent(2);
 					newAgentList.add(purpleAgent);
 					break;
 				}
-				case 3:{
-					Agent blueAgent=new Agent(3);
+				case 3: {
+					Agent blueAgent = new Agent(3);
 					newAgentList.add(blueAgent);
 					break;
 				}
-				case 4:{
-					Agent greenAgent=new Agent(4);
+				case 4: {
+					Agent greenAgent = new Agent(4);
 					newAgentList.add(greenAgent);
 					break;
 				}
-				case 5:{
-					Agent orangeAgent=new Agent(5);
+				case 5: {
+					Agent orangeAgent = new Agent(5);
 					newAgentList.add(orangeAgent);
 					break;
 				}
-				case 6:{
-					Agent greyAgent=new Agent(6);
+				case 6: {
+					Agent greyAgent = new Agent(6);
 					newAgentList.add(greyAgent);
 					break;
 				}
-				default:{
+				default: {
 					System.out.println("No Agents instantiated");
 				}
 				}
@@ -220,199 +191,155 @@ import userManagement.User;
 		setAgentList(newAgentList);
 		return agentList;
 	}
-	/*	public Agent takeCard() {
-			Random card =new Random();
-			int cardTaken = -1;
-			// yellow=0,red=1,purple=2,blue=3,green=4,orange=5,grey=6
-			cardTaken = card.nextInt(7);
-			System.out.println("Card Taken:" + cardTaken);
-			for (int i = 0; i <= agentList.size(); i++) {
-				if (!(agentList.get(i).getColour() == cardTaken)) {
-					switch (cardTaken) {
-					case 0: {
-						System.out.println("You took the yellow Agent!");
-						Agent yellowAgent = new Agent(0);
-						return yellowAgent;
-					}
-					case 1: {
-						System.out.println("You took the red Agent!");
-						Agent redAgent = new Agent(1);
-						return redAgent;
-					}
-					case 2: {
-						System.out.println("You took the purple Agent!");
-						Agent purpleAgent = new Agent(2);
-						return purpleAgent;
-					}
-					case 3: {
-						System.out.println("You took the blue Agent!");
-						Agent blueAgent = new Agent(3);
-						return blueAgent;
-					}
-					case 4: {
-						System.out.println("You took the green Agent!");
-						Agent greenAgent = new Agent(4);
-						return greenAgent;
-					}
-					case 5: {
-						System.out.println("You took the orange Agent!");
-						Agent orangeAgent = new Agent(5);
-						return orangeAgent;
-					}
-					case 6: {
-						System.out.println("You took the grey Agent!");
-						Agent greyAgent = new Agent(6);
-						return greyAgent;
-					}
-					default: {
-						System.out.println("Error while taking a card!");
-						return null;
-					}
-					}
-				}
+
+	public int getSum(int[] array) {
+		int sum = 0;
+		for (int i : array) {
+			sum += array[i];
+		}
+		return sum;
+
+	}
+
+	public int rollDice() {
+
+		Random dice = new Random();
+		int numberRolled = -1;
+
+		numberRolled = 1 + dice.nextInt(6);
+		System.out.println("Rolled number:" + numberRolled);
+
+		return numberRolled;
+	}
+
+	public void scoring() {
+
+		for (int i = 0; i < agentList.size(); i++) {
+			switch (agentList.get(i).getAgentPosition()) {
+			case 0: {
+				break;
 			}
-			return takeCard();
-		}
-		*/
-		public int rollDice(){
-
-			Random dice = new Random();
-			int numberRolled = -1;
-
-				numberRolled = 1 + dice.nextInt(6);
-				System.out.println("Rolled number:" + numberRolled );
-				
-			return numberRolled;
-		}
-		
-		public void scoring() {
-
-			for (int i = 0; i < agentList.size(); i++) {
-				switch (agentList.get(i).getAgentPosition()) {
-				case 0: {
-					break;
-				}
-				case 1: {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 1);
-					break;
-				}
-				case 2: {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 2);
-					break;
-				}
-				case 3: {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 3);
-					break;
-				}
-				case 4: {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 4);
-					break;
-				}
-				case 5: {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 5);
-					break;
-				}
-				case 6: {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 6);
-					break;
-				}
-				case 7: {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 7);
-					break;
-				}
-				case 8: {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 8);
-					break;
-				}
-				case 9: {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 9);
-					break;
-				}
-				case 10: {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 10);
-					break;
-				}
-				case 11: {
-					if (agentList.get(i).getMarkerPosition()>=3) {
-					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() -3);
-					}
-					break;
-				}
-				default: {
-					throw new IllegalArgumentException("Kein gültiges Feld");
-				}
-				}
+			case 1: {
+				agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 1);
+				break;
 			}
-
-		}
-
-		public boolean gameOver() {
-			boolean gameOver=false;
-			for (int i = 0; i < agentList.size(); i++) {
-				if (agentList.get(i).getMarkerPosition() >= 42) {
-					gameOver=true;
-				}
+			case 2: {
+				agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 2);
+				break;
 			}
-			return gameOver;
+			case 3: {
+				agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 3);
+				break;
+			}
+			case 4: {
+				agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 4);
+				break;
+			}
+			case 5: {
+				agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 5);
+				break;
+			}
+			case 6: {
+				agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 6);
+				break;
+			}
+			case 7: {
+				agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 7);
+				break;
+			}
+			case 8: {
+				agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 8);
+				break;
+			}
+			case 9: {
+				agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 9);
+				break;
+			}
+			case 10: {
+				agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() + 10);
+				break;
+			}
+			case 11: {
+				if (agentList.get(i).getMarkerPosition() >= 3) {
+					agentList.get(i).setMarkerPosition(agentList.get(i).getMarkerPosition() - 3);
+				}
+				break;
+			}
+			default: {
+				throw new IllegalArgumentException("Kein gültiges Feld");
+			}
+			}
 		}
-		
-		public HashMap<String,String> assignColour() {
-			HashMap<String,String> hash= new HashMap<String,String>(7);
-			ArrayList<Integer> colourList= new ArrayList<Integer>(7);
-			for (int i=0;i<7;i++) {
+
+	}
+
+	public boolean gameOver() {
+		boolean gameOver = false;
+		for (int i = 0; i < agentList.size(); i++) {
+			if (agentList.get(i).getMarkerPosition() >= 42) {
+				gameOver = true;
+			}
+		}
+		return gameOver;
+	}
+
+	public String assignColour() {
+		HashMap<String, String> hash = new HashMap<String, String>(7);
+		ArrayList<Integer> colourList = new ArrayList<Integer>(7);
+		for (int i = 0; i < 7; i++) {
 			colourList.add(i);
-			}
-			Collections.shuffle(colourList);
-			
-			for(int i=1;i<=playerList.size();i++) {
-				//TODO zwei zusätzliche agenten ins spiel bringen
-				String name=playerList.get(i).getName();
-				int colourInt=colourList.get(i);
-				String colour;
-				switch(colourInt) {
-				case 0:
-					colour = "yellow";
-				case 1:
-					colour = "red";
-				case 2:
-					colour = "purple";
-				case 3:
-					colour = "blue";
-				case 4:
-					colour = "green";
-				case 5:
-					colour = "orange";
-				case 6:
-					colour = "grey";
-				default: 
-					colour="Error while getting a String of the colour";
-				}
-				
-				hash.put(name, colour);
-			}
-			return hash;			
 		}
-		
-		public String intArrayToString(int[] intArr) {
-			String data= Arrays.toString(intArr);//.replaceAll("\\[|\\]|,|\\s", ""); für andere form, nötig?
-			return data;
-			
-		}
-	
-		public String[] hashmapToStringArray(HashMap <String,String> hashmap) {
-			String[]hashToString = null;
-			for(int i=0;i<hashmap.size();i++) {
-				for(Entry<String,String> entry: hashmap.entrySet()) {
-					String key=entry.getKey();
-					String value=entry.getValue();
-					hashToString[i]=key+value;
-					}
+		Collections.shuffle(colourList);
+
+		for (int i = 1; i <= playerList.size(); i++) {
+
+			String name = playerList.get(i).getName();
+			int colourInt = colourList.get(i);
+			String colour;
+			switch (colourInt) {
+			case 0:
+				colour = "yellow";
+			case 1:
+				colour = "red";
+			case 2:
+				colour = "purple";
+			case 3:
+				colour = "blue";
+			case 4:
+				colour = "green";
+			case 5:
+				colour = "orange";
+			case 6:
+				colour = "grey";
+			default:
+				colour = "Error while getting a String of the colour";
 			}
-			
-			return hashToString;
-			
+
+			hash.put(name, colour);
 		}
-		
+		return hash.toString(); // TODO String oder doch stringarray?
+	}
+
+	public String intArrayToString(int[] intArr) {
+		String data = Arrays.toString(intArr);// .replaceAll("\\[|\\]|,|\\s", ""); für andere form, nötig?
+		return data;
+
+	}
+
+	public String[] hashmapToStringArray(HashMap<String, String> hashmap) {
+		String[] hashToString = null;
+		for (int i = 0; i < hashmap.size(); i++) {
+			for (Entry<String, String> entry : hashmap.entrySet()) {
+				String key = entry.getKey();
+				String value = entry.getValue();
+				hashToString[i] = key + value;
+			}
+		}
+
+		return hashToString;
+
+	}
+
 	@Override
 	public int getMaxPlayerAmount() {
 		return 7;
@@ -473,7 +400,7 @@ import userManagement.User;
 		return null;
 	}
 
-	@Override 
+	@Override
 	public String getCSS() {
 		try {
 			return global.FileHelper.getFile("HeimlichUndCo/css/HeimlichUndCo.css");
@@ -503,9 +430,9 @@ import userManagement.User;
 		if (playerList.size() < 7 && !playerList.contains(user)) {
 			playerList.add(user);
 
-		/*	if (playerTurn == null) {
-				playerTurn = user;
-			}*/
+			/*
+			 * if (playerTurn == null) { playerTurn = user; }
+			 */
 			// sendGameDataToClients("START");
 		}
 		if (playerList.size() == 7) {
@@ -555,7 +482,7 @@ import userManagement.User;
 		else
 			return ",NOTTHEHOST";
 	}
-		
+
 	@Override
 	public void execute(User user, String gsonString) {
 		if (this.gState == GameState.CLOSED)
@@ -583,8 +510,8 @@ import userManagement.User;
 		}
 
 		String[] strArray = gsonString.split(",");
-		int[] receiveddataArray = new int[17];
-		for (int i = 0; i < 17; i++) {
+		int[] receiveddataArray = new int[16];
+		for (int i = 0; i < 16; i++) {
 			receiveddataArray[i] = Integer.parseInt(strArray[i]);
 		}
 		boolean changed = false;
@@ -627,62 +554,56 @@ import userManagement.User;
 		}
 	}
 
-		@Override
-		public String getGameData(String eventName, User user) {
-			String gameData = "";
-			if(eventName.equals("PLAYERLEFT")){
-				return playerLeft + " hat das Spiel verlassen!";
-			}
-			if(eventName.equals("CLOSE")){
-				return "CLOSE";
-			}
-			if (eventName.equals("START")) {
-				return assignColour().toString();
-				//TODO stimmt kommunikation so oder besser anders?
-			}
-			
-			int[] actualDataArray=getDataArray();
-			for (int i=0;i<15;i++) {
-				gameData+=String.valueOf(actualDataArray[i]);
-				gameData+=",";
-			}
-			
-			if(playerList.size()<2){
-				gameData += "Warte auf 2ten Spieler oder KI-Spieler..."; //Arrayelem 15
-				gameData += isHost(user); //Arrayelem16
-				return gameData;
-			}
-			if (this.gState == GameState.FINISHED) {
-				//Ausgabe, welcher Agent auf welchem Platz ist
-				Collections.sort(agentList);
-				for(Agent a: agentList)
-			     System.out.print(a.getColourString() +"  : "+
-			     a.getMarkerPosition() + ", ");
-				for (int i=0;i<agentList.size();i++) {
-					gameData+= agentList.get(i)+" ist mit " 
-							+ agentList.get(i).getMarkerPosition()+ " Punkten auf Platz " 
-							+ (agentList.indexOf(agentList.get(i))+1)
-							+"\n";// Arrayelem 15
-				}
-				
-			}
-			else if (playerTurn.equals(user)) {
-				gameData += "Du bist dran!"; //arrayelem 15
-			} else
-				gameData += playerTurn.getName() + " ist dran!";//arrayelem 15
-			
-			gameData+= isHost(user);//Arrayelem16
-			
+	@Override
+	public String getGameData(String eventName, User user) {
+		String gameData = "";
+		if (eventName.equals("PLAYERLEFT")) {
+			return playerLeft + " hat das Spiel verlassen!";
+		}
+		if (eventName.equals("CLOSE")) {
+			return "CLOSE";
+		}
+		if (eventName.equals("START")) {
+			return assignColour();
+			// TODO stimmt kommunikation so oder besser anders? bzw fehlt was
+		}
+
+		int[] actualDataArray = getDataArray();
+		for (int i = 0; i < 15; i++) {
+			gameData += String.valueOf(actualDataArray[i]);
+			gameData += ",";
+		}
+
+		if (playerList.size() < 2) {
+			gameData += "Warte auf 2ten Spieler oder KI-Spieler..."; // Arrayelem 15
+			gameData += isHost(user); // Arrayelem16
 			return gameData;
 		}
+		if (this.gState == GameState.FINISHED) {
+			// Ausgabe, welcher Agent auf welchem Platz ist
+			Collections.sort(agentList);
+			for (Agent a : agentList)
+				System.out.print(a.getColourString() + "  : " + a.getMarkerPosition() + ", ");
+			for (int i = 0; i < agentList.size(); i++) {
+				gameData += agentList.get(i) + " ist mit " + agentList.get(i).getMarkerPosition()
+						+ " Punkten auf Platz " + (agentList.indexOf(agentList.get(i)) + 1) + "\n";// Arrayelem 15
+			}
+
+		} else if (playerTurn.equals(user)) {
+			gameData += "Du bist dran!"; // arrayelem 15
+		} else
+			gameData += playerTurn.getName() + " ist dran!";// arrayelem 15
+
+		gameData += isHost(user);// Arrayelem16
+
+		return gameData;
 	}
+}
 
-	/*
-	 * TODO schnittstellen
-	 * HashMap name,colour übergeben an javascript(wie?)
-	 * Spieleranzahl: durch elemente !=-1 im dataArray von 0 bis 6
-	 * playerturn nachvollziehen , initialisieren
-	 * werden position und punkte richtig überarbeitet?
-	 */
-	
-
+/*
+ * TODO schnittstellen HashMap name,colour übergeben an javascript(wie?)
+ * 
+ * Spieleranzahl: durch elemente !=-1 im dataArray von 0 bis 6
+ * 
+ * werden position und punkte richtig überarbeitet?
+ */
