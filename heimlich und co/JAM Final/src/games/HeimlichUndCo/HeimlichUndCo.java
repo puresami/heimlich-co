@@ -47,7 +47,7 @@ public class HeimlichUndCo extends Game {
 				dataArr[i] = 0;
 			} else {
 				while (getSum(dataArr) < getCurrentPlayerAmount() - 5) { // Spieleranzahl bestimmt die Arraysumme, da -1
-																			// oder 0
+																		 // oder 0
 					agent = Agent.nextInt(getCurrentPlayerAmount() + 2);
 					if (dataArr[agent] == -1) {
 						dataArr[agent] = 0;
@@ -283,7 +283,7 @@ public class HeimlichUndCo extends Game {
 		return gameOver;
 	}
 
-	public String assignColour() {
+	public String[] assignColour() {
 		HashMap<String, String> hash = new HashMap<String, String>(7);
 		ArrayList<Integer> colourList = new ArrayList<Integer>(7);
 		for (int i = 0; i < 7; i++) {
@@ -317,7 +317,7 @@ public class HeimlichUndCo extends Game {
 
 			hash.put(name, colour);
 		}
-		return hash.toString(); // TODO String oder doch stringarray?
+		return hashmapToStringArray(hash); 
 	}
 
 	public String intArrayToString(int[] intArr) {
@@ -327,12 +327,12 @@ public class HeimlichUndCo extends Game {
 	}
 
 	public String[] hashmapToStringArray(HashMap<String, String> hashmap) {
-		String[] hashToString = null;
+		String[] hashToString =  new String[hashmap.size()];
 		for (int i = 0; i < hashmap.size(); i++) {
 			for (Entry<String, String> entry : hashmap.entrySet()) {
 				String key = entry.getKey();
 				String value = entry.getValue();
-				hashToString[i] = key + value;
+				hashToString[i] = key +", "+ value;
 			}
 		}
 
@@ -564,7 +564,7 @@ public class HeimlichUndCo extends Game {
 			return "CLOSE";
 		}
 		if (eventName.equals("START")) {
-			return assignColour();
+			return assignColour().toString();
 			// TODO stimmt kommunikation so oder besser anders? bzw fehlt was
 		}
 
@@ -603,7 +603,6 @@ public class HeimlichUndCo extends Game {
 /*
  * TODO schnittstellen HashMap name,colour übergeben an javascript(wie?)
  * 
- * Spieleranzahl: durch elemente !=-1 im dataArray von 0 bis 6
  * 
  * werden position und punkte richtig überarbeitet?
  */
