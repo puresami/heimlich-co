@@ -1,9 +1,8 @@
-var el = "drop1";
-    var parent1;
+var parent1;
     var array = [];
     var Spieleranzahl = 6;
 
-    var züge ;
+    var zuege ;
 
     var prev;
 
@@ -20,7 +19,7 @@ var el = "drop1";
     var Farben = ["Blau", "Gelb", "Gruen", "Lila", "Rot", "Pink", "Brown"];
     var Spielerpos = [0,0,0,0,0,0,0,0];
     var Punkte = [0,0,0,0,0,0,0]
-    var arrFields = [2,4,5,5,5,8,9,2,4,5,4,6,7,8,9,5,10];
+    var arrFields = [0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0];
 
 
     addListener('standardEvent', function(event) {
@@ -35,6 +34,9 @@ var el = "drop1";
                 if(str=="HOST"){
                     console.log(arr[16]);
                     setVisible();
+                    
+                    
+                    
                 }
 
 
@@ -99,7 +101,7 @@ var el = "drop1";
     function allowDrop(ev) {
 
 
-        if(züge > 0 ){
+        if(zuege > 0 ){
 
             ev.preventDefault();
 
@@ -119,9 +121,9 @@ var el = "drop1";
 
     function drop(ev) {
 
-        console.log(ev.target.getAttribute("number") - prev +" wert: "+ ev.target.getAttribute("number") + "minus" + prev + "Zuege " + züge);
+        console.log(ev.target.getAttribute("number") - prev +" wert: "+ ev.target.getAttribute("number") + "minus" + prev + "Zuege " + zuege);
 
-        if((ev.target.getAttribute("number") - prev) <= züge && prev < ev.target.getAttribute("number")  ){
+        if((ev.target.getAttribute("number") - prev) <= zuege && prev < ev.target.getAttribute("number")  ){
 
 
 
@@ -129,13 +131,14 @@ var el = "drop1";
             var data = ev.dataTransfer.getData("text");
             ev.target.appendChild(document.getElementById(data));
 
-            sendGameData()
+            
 
-            züge = züge - (ev.target.getAttribute("number")-prev);
+            zuege = zuege - (ev.target.getAttribute("number")-prev);
+            sendGameData()
         }
 
 
-        if(züge == 0){
+        if(zuege == 0){
 
             console.log("du bist fertig!");
 
@@ -175,7 +178,7 @@ var el = "drop1";
     }
 
 
-        die1.innerHTML = "Zuege: " + züge;
+        die1.innerHTML = "Zuege: " + zuege;
 
 
 
@@ -199,8 +202,8 @@ var el = "drop1";
         var d1 = Math.floor(Math.random() * 6) + 1;
         document.getElementById("rollimg").src = "wurfel_"+d1+".png"
         var diceTotal = d1;
-        züge = d1;
-        die1.innerHTML = züge;
+        zuege = d1;
+        die1.innerHTML = zuege;
 
        // getparent(el);
          updateBoard();
@@ -312,9 +315,18 @@ var el = "drop1";
 
             var Drop =document.getElementById("drop"+t );
 
-            document.getElementById("Feld"+arrFields[i]).appendChild(Drop);
+            if(arrfields[i]>= 0){
+               
+               
+               
+               document.getElementById("Feld"+arrFields[i]).appendChild(Drop);
 
             t++;
+               
+               
+               }
+            
+            
 
 
         }
@@ -349,6 +361,8 @@ var el = "drop1";
         Spielerpos[6] = parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
         Spielerpos[7] = parseInt(document.getElementById("tresor").parentElement.getAttribute("number"));
 
-        console.log(Spielerpos.concat(Punkte));
+       // sendDataToServer(Spielerpos.concat(Punkte));
+        
+        
 
         }

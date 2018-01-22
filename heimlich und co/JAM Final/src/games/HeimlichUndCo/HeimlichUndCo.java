@@ -130,9 +130,29 @@ public class HeimlichUndCo extends Game {
 			}
 			// punktearray überarbeiten
 			// wertung, ...
-
+			
+			
 		}
-		
+		int[] dataarray=new int[15];
+		for(int i=0;i<7;i++) {
+			dataarray[i]=agentList.get(i).getAgentPosition();
+			dataarray[i+8]=agentList.get(i).getMarkerPosition();
+		}
+		for (int i = 0; i < agentList.size(); i++) {
+			if (agentList.get(i).getAgentPosition() == getSafePosition()) {
+				scoring();
+			}
+		}
+		Random tresor = new Random();
+		int safe=tresor.nextInt(12);
+		for (int i=0;i<agentList.size();i++) {//
+			if(agentList.get(i).getAgentPosition() == safe) {
+				safe=(safe+1)%12;
+			}
+		}
+		setSafePosition(safe);
+		setDataArray(dataarray);
+		sendGameDataToClients("standardEvent");
 	}
 
 	public ArrayList<Agent> instantiateAgents(int[] data) {
