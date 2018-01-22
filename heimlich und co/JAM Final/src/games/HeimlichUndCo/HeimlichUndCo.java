@@ -303,7 +303,7 @@ public class HeimlichUndCo extends Game {
 		return gameOver;
 	}
 
-	public String[] assignColour() {
+	public HashMap<String,String> assignColour() {
 		HashMap<String, String> hash = new HashMap<String, String>(7);
 		ArrayList<Integer> colourList = new ArrayList<Integer>(7);
 		for (int i = 0; i < 7; i++) {
@@ -336,24 +336,28 @@ public class HeimlichUndCo extends Game {
 			}
 
 			hash.put(name, colour);
+			
 		}
-		return hashmapToStringArray(hash); 
+		return hash; 
 	}
-
-	public String intArrayToString(int[] intArr) {
+	
+public String intArrayToString(int[] intArr) {
 		String data = Arrays.toString(intArr);// .replaceAll("\\[|\\]|,|\\s", ""); für andere form, nötig?
 		return data;
 
 	}
 
-	public String[] hashmapToStringArray(HashMap<String, String> hashmap) {
-		String[] hashToString =  new String[hashmap.size()];
-		for (int i = 0; i < hashmap.size(); i++) {
-			for (Entry<String, String> entry : hashmap.entrySet()) {
-				String key = entry.getKey();
-				String value = entry.getValue();
-				hashToString[i] = key +", "+ value;
-			}
+	public String hashmapToString(HashMap<String, String> hashmap) {
+		String hashToString =  "";
+		for(int i = 0; i<playerList.size();i++) {
+			
+			
+			hashToString += playerList.get(i).getName();
+			hashToString += " : ";
+			hashToString +=  hashmap.get(playerList.get(i).getName());
+			hashToString += ",";
+			
+			
 		}
 
 		return hashToString;
@@ -370,6 +374,15 @@ public class HeimlichUndCo extends Game {
 		return playerList.size();
 	}
 
+	public int getCurrentAgentAmount(){
+		int agentAmount=0;
+		if (getCurrentPlayerAmount()<5) {
+			agentAmount=getCurrentPlayerAmount()+2;
+		}
+		else agentAmount=7;
+		
+		return agentAmount;
+	}
 	public int getSafePosition() {
 		return safePosition;
 	}
@@ -580,9 +593,13 @@ public class HeimlichUndCo extends Game {
 		if (eventName.equals("CLOSE")) {
 			return "CLOSE";
 		}
-		if (eventName.equals("START")) {
-			return assignColour().toString();
-			// TODO stimmt kommunikation so oder besser anders? bzw fehlt was
+		if (eventName.equals("STARTNOW")) {
+			gameData+=getCurrentAgentAmount()+",";
+			gameData+=getCurrentPlayerAmount()+",";
+			
+			gameData+=hashmapToString(assignColour());
+			
+			return gameData;
 		}
 
 		int[] actualDataArray = getDataArray();
