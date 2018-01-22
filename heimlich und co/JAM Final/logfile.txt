@@ -66,3 +66,4 @@
 [2018-01-17 11:32:14.532] [IP: /10.7.185.128] [LOGIN] Logging in user "jsch" succeeded
 [2018-01-17 11:32:33.39] [IP: /10.7.185.128] [LOGOUT] Logging out user "jsch" succeeded; Session length: < 1  Minutes
 [2018-01-17 11:32:35.948] [IP: /10.7.185.128] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-22 13:44:31.643] [IP: /10.7.94.175] [LOGIN] Logging in user "jsch" succeeded

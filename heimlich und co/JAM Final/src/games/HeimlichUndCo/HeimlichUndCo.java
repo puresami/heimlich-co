@@ -430,9 +430,6 @@ public class HeimlichUndCo extends Game {
 		if (playerList.size() < 7 && !playerList.contains(user)) {
 			playerList.add(user);
 
-			/*
-			 * if (playerTurn == null) { playerTurn = user; }
-			 */
 			// sendGameDataToClients("START");
 		}
 		if (playerList.size() == 7) {
@@ -601,7 +598,7 @@ public class HeimlichUndCo extends Game {
 }
 
 /*
- * TODO schnittstellen HashMap name,colour übergeben an javascript(wie?)
+ * TODO schnittstellen HashMap name,colour übergeben an javascript(wie und wo?)
  * 
  * 
  * werden position und punkte richtig überarbeitet?

@@ -1,62 +1,354 @@
-addListener('standardEvent', function(event) {
-		var stringFromServer = event.data;
-		var arr = stringFromServer.split(',');
-		//console.log(arr);
-		
-		if(arr.length==11){
-			for(var i=0; i<9; i++) { arrFields[i] = +arr[i]; }
-			playerMessage = arr[9];
-			var str = arr[10];
-			if(str=="HOST"){
-				console.log(arr[10]);
-				setVisible();
-			}
-				
-			
-			
-			// sentFields = [0,0,0,0,0,0,0,0,0];			sentFields muss umgeschrieben werden 		todo
-			
-			document.getElementById("Player").innerHTML = playerMessage;
-			redraw();
-		}
-		statusWait = false;
-	});
-addListener('START', function(event){
-	var stringFromServer = event.data;
-	var arr = stringFromServer.split(',');
-	playerMessage = arr[9];
-	document.getElementById("Player").innerHTML = playerMessage;
-	if(arr[10]=="HOST") setVisible();
-	statusWait = false;
-});
-addListener('PLAYERLEFT', function(event){
-	var stringFromServer = event.data;
-	playerMessage = stringFromServer;
-	document.getElementById("Player").innerHTML = playerMessage;
-});
-addListener('CLOSE', function(event){
-	document.getElementById("Player").innerHTML = "Spiel wurde vom Host beendet!";
-});
-function allowDrop(ev) {
-    ev.preventDefault();
-}
+var el = "drop1";
+    var parent1;
+    var array = [];
+    var Spieleranzahl = 6;
 
-function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-}
+    var züge ;
 
-function drop(ev) {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-   ev.target.appendChild(document.getElementById(data));
-}
+    var prev;
 
-function rollDice(){
-    var die1 = document.getElementById("die1");
-    
-    var status = document.getElementById("status");
-    var d1 = Math.floor(Math.random() * 6) + 1;
-    document.getElementById("rollimg").src = "wurfel_"+d1+".png"
-    var diceTotal = d1;
-    die1.innerHTML = d1;
-}
+    var Spieler1 = 0;
+    var Spieler2 = 0;
+    var Spieler3 = 0;
+    var Spieler4 = 0;
+    var Spieler5 = 0;
+    var Spieler6 = 0;
+
+    var spieler= [0,0,0,0,0,0,0];
+
+
+    var Farben = ["Blau", "Gelb", "Gruen", "Lila", "Rot", "Pink", "Brown"];
+    var Spielerpos = [0,0,0,0,0,0,0,0];
+    var Punkte = [0,0,0,0,0,0,0]
+    var arrFields = [2,4,5,5,5,8,9,2,4,5,4,6,7,8,9,5,10];
+
+
+    addListener('standardEvent', function(event) {
+            var stringFromServer = event.data;
+            var arr = stringFromServer.split(',');
+            //console.log(arr);
+
+            if(arr.length==17){
+                for(var i=0; i<15; i++) { arrFields[i] = +arr[i]; }
+                playerMessage = arr[15];
+                var str = arr[16];
+                if(str=="HOST"){
+                    console.log(arr[16]);
+                    setVisible();
+                }
+
+
+
+                sentFields = [0,0,0,0,0,0,0,0,0];
+                document.getElementById("status").innerHTML = playerMessage;
+                updateBoard();
+            }
+            statusWait = false;
+        });
+    addListener('START', function(event){
+        var stringFromServer = event.data;
+        var arr = stringFromServer.split(',');
+        playerMessage = arr[15];
+        document.getElementById("status").innerHTML = playerMessage;
+        if(arr[16]=="HOST") setVisible();
+        statusWait = false;
+    });
+    addListener('PLAYERLEFT', function(event){
+        var stringFromServer = event.data;
+        playerMessage = stringFromServer;
+        document.getElementById("status").innerHTML = playerMessage;
+    });
+    addListener('CLOSE', function(event){
+        document.getElementById("status").innerHTML = "Spiel wurde vom Host beendet!";
+    });
+
+
+
+
+
+    // Drag and Drop for tresor
+
+    function allowDropt(ev) {
+
+        ev.preventDefault();
+
+
+
+    }
+
+    function dragt(ev) {
+
+         ev.dataTransfer.setData("text", ev.target.id);
+        document.getElementById("tresor").setAttribute("draggable", "false");
+
+    }
+
+
+    function dropt(ev) {
+
+        ev.preventDefault();
+
+
+    }
+
+    //Drag and Drop for Gamefigures
+
+
+
+
+    function allowDrop(ev) {
+
+
+        if(züge > 0 ){
+
+            ev.preventDefault();
+
+        }
+
+
+
+    }
+
+
+    function drag(ev) {
+        ev.dataTransfer.setData("text", ev.target.id);
+
+        prev = ev.target.parentElement.getAttribute("number");
+
+    }
+
+    function drop(ev) {
+
+        console.log(ev.target.getAttribute("number") - prev +" wert: "+ ev.target.getAttribute("number") + "minus" + prev + "Zuege " + züge);
+
+        if((ev.target.getAttribute("number") - prev) <= züge && prev < ev.target.getAttribute("number")  ){
+
+
+
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+
+            sendGameData()
+
+            züge = züge - (ev.target.getAttribute("number")-prev);
+        }
+
+
+        if(züge == 0){
+
+            console.log("du bist fertig!");
+
+            sendGameData();
+
+        }
+
+        console.log(ev.dataTransfer.getData("text"));
+
+        if(ev.dataTransfer.getData("text") != "tresor"){
+
+        if(ev.target.contains(tresor)){
+
+            Punkte[0] += parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
+            Punkte[1] += parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
+            Punkte[2] += parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
+            Punkte[3] += parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
+            Punkte[4] += parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
+            Punkte[5] += parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
+            Punkte[6] += parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
+
+
+
+            fillpoints();
+
+
+
+            document.getElementById("tresor").setAttribute("draggable", "true");
+
+           sendGameData()
+            console.log("addiert");
+
+
+
+        }
+
+    }
+
+
+        die1.innerHTML = "Zuege: " + züge;
+
+
+
+
+
+
+    } 
+
+
+
+
+    // Cube
+
+
+
+    function rollDice(){
+
+        var die1 = document.getElementById("die1");
+
+        var status = document.getElementById("status");
+        var d1 = Math.floor(Math.random() * 6) + 1;
+        document.getElementById("rollimg").src = "wurfel_"+d1+".png"
+        var diceTotal = d1;
+        züge = d1;
+        die1.innerHTML = züge;
+
+       // getparent(el);
+         updateBoard();
+
+        document.getElementById("b4").style.backgroundColor = "green";
+
+    }
+
+
+
+
+
+    /*
+    function getparent(el){
+
+
+
+
+
+
+        for(var i = 0; i<array.length ; i++){ 
+
+
+
+        }
+
+        var myButton = document.createElement("button");
+       document.getElementById("Spielsystem").appendChild(myButton);
+        myButton.setAttribute('id', 'neuerButton');
+
+
+    }
+
+
+    */
+
+
+
+
+
+
+    // initialise Board
+
+
+    function initBoard (Spieleranzahl){
+
+
+
+
+    }
+
+
+
+
+
+    // Points setting for Colors
+
+
+    function fillpoints(){
+
+
+        
+        
+        
+        for(var i = 1; i<=Spieleranzahl;i++){
+            
+           
+            document.getElementById("p"+i).innerHTML = Farben[i-1] + " :   " + Punkte[i-1]
+            
+        }
+        
+        
+        if(Spieleranzahl<7){
+           
+           for(var i =Spieleranzahl+1; i<=7; i++){
+            
+            
+            document.getElementById("p"+i).style.visibility("hidden");
+            
+            
+        } 
+           
+           
+           
+           }
+ 
+/*
+            document.getElementById("p1").innerHTML = "Green = " + Punkte[0];
+            document.getElementById("p2").innerHTML = "Purple = " + Punkte[1];
+            document.getElementById("p3").innerHTML = "Yellow = " + Punkte[2];
+            document.getElementById("p4").innerHTML = "Red = " + Punkte[3];
+            document.getElementById("p5").innerHTML = "Blue = " + Punkte[4];
+            document.getElementById("p6").innerHTML = "Yellow = " + Punkte[5];
+
+*/
+
+    }
+
+
+
+    // getting 
+
+    function updateBoard(){
+
+        var t =1;
+
+        for(var i = 0; i<6; i++){
+
+
+            var Drop =document.getElementById("drop"+t );
+
+            document.getElementById("Feld"+arrFields[i]).appendChild(Drop);
+
+            t++;
+
+
+        }
+
+
+        t=1;
+
+
+        for(var i =6; i<6+Spieleranzahl; i++){
+
+
+            Punkte[i-6] = arrFields[i]
+
+
+        }
+
+
+        fillpoints();
+
+
+    }
+
+
+    function sendGameData(){
+
+        Spielerpos[0] = parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
+        Spielerpos[1] = parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
+        Spielerpos[2] = parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
+        Spielerpos[3] = parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
+        Spielerpos[4] = parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
+        Spielerpos[5] = parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
+        Spielerpos[6] = parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
+        Spielerpos[7] = parseInt(document.getElementById("tresor").parentElement.getAttribute("number"));
+
+        console.log(Spielerpos.concat(Punkte));
+
+        }

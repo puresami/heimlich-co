@@ -1,56 +1,82 @@
-<div id="HeimlichUndCo">
-<div id="Game ">
-	<a class="button" href="#Link">Spieler 1</a>
-    <a class="button1" href="#Link">Spieler 2</a>
-    <a class="button2" href="#Link">Spieler 3</a>
-    <a class="button3" href="#Link">Spieler 4</a>
-    <a class="button4" href="#Link">Spieler 5</a>
+<html>
+<head>
+    
+   <link rel="stylesheet" type="text/css" href="spiel1.css" media="screen" />
+    <script src="spiel1.js"></script>
+    
+</head>
+
+    
+    <body onload="init()">
+    
+    <div id = "Spielerbuttons">
+         
+     
+    <div id="b2" class="button" href="#Link" background-color="#444">Spieler 2</div>
+    <a id="b3" class="button" href="#Link">Spieler 3</a>
+    <a id="b4" class="button" href="#Link">Spieler 4</a>
+    <a id="b5" class="button" href="#Link">Spieler 5</a>
+    <a id="b6" class="button" href="#Link">Spieler 6</a>     
+    <a id="b7" class="button" href="#Link">Spieler 7</a>
+  
+         
+         
+    <p id="status">Status: </p>
+    </div>
+
+   
 
     
     <div id = feld> 
 
         
-    <div id = "Feld1" ondrop="drop(event)" ondragover="allowDrop(event)"  >
+    <div id = "Feld1" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 1  >
      
-     <div id="drop1" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
-     <div id="drop2" class="objects" draggable="true" ondragstart="drag(event)" >  </div>
-     <div id="drop3" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
-     <div id="drop4" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
-     <div id="drop5" class="objects" draggable="true" ondragstart="drag(event)"  ></div>
-      <div id="drop6" class="objects" draggable="true" ondragstart="drag(event)" ></div>
-         <div id="drop7" class="objects" draggable="true" ondragstart="drag(event)"  ></div>
-     </div> 
+     
+    </div> 
         
         
         
-        <div id = "Feld2" ondrop="drop(event)" ondragover="allowDrop(event)"></div> 
-        <div id = "Feld3" ondrop="drop(event)" ondragover="allowDrop(event)"></div> 
+    <div id = "Feld2" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 2></div> 
+    <div id = "Feld3" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 3></div> 
+    <div id = "Feld4" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 4></div> 
+    <div id = "Feld5" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 5></div> 
+    <div id = "Feld6" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 6></div>
+    <div id = "Feld7" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 7> 
+    <div id="tresor" draggable="false" ondragstart="dragt(event)" ></div>
+    </div> 
+    <div id = "Feld8" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 8></div>
+    <div id = "Feld9" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 9></div>
+    <div id = "Feld10" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 10></div> 
+    <div id = "Feld11" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= -3></div> 
+    <div id = "Feld12" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 0>
         
         
         
-        <div id = "Feld4" ondrop="drop(event)" ondragover="allowDrop(event)"></div> 
+    <div id="drop1" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
+    <div id="drop2" class="objects" draggable="true" ondragstart="drag(event)" >  </div>
+    <div id="drop3" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
+    <div id="drop4" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
+    <div id="drop5" class="objects" draggable="true" ondragstart="drag(event)"  ></div>
+    <div id="drop6" class="objects" draggable="true" ondragstart="drag(event)" ></div>
+    <div id="drop7" class="objects" draggable="true" ondragstart="drag(event)"  ></div>
         
-        
-        
-<div id = "Feld5" ondrop="drop(event)" ondragover="allowDrop(event)"></div> 
-<div id = "Feld6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-<div id = "Feld7" ondrop="drop(event)" ondragover="allowDrop(event)"></div> 
-<div id = "Feld8" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-<div id = "Feld9" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-<div id = "Feld10" ondrop="drop(event)" ondragover="allowDrop(event)"></div> 
-<div id = "Feld11" ondrop="drop(event)" ondragover="allowDrop(event)"></div> 
-<div id = "Feld12" ondrop="drop(event)" ondragover="allowDrop(event)"></div> 
+     
+        </div> 
 </div>
     
     <div id = "persönlich">
-    
     <div id = "Notizblock">
+        
         <select>
+            
+            
+            
   <option value="volvo">Spieler1</option>
   <option value="saab">Spieler2</option>
   <option value="opel">Spieler3</option>
   <option value="audi">Spieler4</option>
-</select>
+        </select>
         
         
         <select>
@@ -58,7 +84,7 @@
   <option value="saab">grün</option>
   <option value="opel">gelb</option>
   <option value="audi">rot</option>
-</select>
+        </select>
         
     <a class="buttonapp" href="#Link">approve</a>
         
@@ -72,17 +98,26 @@
     </div> 
     <div id = "Spielsystem">
         
-        <center> <div id="die1" class="dice">0</div> </center>
-<center><button onclick="rollDice(), this.disabled=true;" style="background-color:transparent; border-color:transparent;">
-	<img id="rollimg" src="wurfel.png.png" height="50"/> </center>
-    </button>
-<h2 id="status" style="clear:left;"></h2>
+        <center> <div id="die1" class="dice" >0</div> </center>
+        <center><button onclick="rollDice()" style="background-color:transparent; border-color:transparent;">
+	   <img id="rollimg" src="wurfel.png.png" height="40" /> </button>
+        </center>
+        <h2 id="status" style="clear:left;"></h2>
     
+        
+        
+        <p id="p1" style="background-color: darkgray" ></p>
+        <p id="p2" style="background-color: darkgray" ></p>
+        <p id="p3" style="background-color: darkgray"></p>
+        <p id="p4" style="background-color: darkgray"></p>
+        <p id="p5" style="background-color: darkgray"></p>
+        <p id="p6" style="background-color: darkgray"></p>
+        <p id="p7" style="background-color: darkgray"></p>
         
     
     
     
     </div> 
 
-</div>
-</div>
+</body>
+</html>
