@@ -411,6 +411,18 @@ background-repeat:no-repeat;
 }
 
 
+#Startscreen{
+
+	position: absolute;
+	width: 300px;
+	height: 100px;	
+	margin-left: 0px;
+	margin-top: 0px;	
+}
+
+#Game{
+	display: none;
+}
 
 
 

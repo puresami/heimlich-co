@@ -1,4 +1,4 @@
-var parent1;
+	var parent1;
     var array = [];
     var Spieleranzahl = 6;
 
@@ -19,7 +19,7 @@ var parent1;
     var Farben = ["Blau", "Gelb", "Gruen", "Lila", "Rot", "Pink", "Brown"];
     var Spielerpos = [0,0,0,0,0,0,0,0];
     var Punkte = [0,0,0,0,0,0,0]
-    var arrFields = [0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0];
+    var arrFields = [0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,1];
 
 
     addListener('standardEvent', function(event) {
@@ -141,6 +141,8 @@ var parent1;
         if(zuege == 0){
 
             console.log("du bist fertig!");
+            
+            arrFields[18] = 0;
 
             sendGameData();
 
@@ -315,7 +317,7 @@ var parent1;
 
             var Drop =document.getElementById("drop"+t );
 
-            if(arrfields[i]>= 0){
+            if(arrFields[i]>= 0){
                
                
                
@@ -348,20 +350,34 @@ var parent1;
 
 
     }
-
+    function startscreen(){
+		var anzahlPlayer = parseInt(document.getElementById("countPlayer").value);
+		var anzahlKi = parseInt(document.getElementById("countKi").value);
+				
+		var overall = anzahlPlayer + anzahlKi;
+		if(overall <= 7)
+		{
+			document.getElementById("Startscreen").style.display = "none";
+			document.getElementById("Game").style.display = "contents";
+		}
+		else
+		{
+			document.getElementById("errorNoP").style.visibility = "visible";	
+		}
+}
 
     function sendGameData(){
 
-        Spielerpos[0] = parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
-        Spielerpos[1] = parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
-        Spielerpos[2] = parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
-        Spielerpos[3] = parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
-        Spielerpos[4] = parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
-        Spielerpos[5] = parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
-        Spielerpos[6] = parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
-        Spielerpos[7] = parseInt(document.getElementById("tresor").parentElement.getAttribute("number"));
+       arrFields[0] = Spielerpos[0] = parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
+       arrFields[1] = Spielerpos[1] = parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
+       arrFields[2] = Spielerpos[2] = parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
+       arrFields[3] = Spielerpos[3] = parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
+       arrFields[4] = Spielerpos[4] = parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
+       arrFields[5] = Spielerpos[5] = parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
+       arrFields[6] = Spielerpos[6] = parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
+       arrFields[7] = Spielerpos[7] = parseInt(document.getElementById("tresor").parentElement.getAttribute("number"));
 
-       // sendDataToServer(Spielerpos.concat(Punkte));
+       sendDataToServer(arrayFields);
         
         
 

@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Random;
 
 import gameClasses.Game;
@@ -26,6 +25,7 @@ public class HeimlichUndCo extends Game {
 	private String playerLeft = null;
 	private User playerTurn = null;
 	private int[] dataArray;
+	private int playerAmount=0;
 
 	private static HeimlichUndCo instance;
 
@@ -59,9 +59,8 @@ public class HeimlichUndCo extends Game {
 		instantiateAgents(dataArr);
 		playerTurn = getGameCreator();
 	}
-
+    
 	public void AITurn() {
-
 		Random agent = new Random();
 		int fieldsToGo = rollDice();
 		int rolled = fieldsToGo;
@@ -128,8 +127,6 @@ public class HeimlichUndCo extends Game {
 			} else {
 				agentList.get(agentToMove).setAgentPosition(agentList.get(agentToMove).getAgentPosition() + rolled);
 			}
-			// punktearray überarbeiten
-			// wertung, ...
 			
 			
 		}
@@ -145,23 +142,29 @@ public class HeimlichUndCo extends Game {
 		}
 		Random tresor = new Random();
 		int safe=tresor.nextInt(12);
-		for (int i=0;i<agentList.size();i++) {//
-			if(agentList.get(i).getAgentPosition() == safe) {
-				safe=(safe+1)%12;
-			}
+		
+		ArrayList<Integer> excluded = new ArrayList<Integer>();
+		for(int i=0;i<agentList.size();i++) {
+			excluded.add(agentList.get(i).getAgentPosition());	
 		}
-		setSafePosition(safe);
+		setSafePosition(generateSafePosition(safe,excluded));
 		setDataArray(dataarray);
-		sendGameDataToClients("standardEvent");
+	}
+
+	public int generateSafePosition(int safe ,ArrayList<Integer> excluded) {
+	    Random rand = new Random();
+	    int random = rand.nextInt(12);
+
+	    if(!excluded.contains(safe)) {
+	    	return safe;
+	    }
+	    else {
+	    	safe=(safe+random)%12;
+	    	return generateSafePosition(safe,excluded);
+	    }
 	}
 
 	public ArrayList<Agent> instantiateAgents(int[] data) {
-		// falls Parameter als String übergeben wird:
-		/*
-		 * String[]strArray = gsonString.split(","); int[] receivedDataArray=new int
-		 * [17]; for (int i = 0; i < 17; i++) { receivedDataArray[i] =
-		 * Integer.parseInt(strArray[i]); }
-		 */
 		ArrayList<Agent> newAgentList = new ArrayList<Agent>();
 
 		for (int i = 0; i < 7; i++) {
@@ -366,7 +369,10 @@ public String intArrayToString(int[] intArr) {
 
 	@Override
 	public int getMaxPlayerAmount() {
-		return 7;
+		//TODO 
+		
+		
+		return playerAmount;
 	}
 
 	@Override
@@ -462,8 +468,11 @@ public String intArrayToString(int[] intArr) {
 	public void addUser(User user) {
 		if (playerList.size() < 7 && !playerList.contains(user)) {
 			playerList.add(user);
-
+			//TODO Spiel startbar machen über chris' startseite
 			// sendGameDataToClients("START");
+		}
+		if (playerAmount>7){//Nötig..bzw funktionierts?
+			addSpectator(user);
 		}
 		if (playerList.size() == 7) {
 			this.gState = GameState.RUNNING;
@@ -485,12 +494,11 @@ public String intArrayToString(int[] intArr) {
 		}
 	}
 
-	@Override // von TicTacToe übernommen
+	@Override 
 	public void playerLeft(User user) {
 		playerList.remove(user);
 		setPlayerLeft(user.getName());
 		sendGameDataToClients("PLAYERLEFT");
-		// javascript-listener,seite 44 in der Entwicklerdokumentation
 	}
 
 	@Override
@@ -530,18 +538,45 @@ public String intArrayToString(int[] intArr) {
 			sendGameDataToClients("standardEvent");
 			return;
 		}
+		
+		if (gsonString.contains("INITIALIZE")) {
+			String[] strArray=gsonString.split(",");
+			int[] receiveddata= new int[2];
+			for (int i=1;i<=2;i++) {
+				receiveddata[i-1] = Integer.parseInt(strArray[i]);
+			}
+			 int humanPlayers=receiveddata[0];
+			 int aiPlayers=receiveddata[1];
+			 //TODO erst irgendwie menschliche Spieler in playerlist.. oder funktioniert das automatisch?
+			 for(int i=1;i<=aiPlayers;i++) {
+				 User AI= new User("KI-"+i,"0000");
+				 playerList.add(AI);
+			 }
+			 playerAmount=humanPlayers+aiPlayers;
+			 
+			initializeGame();
+			this.gState = GameState.RUNNING;
+			sendGameDataToClients("standardEvent");
+			return;
+		}
 
 		if (gState != GameState.RUNNING) {
 			return;
 		}
-
+		if(user.getName().contains("KI-")) {
+			AITurn();
+			sendGameDataToClients("standardEvent");
+			return;
+		}
+		System.out.println(gsonString);
+		
 		if (!user.equals(playerTurn)) {
 			return;
 		}
-
+		
 		String[] strArray = gsonString.split(",");
-		int[] receiveddataArray = new int[16];
-		for (int i = 0; i < 16; i++) {
+		int[] receiveddataArray = new int[18];	//0-6:Positionen der Agenten, 7 Tresorposition, 8-14 punktzahlen der agenten,
+		for (int i = 0; i < 15; i++) {			//15 playermessage(hier obsolet), 16 Host, 17 Zug vorbei(0) oder noch zuege übrig(1)
 			receiveddataArray[i] = Integer.parseInt(strArray[i]);
 		}
 		boolean changed = false;
@@ -568,16 +603,16 @@ public String intArrayToString(int[] intArr) {
 				this.gState = GameState.FINISHED;
 			}
 			// playerTurn um eins nach vorn verschieben
+			if (receiveddataArray[17]==0) {
+				Iterator<User> it = playerList.iterator();
 
-			Iterator<User> it = playerList.iterator();
-
-			if (it.hasNext()) {
-				setPlayerTurn(it.next());
-			} else {// wenn playerlist durchlaufen wieder bei 0 beginnen
-				it = playerList.iterator();
-				setPlayerTurn(it.next());
+				if (it.hasNext()) {
+					setPlayerTurn(it.next());
+				} else {// wenn playerlist durchlaufen wieder bei 0/Spieler 1 beginnen
+					it = playerList.iterator();
+					setPlayerTurn(it.next());
+				}
 			}
-
 			setDataArray(actualdataArray);
 
 			sendGameDataToClients("standardEvent");
@@ -633,10 +668,3 @@ public String intArrayToString(int[] intArr) {
 		return gameData;
 	}
 }
-
-/*
- * TODO schnittstellen HashMap name,colour übergeben an javascript(wie und wo?)
- * 
- * 
- * werden position und punkte richtig überarbeitet?
- */

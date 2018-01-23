@@ -9,6 +9,7 @@
     
     <body onload="init()">
     
+    <div id = "Game">
     <div id = "Spielerbuttons">
          
      
@@ -117,7 +118,18 @@
     
     
     
+    </div>
     </div> 
+    	<div id="Startscreen">
+			<p style="position: absolute;right: 0;top: 0;">Anzahl Spieler: 
+				<input type="text" id="countPlayer">
+			</p> 
+			<p style="position: absolute;right: 0;top: 30px;">Anzahl Ki:  
+				<input type="text" id="countKi">
+			</p>
+			<button onclick="startscreen(), this.disabled=true;" class="button"; style="position: absolute;bottom: 0;right: 0;">Spiel starten</button>
+			<span style="color: red;position: absolute;bottom: 0;left: 0;visibility: hidden" id="errorNoP">Fehler: Spieleranzahl > 7</span>
+	</div>
 
 </body>
 </html>
