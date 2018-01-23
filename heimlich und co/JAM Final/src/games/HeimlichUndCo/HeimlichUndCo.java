@@ -344,7 +344,7 @@ public class HeimlichUndCo extends Game {
 		return hash; 
 	}
 	
-public String intArrayToString(int[] intArr) {
+	public String intArrayToString(int[] intArr) {
 		String data = Arrays.toString(intArr);// .replaceAll("\\[|\\]|,|\\s", ""); für andere form, nötig?
 		return data;
 
@@ -369,9 +369,6 @@ public String intArrayToString(int[] intArr) {
 
 	@Override
 	public int getMaxPlayerAmount() {
-		//TODO 
-		
-		
 		return playerAmount;
 	}
 
@@ -385,7 +382,9 @@ public String intArrayToString(int[] intArr) {
 		if (getCurrentPlayerAmount()<5) {
 			agentAmount=getCurrentPlayerAmount()+2;
 		}
-		else agentAmount=7;
+		else {
+			agentAmount=7;
+		}
 		
 		return agentAmount;
 	}
@@ -470,6 +469,7 @@ public String intArrayToString(int[] intArr) {
 			playerList.add(user);
 			//TODO Spiel startbar machen über chris' startseite
 			// sendGameDataToClients("START");
+			sendGameDataToClients("CREATE");
 		}
 		if (playerAmount>7){//Nötig..bzw funktionierts?
 			addSpectator(user);
@@ -548,6 +548,7 @@ public String intArrayToString(int[] intArr) {
 			 int humanPlayers=receiveddata[0];
 			 int aiPlayers=receiveddata[1];
 			 //TODO erst irgendwie menschliche Spieler in playerlist.. oder funktioniert das automatisch?
+			 
 			 for(int i=1;i<=aiPlayers;i++) {
 				 User AI= new User("KI-"+i,"0000");
 				 playerList.add(AI);
@@ -603,7 +604,7 @@ public String intArrayToString(int[] intArr) {
 				this.gState = GameState.FINISHED;
 			}
 			// playerTurn um eins nach vorn verschieben
-			if (receiveddataArray[17]==0) {
+			if (receiveddataArray[17]==0) {//keine zuege übrig
 				Iterator<User> it = playerList.iterator();
 
 				if (it.hasNext()) {
@@ -622,6 +623,16 @@ public String intArrayToString(int[] intArr) {
 	@Override
 	public String getGameData(String eventName, User user) {
 		String gameData = "";
+		if (eventName.equals("CREATE")) {// Fehlender Listener.. für chris' seite direkt nach Spielerstellung
+			String isHost="";
+			User host= getGameCreator();
+			if (user.equals(host)) {
+				isHost+="H";
+			}
+			else
+				isHost +="C";
+			return isHost;
+		}
 		if (eventName.equals("PLAYERLEFT")) {
 			return playerLeft + " hat das Spiel verlassen!";
 		}
@@ -635,6 +646,9 @@ public String intArrayToString(int[] intArr) {
 			gameData+=hashmapToString(assignColour());
 			
 			return gameData;
+		}
+		if (eventName.equals("INITIALIZE")) {
+			//TODO?
 		}
 
 		int[] actualDataArray = getDataArray();
