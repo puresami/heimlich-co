@@ -1,15 +1,32 @@
-<html>
-<head>
-    
-   <link rel="stylesheet" type="text/css" href="HeimlichUndCo/css/HeimlichUndCo.css" media="screen" />
-    <script src="HeimlichUndCo/javascript/HeimlichUndCo.js"></script>
-    
-</head>
+
+<div id = "HeimlichUndCo">
+
 
     
-    <body onload="init()">
-    
-    <div id = "Game">
+        <div id="Startscreen">
+	<p style="position: absolute;right: 0;top: 0;">Anzahl Spieler: 
+		<input type="text" id="countPlayer">
+	</p> 
+	<p style="position: absolute;right: 0;top: 30px;">Anzahl Ki:  
+		<input type="text" id="countKi">
+	</p>
+	<button onclick="startscreen(), this.disabled=true;" class="button;" style= "position: absolute; bottom: 0;right: 0;" >Spiel starten</button>
+	<span style="color: red;position: absolute;bottom: 0;left: 0;visibility: hidden" id="errorNoP">Fehler: Spieleranzahl > 7</span>
+</div>
+
+  
+   
+        
+        
+       <div id="Game">
+        
+        
+        
+        
+        
+        
+       
+        
     <div id = "Spielerbuttons">
          
      
@@ -100,8 +117,8 @@
     <div id = "Spielsystem">
         
         <center> <div id="die1" class="dice" >0</div> </center>
-        <center><button onclick="rollDice()" style="background-color:transparent; border-color:transparent;">
-	   <img id="rollimg" src="images/wurfel.png.png" height="40" /> </button>
+        <center><button id="wuerfel" visibility="visible" onclick="rollDice()" style="background-color:transparent; border-color:transparent;">
+	   <img id="rollimg" src="/HeimlichUndCo/images/wurfel.png.png" height="40" /> </button>
         </center>
         <h2 id="status" style="clear:left;"></h2>
     
@@ -118,18 +135,19 @@
     
     
     
-    </div>
     </div> 
-    	<div id="Startscreen">
-			<p style="position: absolute;right: 0;top: 0;">Anzahl Spieler: 
-				<input type="text" id="countPlayer">
-			</p> 
-			<p style="position: absolute;right: 0;top: 30px;">Anzahl Ki:  
-				<input type="text" id="countKi">
-			</p>
-			<button onclick="startscreen(), this.disabled=true;" class="button"; style="position: absolute;bottom: 0;right: 0;">Spiel starten</button>
-			<span style="color: red;position: absolute;bottom: 0;left: 0;visibility: hidden" id="errorNoP">Fehler: Spieleranzahl > 7</span>
-	</div>
+</div> 
 
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

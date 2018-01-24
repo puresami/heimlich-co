@@ -450,7 +450,11 @@ public class HeimlichUndCo extends Game {
 
 	@Override
 	public String getJavaScript() {
+		
+		
+		System.out.println("lädt");
 		return "<script src=\"javascript/HeimlichUndCo.js\"></script>";
+
 	}
 
 	@Override
@@ -469,7 +473,8 @@ public class HeimlichUndCo extends Game {
 			playerList.add(user);
 			//TODO Spiel startbar machen über chris' startseite
 			// sendGameDataToClients("START");
-			sendGameDataToClients("CREATE");
+			//sendGameDataToClients("CREATE");
+			System.out.println("creating");
 		}
 		if (playerAmount>7){//Nötig..bzw funktionierts?
 			addSpectator(user);
@@ -525,7 +530,7 @@ public class HeimlichUndCo extends Game {
 	public void execute(User user, String gsonString) {
 		if (this.gState == GameState.CLOSED)
 			return;
-
+			
 		if (gsonString.equals("CLOSE")) {
 			sendGameDataToClients("CLOSE");
 			closeGame();
@@ -623,7 +628,7 @@ public class HeimlichUndCo extends Game {
 	@Override
 	public String getGameData(String eventName, User user) {
 		String gameData = "";
-		if (eventName.equals("CREATE")) {// Fehlender Listener.. für chris' seite direkt nach Spielerstellung
+		if (eventName.equals("CREATE")) {// für chris' seite direkt nach Spielerstellung
 			String isHost="";
 			User host= getGameCreator();
 			if (user.equals(host)) {
