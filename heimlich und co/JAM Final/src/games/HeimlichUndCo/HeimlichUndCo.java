@@ -26,6 +26,7 @@ public class HeimlichUndCo extends Game {
 	private User playerTurn = null;
 	private int[] dataArray;
 	private int playerAmount=0;
+	private boolean p=false;
 
 	private static HeimlichUndCo instance;
 
@@ -369,6 +370,9 @@ public class HeimlichUndCo extends Game {
 
 	@Override
 	public int getMaxPlayerAmount() {
+		sendGameDataToUser(getGameCreator(),"PLAYERAMOUNT");
+		
+		
 		return playerAmount;
 	}
 
@@ -473,12 +477,12 @@ public class HeimlichUndCo extends Game {
 			playerList.add(user);
 			//TODO Spiel startbar machen über chris' startseite
 			// sendGameDataToClients("START");
-			//sendGameDataToClients("CREATE");
+			sendGameDataToClients("CREATE");
 			System.out.println("creating");
 		}
-		if (playerAmount>7){//Nötig..bzw funktionierts?
+		/*if (playerAmount>7){//Nötig..bzw funktionierts?
 			addSpectator(user);
-		}
+		}*/
 		if (playerList.size() == 7) {
 			this.gState = GameState.RUNNING;
 			sendGameDataToClients("START");
@@ -528,9 +532,15 @@ public class HeimlichUndCo extends Game {
 
 	@Override
 	public void execute(User user, String gsonString) {
+		
+		
 		if (this.gState == GameState.CLOSED)
 			return;
-			
+		System.out.println(gsonString);
+		/*if (gsonString.contains("PLAYERAMOUNT")) {
+			String[] strArray=gsonString.split(",");
+			playerAmount=Integer.parseInt(strArray[1]);
+		}*/
 		if (gsonString.equals("CLOSE")) {
 			sendGameDataToClients("CLOSE");
 			closeGame();
@@ -546,17 +556,16 @@ public class HeimlichUndCo extends Game {
 		
 		if (gsonString.contains("INITIALIZE")) {
 			String[] strArray=gsonString.split(",");
-			int[] receiveddata= new int[2];
-			for (int i=1;i<=2;i++) {
-				receiveddata[i-1] = Integer.parseInt(strArray[i]);
-			}
-			 int humanPlayers=receiveddata[0];
-			 int aiPlayers=receiveddata[1];
+			
+			 int humanPlayers=Integer.parseInt(strArray[1]);
+			 int aiPlayers=Integer.parseInt(strArray[2]);
 			 //TODO erst irgendwie menschliche Spieler in playerlist.. oder funktioniert das automatisch?
-			 
+			 if (p==false) {
 			 for(int i=1;i<=aiPlayers;i++) {
 				 User AI= new User("KI-"+i,"0000");
 				 playerList.add(AI);
+			 	}
+			 p=true;
 			 }
 			 playerAmount=humanPlayers+aiPlayers;
 			 
@@ -569,17 +578,17 @@ public class HeimlichUndCo extends Game {
 		if (gState != GameState.RUNNING) {
 			return;
 		}
-		if(user.getName().contains("KI-")) {
-			AITurn();
-			sendGameDataToClients("standardEvent");
-			return;
-		}
+		
 		System.out.println(gsonString);
 		
 		if (!user.equals(playerTurn)) {
 			return;
 		}
-		
+		if(user.getName().contains("KI-")) {
+			AITurn();
+			sendGameDataToClients("standardEvent");
+			return;
+		}
 		String[] strArray = gsonString.split(",");
 		int[] receiveddataArray = new int[18];	//0-6:Positionen der Agenten, 7 Tresorposition, 8-14 punktzahlen der agenten,
 		for (int i = 0; i < 15; i++) {			//15 playermessage(hier obsolet), 16 Host, 17 Zug vorbei(0) oder noch zuege übrig(1)
@@ -603,7 +612,6 @@ public class HeimlichUndCo extends Game {
 					scoring();
 				}
 			}
-
 			if (gameOver()) {
 				System.out.println("The game is over.");
 				this.gState = GameState.FINISHED;
@@ -628,7 +636,12 @@ public class HeimlichUndCo extends Game {
 	@Override
 	public String getGameData(String eventName, User user) {
 		String gameData = "";
+		if(eventName.equals("PLAYERAMOUNT")) {
+			return "PLAYERAMOUNT";
+		}
+		
 		if (eventName.equals("CREATE")) {// für chris' seite direkt nach Spielerstellung
+			
 			String isHost="";
 			User host= getGameCreator();
 			if (user.equals(host)) {
@@ -648,12 +661,9 @@ public class HeimlichUndCo extends Game {
 			gameData+=getCurrentAgentAmount()+",";
 			gameData+=getCurrentPlayerAmount()+",";
 			
-			gameData+=hashmapToString(assignColour());
+			//gameData+=hashmapToString(assignColour()); anders: jedem einzeln seine karte schicken
 			
 			return gameData;
-		}
-		if (eventName.equals("INITIALIZE")) {
-			//TODO?
 		}
 
 		int[] actualDataArray = getDataArray();
@@ -671,7 +681,7 @@ public class HeimlichUndCo extends Game {
 			// Ausgabe, welcher Agent auf welchem Platz ist
 			Collections.sort(agentList);
 			for (Agent a : agentList)
-				System.out.print(a.getColourString() + "  : " + a.getMarkerPosition() + ", ");
+				System.out.print( a.getColourString() + "  : " + a.getMarkerPosition() + ", ");
 			for (int i = 0; i < agentList.size(); i++) {
 				gameData += agentList.get(i) + " ist mit " + agentList.get(i).getMarkerPosition()
 						+ " Punkten auf Platz " + (agentList.indexOf(agentList.get(i)) + 1) + "\n";// Arrayelem 15
