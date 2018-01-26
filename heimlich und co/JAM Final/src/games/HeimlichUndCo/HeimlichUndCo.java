@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import gameClasses.Game;
 import gameClasses.GameState;
@@ -27,7 +28,7 @@ public class HeimlichUndCo extends Game {
 	private int[] dataArray;
 	private int playerAmount=0;
 	private boolean p=false;
-	
+	private boolean jsLoaded=false;
 	// PRO-Version
 	// private String[] notes;
 
@@ -469,11 +470,17 @@ public class HeimlichUndCo extends Game {
 
 	@Override
 	public void addUser(User user) {
-		if (playerList.size() < 7 && !playerList.contains(user)) {
+		if ()
+		if (playerList.size() < playerAmount && !playerList.contains(user)) {
 			playerList.add(user);
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+				sendGameDataToUser(user,"CREATE");
 			
-				sendGameDataToClients("CREATE");
-			System.out.println("creating");
+			System.out.println("adding new user-create aufrufen");
 		}
 		/*if (playerAmount>7){//Nötig..bzw funktionierts?
 			addSpectator(user);
@@ -481,7 +488,11 @@ public class HeimlichUndCo extends Game {
 		
 		if (playerList.size() == playerAmount) {
 			this.gState = GameState.RUNNING;
+			for(int i=0;i<playerList.size();i++) {
+				if (!user.getName().contains("KI-")) {
 			sendGameDataToClients("START");
+				}
+			}
 		}
 	}
 
@@ -503,7 +514,11 @@ public class HeimlichUndCo extends Game {
 	public void playerLeft(User user) {
 		playerList.remove(user);
 		setPlayerLeft(user.getName());
+		for(int i=0;i<playerList.size();i++) {
+			if (!user.getName().contains("KI-")) {
 		sendGameDataToClients("PLAYERLEFT");
+			}
+		}
 	}
 
 	@Override
@@ -528,13 +543,23 @@ public class HeimlichUndCo extends Game {
 
 	@Override
 	public void execute(User user, String gsonString) {
-		
+		if (gsonString.equals("HI")) {
+		  jsLoaded=true;
+			if(jsLoaded) {
+				addUser(user);
+			}
+			jsLoaded=false;
+		}
 		if (this.gState == GameState.CLOSED)
 			return;
 		System.out.println(gsonString);
 
 		if (gsonString.equals("CLOSE")) {
+			for(int i=0;i<playerList.size();i++) {
+				if (!user.getName().contains("KI-")) {
 			sendGameDataToClients("CLOSE");
+				}
+			}
 			closeGame();
 			return;
 		}
@@ -542,7 +567,11 @@ public class HeimlichUndCo extends Game {
 		if (gsonString.equals("RESTART")) {
 			initializeGame();
 			this.gState = GameState.RUNNING;
+			for(int i=0;i<playerList.size();i++) {
+				if (!user.getName().contains("KI-")) {
 			sendGameDataToClients("standardEvent");
+				}
+			}
 			return;
 		}
 	
@@ -556,14 +585,18 @@ public class HeimlichUndCo extends Game {
 			 for(int i=1;i<=aiPlayers;i++) {
 				 User AI= new User("KI-"+i,"0000");
 				 playerList.add(AI);
+				 System.out.println("1111");
 			 	}
-			 p=true;
-			 }
 			 playerAmount=humanPlayers+aiPlayers;
-			 
+			 }
+			 p=true;
 			initializeGame();
 			this.gState = GameState.RUNNING;
-			sendGameDataToClients("standardEvent");
+			for(int i=0;i<playerList.size();i++) {
+					if (!user.getName().contains("KI-")) {
+						sendGameDataToClients("standardEvent");
+					}
+			}
 			return;
 		}
 
@@ -582,7 +615,11 @@ public class HeimlichUndCo extends Game {
 		}
 		if(user.getName().contains("KI-")) {
 			AITurn();
-			sendGameDataToClients("standardEvent");
+			for(int i=0;i<playerList.size();i++) {
+				if (!user.getName().contains("KI-")) {
+					sendGameDataToClients("standardEvent");
+				}
+			}
 			return;
 		}
 		String[] strArray = gsonString.split(",");
@@ -631,7 +668,11 @@ public class HeimlichUndCo extends Game {
 			}
 			setDataArray(actualdataArray);
 
-			sendGameDataToClients("standardEvent");
+			for(int i=0;i<playerList.size();i++) {
+				if (!user.getName().contains("KI-")) {
+					sendGameDataToClients("standardEvent");
+				}
+			}
 		}
 	}
 
@@ -645,9 +686,11 @@ public class HeimlichUndCo extends Game {
 			User host= getGameCreator();
 			if (user.equals(host)) {
 				isHost ="H";
+				System.out.println("an host geschickt "+ user.getName());
 			}
 			else if(!user.equals(host)) {
 				isHost ="C";
+				System.out.println("an client geschickt "+user.getName());
 			}
 			return isHost;
 		}
@@ -657,9 +700,7 @@ public class HeimlichUndCo extends Game {
 		if (eventName.equals("CLOSE")) {
 			return "CLOSE";
 		}
-		if (eventName.equals("NOTES")) {
-			//TODO?
-		}
+		
 		if (eventName.equals("START")) {
 			HashMap<String,String> hash=assignColour();
 			for (int i=0;i<7;i++) {
