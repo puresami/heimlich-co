@@ -539,6 +539,7 @@ public class HeimlichUndCo extends Game {
 	public void execute(User user, String gsonString) {
 		if (gsonString.equals("HI")) {
 		  sendGameDataToUser(user,"CREATE");
+		  return;
 		}
 		if (this.gState == GameState.CLOSED)
 			return;
