@@ -679,17 +679,12 @@ public class HeimlichUndCo extends Game {
 
 				System.out.println("an host geschickt "+ user.getName());
 
-				
-				System.out.println("an Host geschickt" + user.getName());
 
 			}
 			else if(!user.equals(host)) {
 				isHost ="C";
 
 				System.out.println("an client geschickt "+user.getName());
-
-				
-				System.out.println("an client geschickt" + user.getName());
 
 			}
 			return isHost;

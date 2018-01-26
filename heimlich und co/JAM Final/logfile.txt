@@ -186,3 +186,9 @@
 [2018-01-26 12:12:36.801] [IP: /10.7.94.175] [LOGIN] Logging in user "jsch" succeeded
 [2018-01-26 12:13:12.786] [IP: /10.7.94.175] [REGISTER] Registering user "cvogt" succeeded
 [2018-01-26 12:13:18.38] [IP: /10.7.94.175] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-26 12:31:28.639] [IP: /10.7.94.175] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-26 12:32:07.435] [IP: /10.7.94.175] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-26 12:32:52.677] [IP: /10.7.94.175] [REGISTER] Registering user "abc" succeeded
+[2018-01-26 12:32:59.271] [IP: /10.7.94.175] [LOGIN] Logging in user "abc" succeeded
+[2018-01-26 12:35:47.731] [IP: /10.7.94.175] [LOGOUT] Logging out user "cvogt" succeeded; Session length: 3  Minutes
+[2018-01-26 12:36:01.803] [IP: /10.7.94.175] [LOGIN] Logging in user "cvogt" succeeded
