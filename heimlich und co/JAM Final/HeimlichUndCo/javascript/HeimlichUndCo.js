@@ -26,6 +26,19 @@
 
  
 
+    Window.onload() = Hello();
+    
+    	
+    	function Hello(){
+    	
+    	sendDataToServer("HI");
+    	console.log("geladen");
+    	
+    }
+    	
+    	
+    	
+    
     addListener('START', function(event){
         var stringFromServer = event.data;
         arr = stringFromServer.split(',');
@@ -83,6 +96,8 @@
 
 addListener('CREATE', function(event){
         
+	
+	console.log(event.data);
     
     if (event.data == "H"){
         
@@ -97,7 +112,7 @@ addListener('CREATE', function(event){
         document.getElementById("Game").style.visibility = "visible";
         document.getElementById("Startscreen").style.visibility = "hidden";    
                   
-                  
+       
                   }
     
     });

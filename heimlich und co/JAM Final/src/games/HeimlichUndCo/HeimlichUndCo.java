@@ -480,7 +480,12 @@ public class HeimlichUndCo extends Game {
 			}
 				sendGameDataToUser(user,"CREATE");
 			
+<<<<<<< HEAD
 			System.out.println("adding new user-create aufrufen");
+=======
+				sendGameDataToUser(user,"CREATE");
+			System.out.println("creating");
+>>>>>>> branch 'master' of https://github.com/puresami/heimlich-co.git
 		}
 		/*if (playerAmount>7){//Nötig..bzw funktionierts?
 			addSpectator(user);
@@ -686,11 +691,21 @@ public class HeimlichUndCo extends Game {
 			User host= getGameCreator();
 			if (user.equals(host)) {
 				isHost ="H";
+<<<<<<< HEAD
 				System.out.println("an host geschickt "+ user.getName());
+=======
+				
+				System.out.println("an Host geschickt" + user.getName());
+>>>>>>> branch 'master' of https://github.com/puresami/heimlich-co.git
 			}
 			else if(!user.equals(host)) {
 				isHost ="C";
+<<<<<<< HEAD
 				System.out.println("an client geschickt "+user.getName());
+=======
+				
+				System.out.println("an client geschickt" + user.getName());
+>>>>>>> branch 'master' of https://github.com/puresami/heimlich-co.git
 			}
 			return isHost;
 		}
