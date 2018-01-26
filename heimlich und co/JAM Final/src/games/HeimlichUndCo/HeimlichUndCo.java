@@ -472,7 +472,7 @@ public class HeimlichUndCo extends Game {
 		if (playerList.size() < 7 && !playerList.contains(user)) {
 			playerList.add(user);
 			
-				sendGameDataToClients("CREATE");
+				sendGameDataToUser(user,"CREATE");
 			System.out.println("creating");
 		}
 		/*if (playerAmount>7){//Nötig..bzw funktionierts?
@@ -645,9 +645,13 @@ public class HeimlichUndCo extends Game {
 			User host= getGameCreator();
 			if (user.equals(host)) {
 				isHost ="H";
+				
+				System.out.println("an Host geschickt" + user.getName());
 			}
 			else if(!user.equals(host)) {
 				isHost ="C";
+				
+				System.out.println("an client geschickt" + user.getName());
 			}
 			return isHost;
 		}
