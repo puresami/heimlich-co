@@ -28,7 +28,7 @@ public class HeimlichUndCo extends Game {
 	private int[] dataArray;
 	private int playerAmount=0;
 	private boolean p=false;
-	private boolean jsLoaded=false;
+
 	// PRO-Version
 	// private String[] notes;
 
@@ -470,22 +470,11 @@ public class HeimlichUndCo extends Game {
 
 	@Override
 	public void addUser(User user) {
-		if ()
 		if (playerList.size() < playerAmount && !playerList.contains(user)) {
 			playerList.add(user);
-			try {
-				TimeUnit.SECONDS.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-				sendGameDataToUser(user,"CREATE");
-			
-<<<<<<< HEAD
-			System.out.println("adding new user-create aufrufen");
-=======
-				sendGameDataToUser(user,"CREATE");
+				
 			System.out.println("creating");
->>>>>>> branch 'master' of https://github.com/puresami/heimlich-co.git
+
 		}
 		/*if (playerAmount>7){//Nötig..bzw funktionierts?
 			addSpectator(user);
@@ -549,11 +538,7 @@ public class HeimlichUndCo extends Game {
 	@Override
 	public void execute(User user, String gsonString) {
 		if (gsonString.equals("HI")) {
-		  jsLoaded=true;
-			if(jsLoaded) {
-				addUser(user);
-			}
-			jsLoaded=false;
+		  sendGameDataToUser(user,"CREATE");
 		}
 		if (this.gState == GameState.CLOSED)
 			return;
@@ -691,21 +676,21 @@ public class HeimlichUndCo extends Game {
 			User host= getGameCreator();
 			if (user.equals(host)) {
 				isHost ="H";
-<<<<<<< HEAD
+
 				System.out.println("an host geschickt "+ user.getName());
-=======
+
 				
 				System.out.println("an Host geschickt" + user.getName());
->>>>>>> branch 'master' of https://github.com/puresami/heimlich-co.git
+
 			}
 			else if(!user.equals(host)) {
 				isHost ="C";
-<<<<<<< HEAD
+
 				System.out.println("an client geschickt "+user.getName());
-=======
+
 				
 				System.out.println("an client geschickt" + user.getName());
->>>>>>> branch 'master' of https://github.com/puresami/heimlich-co.git
+
 			}
 			return isHost;
 		}

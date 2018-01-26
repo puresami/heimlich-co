@@ -26,10 +26,7 @@
 
  
 
-    Window.onload() = Hello();
-    
-    	
-    	function Hello(){
+    window.onload = function () {
     	
     	sendDataToServer("HI");
     	console.log("geladen");
