@@ -27,6 +27,9 @@ public class HeimlichUndCo extends Game {
 	private int[] dataArray;
 	private int playerAmount=0;
 	private boolean p=false;
+	
+	// PRO-Version
+	// private String[] notes;
 
 	private static HeimlichUndCo instance;
 
@@ -370,9 +373,6 @@ public class HeimlichUndCo extends Game {
 
 	@Override
 	public int getMaxPlayerAmount() {
-		sendGameDataToUser(getGameCreator(),"PLAYERAMOUNT");
-		
-		
 		return playerAmount;
 	}
 
@@ -454,11 +454,7 @@ public class HeimlichUndCo extends Game {
 
 	@Override
 	public String getJavaScript() {
-		
-		
-		System.out.println("lädt");
 		return "<script src=\"javascript/HeimlichUndCo.js\"></script>";
-
 	}
 
 	@Override
@@ -475,15 +471,15 @@ public class HeimlichUndCo extends Game {
 	public void addUser(User user) {
 		if (playerList.size() < 7 && !playerList.contains(user)) {
 			playerList.add(user);
-			//TODO Spiel startbar machen über chris' startseite
-			// sendGameDataToClients("START");
-			sendGameDataToClients("CREATE");
+			
+				sendGameDataToClients("CREATE");
 			System.out.println("creating");
 		}
 		/*if (playerAmount>7){//Nötig..bzw funktionierts?
 			addSpectator(user);
 		}*/
-		if (playerList.size() == 7) {
+		
+		if (playerList.size() == playerAmount) {
 			this.gState = GameState.RUNNING;
 			sendGameDataToClients("START");
 		}
@@ -533,14 +529,10 @@ public class HeimlichUndCo extends Game {
 	@Override
 	public void execute(User user, String gsonString) {
 		
-		
 		if (this.gState == GameState.CLOSED)
 			return;
 		System.out.println(gsonString);
-		/*if (gsonString.contains("PLAYERAMOUNT")) {
-			String[] strArray=gsonString.split(",");
-			playerAmount=Integer.parseInt(strArray[1]);
-		}*/
+
 		if (gsonString.equals("CLOSE")) {
 			sendGameDataToClients("CLOSE");
 			closeGame();
@@ -553,8 +545,8 @@ public class HeimlichUndCo extends Game {
 			sendGameDataToClients("standardEvent");
 			return;
 		}
-		
-		if (gsonString.contains("INITIALIZE")) {
+	
+		if (gsonString.contains("INITIALIZE")) {//sollte aufgerufen werden sobald alle menschlichen spieler gejoint sind
 			String[] strArray=gsonString.split(",");
 			
 			 int humanPlayers=Integer.parseInt(strArray[1]);
@@ -578,9 +570,13 @@ public class HeimlichUndCo extends Game {
 		if (gState != GameState.RUNNING) {
 			return;
 		}
-		
-		System.out.println(gsonString);
-		
+		/* PRO-Version
+		 * if (gsonString.contains("NOTES")) {
+			String[] strArray=gsonString.split(",");
+			for (int i=1;i<=7;i++) {
+				notes[i-1]=strArray[i];
+			}
+		}*/
 		if (!user.equals(playerTurn)) {
 			return;
 		}
@@ -614,6 +610,12 @@ public class HeimlichUndCo extends Game {
 			}
 			if (gameOver()) {
 				System.out.println("The game is over.");
+				/*PRO-Version
+				 * for(int i=1;i<=7;i++) {
+					if (notes[i-1].equals(strArray[i])){
+						agentList.get(i-1).setMarkerPosition(agentList.get(-1).getMarkerPosition()+5);
+					}
+				}*/
 				this.gState = GameState.FINISHED;
 			}
 			// playerTurn um eins nach vorn verschieben
@@ -636,19 +638,17 @@ public class HeimlichUndCo extends Game {
 	@Override
 	public String getGameData(String eventName, User user) {
 		String gameData = "";
-		if(eventName.equals("PLAYERAMOUNT")) {
-			return "PLAYERAMOUNT";
-		}
 		
 		if (eventName.equals("CREATE")) {// für chris' seite direkt nach Spielerstellung
 			
 			String isHost="";
 			User host= getGameCreator();
 			if (user.equals(host)) {
-				isHost+="H";
+				isHost ="H";
 			}
-			else
-				isHost +="C";
+			else if(!user.equals(host)) {
+				isHost ="C";
+			}
 			return isHost;
 		}
 		if (eventName.equals("PLAYERLEFT")) {
@@ -657,12 +657,18 @@ public class HeimlichUndCo extends Game {
 		if (eventName.equals("CLOSE")) {
 			return "CLOSE";
 		}
-		if (eventName.equals("STARTNOW")) {
-			gameData+=getCurrentAgentAmount()+",";
-			gameData+=getCurrentPlayerAmount()+",";
-			
-			//gameData+=hashmapToString(assignColour()); anders: jedem einzeln seine karte schicken
-			
+		if (eventName.equals("NOTES")) {
+			//TODO?
+		}
+		if (eventName.equals("START")) {
+			HashMap<String,String> hash=assignColour();
+			for (int i=0;i<7;i++) {
+				if(dataArray[i]!=-1) {
+					gameData+=1+",";
+				}
+				else gameData+=0+",";
+			}
+			gameData+=hash.get(user.getName());
 			return gameData;
 		}
 

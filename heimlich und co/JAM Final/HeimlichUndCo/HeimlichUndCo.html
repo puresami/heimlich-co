@@ -1,16 +1,16 @@
 
-<div id = "HeimlichUndCo">
-
-
-    
-     <div id="Startscreen">
+        
+       <div id= "HeimlichUndCo">
+        
+       
+        <div id="Startscreen">
 	<p style="position: absolute;right: 0;top: 0;">Anzahl Spieler: 
 		<input type="text" id="countPlayer">
 	</p> 
 	<p style="position: absolute;right: 0;top: 30px;">Anzahl Ki:  
 		<input type="text" id="countKi">
 	</p>
-	<button onclick="startscreen(), this.disabled=true;" class="button;" style= "position: absolute; bottom: 0;right: 0;" >Spiel starten</button>
+	<button onclick="startscreen(), this.disabled=true;" class="button;" style="position: absolute;bottom: 0;right: 0;">Spiel starten</button>
 	<span style="color: red;position: absolute;bottom: 0;left: 0;visibility: hidden" id="errorNoP">Fehler: Spieleranzahl > 7</span>
 </div>
 
@@ -86,14 +86,13 @@
     <div id = "persönlich">
     <div id = "Notizblock">
         
+        
+        
         <select>
-            
-            
-            
-  <option value="volvo">Spieler1</option>
-  <option value="saab">Spieler2</option>
-  <option value="opel">Spieler3</option>
-  <option value="audi">Spieler4</option>
+  <option value="volvo">blau</option>
+  <option value="saab">grün</option>
+  <option value="opel">gelb</option>
+  <option value="audi">rot</option>
         </select>
         
         
@@ -117,37 +116,25 @@
     <div id = "Spielsystem">
         
         <center> <div id="die1" class="dice" >0</div> </center>
-        <center><button id="wuerfel" visibility="visible" onclick="rollDice()" style="background-color:transparent; border-color:transparent;">
+        <center><button id="wuerfel"  onclick="rollDice()" style="background-color:transparent; border-color:transparent; visibility: visible">
 	   <img id="rollimg" src="/HeimlichUndCo/images/wurfel.png.png" height="40" /> </button>
         </center>
         <h2 id="status" style="clear:left;"></h2>
     
         
         
-        <p id="p1" style="background-color: darkgray" ></p>
-        <p id="p2" style="background-color: darkgray" ></p>
-        <p id="p3" style="background-color: darkgray"></p>
-        <p id="p4" style="background-color: darkgray"></p>
-        <p id="p5" style="background-color: darkgray"></p>
-        <p id="p6" style="background-color: darkgray"></p>
-        <p id="p7" style="background-color: darkgray"></p>
+        <p id="p1" style="background-color: darkgray; visibility: hidden"></p>
+        <p id="p2" style="background-color: darkgray; visibility: hidden"></p>
+        <p id="p3" style="background-color: darkgray; visibility: hidden"></p>
+        <p id="p4" style="background-color: darkgray; visibility: hidden"></p>
+        <p id="p5" style="background-color: darkgray; visibility: hidden"></p>
+        <p id="p6" style="background-color: darkgray; visibility: hidden"></p>
+        <p id="p7" style="background-color: darkgray; visibility: hidden"></p>
         
     
     
     
     </div> 
 </div> 
-
-
-
-
-
-
-
-
-
-
-
-
-
+            
 </div>
