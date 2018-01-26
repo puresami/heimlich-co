@@ -27,7 +27,7 @@ public class HeimlichUndCo extends Game {
 	private User playerTurn = null;
 	private int[] dataArray;
 	private int playerAmount=0;
-	private boolean p=false;
+	private boolean ai=false;
 
 	// PRO-Version
 	// private String[] notes;
@@ -63,6 +63,7 @@ public class HeimlichUndCo extends Game {
 		setDataArray(dataArr);
 		instantiateAgents(dataArr);
 		playerTurn = getGameCreator();
+		setRetry("500");
 	}
     
 	public void AITurn() {
@@ -566,28 +567,25 @@ public class HeimlichUndCo extends Game {
 			return;
 		}
 	
-		if (gsonString.contains("INITIALIZE")) {//sollte aufgerufen werden sobald alle menschlichen spieler gejoint sind
+		if (gsonString.contains("INITIALIZE")) {
 			String[] strArray=gsonString.split(",");
 			
 			 int humanPlayers=Integer.parseInt(strArray[1]);
+			 System.out.println(humanPlayers);
 			 int aiPlayers=Integer.parseInt(strArray[2]);
-			 //TODO erst irgendwie menschliche Spieler in playerlist.. oder funktioniert das automatisch?
-			 if (p==false) {
+			 System.out.println(aiPlayers);
+			
+			 if (ai==false) {
 			 for(int i=1;i<=aiPlayers;i++) {
 				 User AI= new User("KI-"+i,"0000");
 				 playerList.add(AI);
-				 System.out.println("1111");
+				 System.out.println("AI's added");
+				 System.out.println("Größe der PlayerList: " +playerList.size());
 			 	}
 			 playerAmount=humanPlayers+aiPlayers;
 			 }
-			 p=true;
+			 ai=true;
 			initializeGame();
-			this.gState = GameState.RUNNING;
-			for(int i=0;i<playerList.size();i++) {
-					if (!user.getName().contains("KI-")) {
-						sendGameDataToClients("standardEvent");
-					}
-			}
 			return;
 		}
 
@@ -679,7 +677,6 @@ public class HeimlichUndCo extends Game {
 				isHost ="H";
 
 				System.out.println("an host geschickt "+ user.getName());
-
 
 			}
 			else if(!user.equals(host)) {

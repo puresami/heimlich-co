@@ -192,3 +192,4 @@
 [2018-01-26 12:32:59.271] [IP: /10.7.94.175] [LOGIN] Logging in user "abc" succeeded
 [2018-01-26 12:35:47.731] [IP: /10.7.94.175] [LOGOUT] Logging out user "cvogt" succeeded; Session length: 3  Minutes
 [2018-01-26 12:36:01.803] [IP: /10.7.94.175] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-26 15:44:36.289] [IP: /10.7.94.175] [LOGIN] Logging in user "jsch" succeeded

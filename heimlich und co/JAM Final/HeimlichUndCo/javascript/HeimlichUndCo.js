@@ -36,11 +36,14 @@
     	
     	
     
-    addListener('START', function(event){
+   addListener('START1', function(event){
         var stringFromServer = event.data;
         arr = stringFromServer.split(',');
-          
-        starting(arr);
+         
+        console.log(arr);
+        
+        startGame();
+        //starting(arr);
         
         document.getElementById("status").innerHTML = "Alle Spieler sind nun im Spiel, warte auf Spielstart!";
         
@@ -94,20 +97,22 @@
 addListener('CREATE', function(event){
         
 	
-	console.log(event.data);
+	//console.log(event.data);
     
     if (event.data == "H"){
         
         
         document.getElementById("Startscreen").style.visibility = "visible";
         document.getElementById("Game").style.visibility = "hidden";
-        
+        document.getElementById("Lobby").style.visibility = "hidden";
+        console.log("H bekommen");
         
         } else if(event.data == "C"){
                   
-                  
-        document.getElementById("Game").style.visibility = "visible";
-        document.getElementById("Startscreen").style.visibility = "hidden";    
+                  console.log("C bekommen");
+        document.getElementById("Game").style.visibility = "hidden";
+        document.getElementById("Startscreen").style.visibility = "hidden"; 
+        document.getElementById("Lobby").style.visibility = "visible";   
                   
        
                   }
@@ -397,7 +402,8 @@ function startscreen(){
 	if(overall <= 5)
 	{
 		document.getElementById("Startscreen").style.display = "none";
-		document.getElementById("Game").style.visibility = "visible";
+		document.getElementById("Game").style.visibility = "hidden";
+		document.getElementById("Lobby").style.visibility = "visible";
         
         var arri=[anzahlPlayer, anzahlKi];
         
@@ -415,3 +421,11 @@ function startscreen(){
         sendDataToServer("INITIALIZE,"+arri);
   
     }
+    
+    
+    function startGame(){
+	//soll ausgefuehrt werden, sobald die vorgegebene Spieleranzal erreicht wurde
+	document.getElementById("Startscreen").style.visibility = "hidden";
+	document.getElementById("Game").style.visibility = "visible";
+	document.getElementById("Lobby").style.visibility = "hidden";
+}
