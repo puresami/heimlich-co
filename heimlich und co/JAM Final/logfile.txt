@@ -193,3 +193,23 @@
 [2018-01-26 12:35:47.731] [IP: /10.7.94.175] [LOGOUT] Logging out user "cvogt" succeeded; Session length: 3  Minutes
 [2018-01-26 12:36:01.803] [IP: /10.7.94.175] [LOGIN] Logging in user "cvogt" succeeded
 [2018-01-26 15:44:36.289] [IP: /10.7.94.175] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-26 16:00:44.564] [IP: /10.7.94.175] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-26 16:01:31.68] [IP: /10.7.94.175] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-27 12:31:22.183] [IP: /192.168.2.105] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-27 12:31:59.093] [IP: /192.168.2.105] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-27 14:40:57.065] [IP: /192.168.2.105] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-27 14:41:31.313] [IP: /192.168.2.105] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-27 14:43:57.297] [IP: /192.168.2.105] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-27 14:44:33.175] [IP: /192.168.2.105] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-27 14:49:16.817] [IP: /192.168.2.105] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-27 14:49:47.873] [IP: /192.168.2.105] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-27 14:59:31.353] [IP: /192.168.2.105] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-27 14:59:51.072] [IP: /192.168.2.105] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-27 15:02:28.123] [IP: /192.168.2.105] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-27 15:02:43.136] [IP: /192.168.2.105] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-27 15:05:47.754] [IP: /192.168.2.105] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-27 15:06:12.798] [IP: /192.168.2.105] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-27 15:10:39.909] [IP: /192.168.2.105] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-27 15:11:00.227] [IP: /192.168.2.105] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-27 15:25:17.156] [IP: /192.168.2.105] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-27 15:25:35.914] [IP: /192.168.2.105] [LOGIN] Logging in user "cvogt" succeeded

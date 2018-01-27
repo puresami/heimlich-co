@@ -40,10 +40,11 @@
         var stringFromServer = event.data;
         arr = stringFromServer.split(',');
          
+        console.log("start erhalten");
         console.log(arr);
         
         startGame();
-        //starting(arr);
+        starting(arr);
         
         document.getElementById("status").innerHTML = "Alle Spieler sind nun im Spiel, warte auf Spielstart!";
         
@@ -53,7 +54,7 @@
   addListener('standardEvent', function(event){
             var stringFromServer = event.data;
             var arr = stringFromServer.split(',');
-            //console.log(arr);
+            console.log(arr);
 
             if(arr.length==17){
                 for(var i=0; i<15; i++) { arrFields[i] = +arr[i]; }
@@ -63,11 +64,10 @@
                 
                 
                 
-                if(str=="HOST"){
-                    console.log(arr[16]);
-          
-                } else if(arr[15].contains("Du ")){
+                if(playerMessage.includes("Du ")){
                           
+                	console.log("hallo");
+                	
                           document.getElementById("wuerfel").style.visibility= "visible";
                  
                           }
@@ -75,7 +75,7 @@
                 document.getElementById("status").innerHTML = playerMessage;
                 //updateBoard();
             }
-            statusWait = false;
+            
         });
 
 
@@ -116,6 +116,7 @@ addListener('CREATE', function(event){
                   
        
                   }
+    sendDataToServer("OK");
     
     });
 
@@ -419,6 +420,7 @@ function startscreen(){
     function initialize(arri){
       
         sendDataToServer("INITIALIZE,"+arri);
+        
   
     }
     
