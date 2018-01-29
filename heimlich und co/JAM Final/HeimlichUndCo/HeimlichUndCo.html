@@ -1,142 +1,85 @@
-   
-        
-       <div id= "HeimlichUndCo">
-       
-       	<div id="Lobby" style="visibility: hidden">
+<div id= "HeimlichUndCo">
+
+	<div id="Lobby" style="visibility: hidden">
 			<a>Warte auf Spieler...</a>
-		
-		</div>
-        
-       
-        <div id="Startscreen">
-	<p style="position: absolute;right: 0;top: 0;">Anzahl Spieler: 
-		<input type="text" id="countPlayer">
-	</p> 
-	<p style="position: absolute;right: 0;top: 30px;">Anzahl Ki:  
-		<input type="text" id="countKi">
-	</p>
-	<button onclick="startscreen(), this.disabled=true;" class="button;" style="position: absolute;bottom: 0;right: 0;">Spiel starten</button>
-	<span style="color: red;position: absolute;bottom: 0;left: 0;visibility: hidden" id="errorNoP">Fehler: Spieleranzahl > 7</span>
-</div>
+	</div>
 
-  
-   
-        
-        
-       <div id="Game">
-        
-        
-        
-        
-        
-        
-       
-        
-    <div id = "Spielerbuttons">
-         
-     
-    <div id="b2" class="button" href="#Link" background-color="#444">Spieler 2</div>
-    <a id="b3" class="button" href="#Link">Spieler 3</a>
-    <a id="b4" class="button" href="#Link">Spieler 4</a>
-    <a id="b5" class="button" href="#Link">Spieler 5</a>
-    <a id="b6" class="button" href="#Link">Spieler 6</a>     
-    <a id="b7" class="button" href="#Link">Spieler 7</a>
-  
-         
-         
-    <p id="status">Status: </p>
-    </div>
+	<div id="Startscreen">
+		<p style="position: absolute;right: 0;top: 0;">Anzahl Spieler: 
+			<input type="text" id="countPlayer">
+		</p> 
+		<p style="position: absolute;right: 0;top: 30px;">Anzahl Ki:  
+			<input type="text" id="countKi">
+		</p>
+		<button onclick="startscreen(), this.disabled=true;" class="button;" style="position: absolute;bottom: 0;right: 0;">Spiel starten</button>
+		<form style="position: absolute;bottom: 0; left: 0;">
+		<input type="checkbox" id="cbPro">Pro-Version<br>
+		</form>
+		<span style="color: red;position: absolute;bottom: 0;left: 0;visibility: hidden" id="errorNoP">Fehler: Spieleranzahl ungültig</span>
+	</div>
 
-   
-
-    
-    <div id = feld> 
-
-        
-    <div id = "Feld1" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 1 position = 1  >
-     
-     
-    </div> 
-        
-        
-        
-    <div id = "Feld2" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 2 position = 2></div> 
-    <div id = "Feld3" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 3 position = 3></div> 
-    <div id = "Feld4" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 4 position = 4></div> 
-    <div id = "Feld5" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 5 position = 5></div> 
-    <div id = "Feld6" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 6 position = 6></div>
-    <div id = "Feld7" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 7 position = 7> 
-    <div id="tresor" draggable="false" ondragstart="dragt(event)" ></div>
-    </div> 
-    <div id = "Feld8" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 8 position = 8></div>
-    <div id = "Feld9" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 9 position = 9></div>
-    <div id = "Feld10" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 10 position = 10></div> 
-    <div id = "Feld11" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= -3 position = 11></div> 
-    <div id = "Feld12" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 0 position = 0>
-        
-        
-        
-    <div id="drop1" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
-    <div id="drop2" class="objects" draggable="true" ondragstart="drag(event)" >  </div>
-    <div id="drop3" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
-    <div id="drop4" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
-    <div id="drop5" class="objects" draggable="true" ondragstart="drag(event)"  ></div>
-    <div id="drop6" class="objects" draggable="true" ondragstart="drag(event)" ></div>
-    <div id="drop7" class="objects" draggable="true" ondragstart="drag(event)"  ></div>
-        
-     
-        </div> 
-</div>
+	<div id="Game">
+		<div id = "Spielerbuttons">
+		    <div id="b2" class="button" href="#Link" background-color="#444">Spieler 2</div>
+		    <a id="b3" class="button" href="#Link">Spieler 3</a>
+		    <a id="b4" class="button" href="#Link">Spieler 4</a>
+		    <a id="b5" class="button" href="#Link">Spieler 5</a>
+		    <a id="b6" class="button" href="#Link">Spieler 6</a>     
+		    <a id="b7" class="button" href="#Link">Spieler 7</a>
+			<p id="status">Status: </p>
+    		</div>
+		<div id = "feld"> 
+			<div id = "Feld1" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 1 position = 1  >
+		</div>        
+		    <div id = "Feld2" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 2 position = 2></div> 
+		    <div id = "Feld3" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 3 position = 3></div> 
+		    <div id = "Feld4" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 4 position = 4></div> 
+		    <div id = "Feld5" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 5 position = 5></div> 
+		    <div id = "Feld6" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 6 position = 6></div>
+		    <div id = "Feld7" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 7 position = 7> 
+		    <div id="tresor" draggable="false" ondragstart="dragt(event)" ></div>
+		    </div> 
+		    <div id = "Feld8" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 8 position = 8></div>
+		    <div id = "Feld9" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 9 position = 9></div>
+		    <div id = "Feld10" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 10 position = 10></div> 
+		    <div id = "Feld11" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= -3 position = 11></div> 
+		    <div id = "Feld12" ondrop="drop(event)" ondragover="allowDrop(event)" ondrop="dropt(event)" ondragover="allowDropt(event)" number= 0 position = 0>      
+		    <div id="drop1" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
+		    <div id="drop2" class="objects" draggable="true" ondragstart="drag(event)" >  </div>
+		    <div id="drop3" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
+		    <div id="drop4" class="objects" draggable="true" ondragstart="drag(event)"  >  </div>
+		    <div id="drop5" class="objects" draggable="true" ondragstart="drag(event)"  ></div>
+		    <div id="drop6" class="objects" draggable="true" ondragstart="drag(event)" ></div>
+		    <div id="drop7" class="objects" draggable="true" ondragstart="drag(event)"  ></div>
+		</div> 
+	</div>
     
     <div id = "persönlich">
-    <div id = "Notizblock">
-        
-        
-        
-        <select>
-  <option value="volvo">blau</option>
-  <option value="saab">grün</option>
-  <option value="opel">gelb</option>
-  <option value="audi">rot</option>
-        </select>
-        
-        
-     
-        
-        
-        </div> 
-    
-    <div id = "Karte">
-    
-    
-    
-    </div> 
-    
-    
-    
-    </div> 
-    <div id = "Spielsystem">
-        
-        <center> <div id="die1" class="dice" >0</div> </center>
-        <center><button id="wuerfel"  onclick="rollDice()" style="background-color:transparent; border-color:transparent; visibility: hidden">
-	   <img id="rollimg" src="/HeimlichUndCo/images/wurfel.png.png" height="40" /> </button>
-        </center>
-        <h2 id="status" style="clear:left;"></h2>
-    
-        
-        
-        <p id="p1" style="background-color: darkgray; visibility: hidden"></p>
-        <p id="p2" style="background-color: darkgray; visibility: hidden"></p>
-        <p id="p3" style="background-color: darkgray; visibility: hidden"></p>
-        <p id="p4" style="background-color: darkgray; visibility: hidden"></p>
-        <p id="p5" style="background-color: darkgray; visibility: hidden"></p>
-        <p id="p6" style="background-color: darkgray; visibility: hidden"></p>
-        <p id="p7" style="background-color: darkgray; visibility: hidden"></p>
-        
-    
-    
-    
-    </div> 
-</div> 
-            
+	    		<div id = "Notizblock">
+				<select>
+				  <option value="volvo">blau</option>
+				  <option value="saab">grün</option>
+				  <option value="opel">gelb</option>
+				  <option value="audi">rot</option>
+	        		</select>
+			</div> 
+			<div id = "Karte">
+			</div> 
+		</div> 
+		
+	    <div id = "Spielsystem">    
+	        <center> <div id="die1" class="dice" >0</div> </center>
+	        <center><button id="wuerfel"  onclick="rollDice()" style="background-color:transparent; border-color:transparent; visibility: hidden">
+		    <img id="rollimg" src="/HeimlichUndCo/images/wurfel.png.png" height="40" /> </button>
+	        </center>
+	        <h2 id="status" style="clear:left;"></h2>
+			<p id="p1" style="background-color: darkgray; visibility: hidden"></p>
+	        <p id="p2" style="background-color: darkgray; visibility: hidden"></p>
+	        <p id="p3" style="background-color: darkgray; visibility: hidden"></p>
+	        <p id="p4" style="background-color: darkgray; visibility: hidden"></p>
+	        <p id="p5" style="background-color: darkgray; visibility: hidden"></p>
+	        <p id="p6" style="background-color: darkgray; visibility: hidden"></p>
+	        <p id="p7" style="background-color: darkgray; visibility: hidden"></p>
+		</div> 
+	</div> 
 </div>

@@ -18,6 +18,9 @@
     var Spielerpos = [0,0,0,0,0,0,0,0];
     var Punkte = [0,0,0,0,0,0,0]
     var arrFields = [0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0];
+    
+    
+    var version =0;
 
 
  
@@ -411,14 +414,19 @@ function startscreen(){
 	var anzahlKi = parseInt(document.getElementById("countKi").value);
 	
 	var overall = anzahlPlayer + anzahlKi;
+
+	if(document.getElementById("cbPro").checked)
+	{
+		version = 1;
+	}
 	
-	if(overall <= 5)
+	if(overall > 1 && overall <= 7)
 	{
 		document.getElementById("Startscreen").style.display = "none";
 		document.getElementById("Game").style.visibility = "hidden";
 		document.getElementById("Lobby").style.visibility = "visible";
         
-        var arri=[anzahlPlayer, anzahlKi];
+        var arri=[anzahlPlayer, anzahlKi, version];
         
         initialize(arri);
 	}
@@ -432,6 +440,7 @@ function startscreen(){
     function initialize(arri){
       
         sendDataToServer("INITIALIZE,"+arri);
+        sendDataToServer("OK");
         
   
     }

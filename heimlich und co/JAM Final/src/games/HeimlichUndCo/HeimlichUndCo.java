@@ -18,6 +18,7 @@ public class HeimlichUndCo extends Game {
 	/*
 	 * dataArray contains the gameData
 	 */
+	private int humanPlayers=0;
 	private int safePosition;
 	private ArrayList<User> playerList = new ArrayList<User>();
 	private ArrayList<User> spectatorList = new ArrayList<User>();
@@ -640,7 +641,10 @@ public class HeimlichUndCo extends Game {
 			return;
 		}
 		if (gsonString.equals("OK")) {
-			if(playerAmount == aufruf) {
+			System.out.println("Anzahl menschl. Spieler: " + humanPlayers);
+			System.out.println("aufruf= " + aufruf);
+			if(humanPlayers == aufruf) {
+				
 				
 				sendGameDataToClients("START1");
 				
@@ -677,7 +681,7 @@ public class HeimlichUndCo extends Game {
 			
 			String[] strArray=gsonString.split(",");
 			
-			 int humanPlayers=Integer.parseInt(strArray[1]);
+			 humanPlayers=Integer.parseInt(strArray[1]);
 			 int aiPlayers=Integer.parseInt(strArray[2]);
 			 //TODO erst irgendwie menschliche Spieler in playerlist.. oder funktioniert das automatisch?
 			 if (p==false) {
