@@ -157,6 +157,13 @@ addListener('CREATE', function(event){
             ev.preventDefault();
 
         }
+        
+        
+       
+        
+        
+        
+        
 
 
     }
@@ -187,6 +194,30 @@ addListener('CREATE', function(event){
             sendGameData()
         }
 
+        
+        
+        if(ev.dataTransfer.getData("text") != "tresor"){
+
+            if(ev.target.contains(tresor) ){
+
+                arrFields[8] = parseInt(arrFields[8]) + parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
+                arrFields[9] = parseInt(arrFields[9]) + parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
+                arrFields[10] = parseInt(arrFields[10]) + parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
+                arrFields[11] = parseInt(arrFields[11]) + parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
+                arrFields[12] = parseInt(arrFields[12]) + parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
+                arrFields[13] = parseInt(arrFields[13]) + parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
+                arrFields[14] = parseInt(arrFields[14]) + parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
+
+                fillpoints();
+
+                document.getElementById("tresor").setAttribute("draggable", "true");
+
+               sendGameData()
+                console.log(arrFields);
+
+            }
+
+        }
 
         if(zuege == 0){
             
@@ -194,35 +225,15 @@ addListener('CREATE', function(event){
             //arrFields[17] = 0;
             
             console.log("du bist fertig!");
-
+            document.getElementById("wuerfel").style.visibility = "hidden";
+            
             sendGameData();
 
         }
 
         console.log(ev.dataTransfer.getData("text"));
 
-        if(ev.dataTransfer.getData("text") != "tresor"){
-
-        if(ev.target.contains(tresor)){
-
-            arrFields[8] = parseInt(arrFields[8]) + parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
-            arrFields[9] = parseInt(arrFields[9]) + parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
-            arrFields[10] = parseInt(arrFields[10]) + parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
-            arrFields[11] = parseInt(arrFields[11]) + parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
-            arrFields[12] = parseInt(arrFields[12]) + parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
-            arrFields[13] = parseInt(arrFields[13]) + parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
-            arrFields[14] = parseInt(arrFields[14]) + parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
-
-            fillpoints();
-
-            document.getElementById("tresor").setAttribute("draggable", "true");
-
-           sendGameData()
-            console.log(arrFields);
-
-        }
-
-    }
+        
 
 
         die1.innerHTML = "Zuege: " + zuege;
@@ -428,6 +439,7 @@ function startscreen(){
         
         var arri=[anzahlPlayer, anzahlKi, version];
         
+        sendDataToServer("HUMANPLAYERCOUNT," + anzahlPlayer)
         initialize(arri);
 	}
 	else

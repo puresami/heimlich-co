@@ -109,6 +109,8 @@ public class HeimlichUndCo extends Game {
 		int fieldsToGo = rollDice();
 		int rolled = fieldsToGo;
 		Random fieldsgone = new Random();
+		
+		System.out.println("KI ist dran" );
 
 		// yellow=0,red=1,purple=2,blue=3,green=4,orange=5,grey=6
 		while (fieldsToGo > 0) {
@@ -669,6 +671,14 @@ public class HeimlichUndCo extends Game {
 				}
 			}
 			return;
+		}
+		
+		
+		if (gsonString.contains("HUMANPLAYERCOUNT")) {
+			String[] strArray=gsonString.split(",");
+			
+			 humanPlayers=Integer.parseInt(strArray[1]);
+			
 		}
 	
 		if (gsonString.contains("INITIALIZE")) {//sollte aufgerufen werden sobald alle menschlichen spieler gejoint sind
