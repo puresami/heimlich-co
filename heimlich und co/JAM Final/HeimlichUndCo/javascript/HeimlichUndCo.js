@@ -205,13 +205,13 @@ addListener('CREATE', function(event){
 
         if(ev.target.contains(tresor)){
 
-            arrFields[8] = parseInt(arrFields[8) + parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
-            arrFields[9] = parseInt(arrFields[9) + parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
-            arrFields[10] = parseInt(arrFields[10) + parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
-            arrFields[11] = parseInt(arrFields[11) + parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
-            arrFields[12] = parseInt(arrFields[12) + parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
-            arrFields[13] = parseInt(arrFields[13) + parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
-            arrFields[14] = parseInt(arrFields[14) + parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
+            arrFields[8] = parseInt(arrFields[8]) + parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
+            arrFields[9] = parseInt(arrFields[9]) + parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
+            arrFields[10] = parseInt(arrFields[10]) + parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
+            arrFields[11] = parseInt(arrFields[11]) + parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
+            arrFields[12] = parseInt(arrFields[12]) + parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
+            arrFields[13] = parseInt(arrFields[13]) + parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
+            arrFields[14] = parseInt(arrFields[14]) + parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
 
             fillpoints();
 
