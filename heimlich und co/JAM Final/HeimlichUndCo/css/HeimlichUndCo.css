@@ -408,7 +408,7 @@ background-repeat:no-repeat;
      width: 190;
     height: 300;
     
-    background-image: url(../images/green.png);
+    background-image: url(/images/green.png);
    
     border-radius: 20px;
     
@@ -429,3 +429,16 @@ background-repeat:no-repeat;
     
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

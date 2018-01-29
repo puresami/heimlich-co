@@ -30,6 +30,7 @@ public class HeimlichUndCo extends Game {
 	private ArrayList<Integer> colourList = new ArrayList<Integer>();
 	private int aufruf =0;
 	private boolean alreadyScored=false;
+	Iterator<User> it = playerList.iterator();
 
 	// PRO-Version
 	// private String[] notes;
@@ -94,7 +95,7 @@ public class HeimlichUndCo extends Game {
 			}
 		
 			for (int i=0;i<dataArr.length;i++) {
-				System.out.println(dataArr[i]);
+				
 			}
 	
 		setDataArray(dataArr);
@@ -120,43 +121,43 @@ public class HeimlichUndCo extends Game {
 			if (rolled < fieldsToGo) {
 				switch (agentToMove) {
 				case 0: {
-					System.out.println("Move Yellow Agent");
+					
 					agentList.get(0).setAgentPosition(agentList.get(0).getAgentPosition() + fieldsGone);
 					fieldsToGo -= fieldsGone;
 					break;
 				}
 				case 1: {
-					System.out.println("Move red agent");
+					
 					agentList.get(1).setAgentPosition(agentList.get(1).getAgentPosition() + fieldsGone);
 					fieldsToGo -= fieldsGone;
 					break;
 				}
 				case 2: {
-					System.out.println("Move purple agent");
+					
 					agentList.get(2).setAgentPosition(agentList.get(2).getAgentPosition() + fieldsGone);
 					fieldsToGo -= fieldsGone;
 					break;
 				}
 				case 3: {
-					System.out.println("Move blue agent");
+					
 					agentList.get(3).setAgentPosition(agentList.get(3).getAgentPosition() + fieldsGone);
 					fieldsToGo -= fieldsGone;
 					break;
 				}
 				case 4: {
-					System.out.println("Move green agent");
+					
 					agentList.get(4).setAgentPosition(agentList.get(4).getAgentPosition() + fieldsGone);
 					fieldsToGo -= fieldsGone;
 					break;
 				}
 				case 5: {
-					System.out.println("Move orange agent");
+					
 					agentList.get(5).setAgentPosition(agentList.get(5).getAgentPosition() + fieldsGone);
 					fieldsToGo -= fieldsGone;
 					break;
 				}
 				case 6: {
-					System.out.println("Move grey agent");
+					
 					agentList.get(6).setAgentPosition(agentList.get(6).getAgentPosition() + fieldsGone);
 					fieldsToGo -= fieldsGone;
 					break;
@@ -405,7 +406,7 @@ public class HeimlichUndCo extends Game {
 				colour = "orange";
 				break;
 			case 6:
-				colour = "grey";
+				colour = "gray";
 				break;
 			default:
 				colour = "Error while getting a String of the colour";
@@ -413,6 +414,8 @@ public class HeimlichUndCo extends Game {
 
 			hash.put(name, colour);
 			}
+		
+		
 		
 		return hash; 
 	}
@@ -549,7 +552,7 @@ public class HeimlichUndCo extends Game {
 		
 		if (playerList.size() == playerAmount && aufruf == playerAmount ) {
 			
-			System.out.println("Playerlist-Größe:" +playerList.size() + "  PlayerAmount: " + playerAmount );
+			
 	
 			
 			this.gState = GameState.RUNNING;
@@ -620,7 +623,7 @@ public class HeimlichUndCo extends Game {
 		  
 		  aufruf++;
 		  
-		  System.out.println(" create an gesendet" + user);
+		  
 		  return;
 		}
 		if (this.gState == GameState.CLOSED)
@@ -681,7 +684,7 @@ public class HeimlichUndCo extends Game {
 			 for(int i=1;i<=aiPlayers;i++) {
 				 User AI= new User("KI-"+i,"0000");
 				 playerList.add(AI);
-				 System.out.println("AIs added");
+				 
 			 	}
 			 playerAmount=humanPlayers+aiPlayers;
 			 }
@@ -697,7 +700,7 @@ public class HeimlichUndCo extends Game {
 //			}
 			return;
 		}
-		System.out.println("The game is over.0");
+		
 		if (gState == GameState.RUNNING) {
 			return;
 		}
@@ -710,13 +713,13 @@ public class HeimlichUndCo extends Game {
 		}*/
 		if (!user.equals(playerTurn)) {
 			
-			System.out.println("nicht dran");
+			
 			
 			
 			return;
 		}
 		
-		System.out.println("The game is over.1");
+		
 		
 		if(user.getName().contains("KI-")) {
 			AITurn();
@@ -727,28 +730,24 @@ public class HeimlichUndCo extends Game {
 			}
 			return;
 		}
-		System.out.println("The game is over.2");
+		
 		String[] strArray = gsonString.split(",");
-		for(int i=0;i<18;i++) {
-		System.out.print(strArray[i]+ ",");
-		}
-		System.out.println("The game is over.21");
 		int[] receiveddataArray = new int[16];	//0-6:Positionen der Agenten, 7 Tresorposition, 8-14 punktzahlen der agenten,
 		for (int i = 0; i < 15; i++) {			//15 playermessage(hier obsolet), 16 Host, 17 Zug vorbei(0) oder noch zuege übrig(1)
 			receiveddataArray[i] = Integer.parseInt(strArray[i]);
 		}
-		System.out.println(".25");
+//		receiveddataArray[15]=Integer.parseInt(strArray[17]);
 		boolean changed = false;
 		int[] actualdataArray = getDataArray();
 
-		System.out.println("The game is over.3");
+		
 		for(int i=0;i<15;i++) {
 			if (actualdataArray[i]!=receiveddataArray[i]) {
 				changed = true;
 			}
 		}
-		System.out.println(changed);
-		System.out.println("The game is over.4");
+		//System.out.println(changed);
+		
 		if (changed == true) {
 			
 		
@@ -759,10 +758,11 @@ public class HeimlichUndCo extends Game {
 				 }
 			}
 			
-			System.out.println("The game is over.41");
-			alreadyScored=false;// neu
+			
+
 			for (int i = 8; i < 15; i++) {
 				if (receiveddataArray[i] == getSafePosition()) {
+					//System.out.println("Größe agentList: " + agentList.size());
 					if (!alreadyScored) {
 						scoring();
 						alreadyScored = true;
@@ -770,7 +770,7 @@ public class HeimlichUndCo extends Game {
 				}
 			}
 
-			System.out.println("The game is over.42");
+			
 			if (gameOver()) {
 				System.out.println("The game is over.");
 				/*PRO-Version
@@ -781,30 +781,58 @@ public class HeimlichUndCo extends Game {
 				}*/
 				this.gState = GameState.FINISHED;
 			}
-			System.out.println("The game is over.43");
-			// playerTurn um eins nach vorn verschieben
-			if (strArray[17]=="0") {//keine zuege übrig
-				System.out.println("435");
-				Iterator<User> it = playerList.iterator();
-
-				if (it.hasNext()) {
-					setPlayerTurn(it.next());
-					System.out.println("436");
-				} else {// wenn playerlist durchlaufen wieder bei 0/Spieler 1 beginnen
-					System.out.println("437");
-					it = playerList.iterator();
-					setPlayerTurn(it.next());
-					System.out.println("438");
-				}
-			}
-			System.out.println("The game is over.44");
 			
+			// playerTurn um eins nach vorn verschieben
+			if (strArray[17].equals("0")) {//keine zuege übrig
+				
+				//Iterator<User> it = playerList.iterator();
+				
+				
+				
+				
+				System.out.println("1playerTurn: " + playerTurn.getName());
+				int x = playerList.indexOf(playerTurn);
+				
+				System.out.println("index of playerturn "+ playerList.indexOf(playerTurn));
+				System.out.println("playerList size "+ playerList.size());
+				x++;
+				
+				
+				if(playerList.size()>(x)) {
+					
+				
+				playerTurn = playerList.get(x);
+				System.out.println("2playerTurn: " + playerTurn.getName());
+				
+				}else {
+					
+					playerTurn= playerList.get(0);
+					System.out.println("3playerTurn: " + playerTurn.getName());
+				}
+				
+				
+				
+
+//				if (it.hasNext()) {
+//					System.out.println("Spieler ist dran : " + it.next().getName());
+//					setPlayerTurn(it.next());
+//					
+//				} else {// wenn playerlist durchlaufen wieder bei 0/Spieler 1 beginnen
+//					
+//					it = playerList.iterator();
+//					setPlayerTurn(it.next());
+//					
+//				}
+			}
+			
+			System.out.println("nicht empfangen");
 			setDataArray(receiveddataArray);
 
 			System.out.println("empfangen");
 			for(int i=0;i<playerList.size();i++) {
 				if (!user.getName().contains("KI-")) {
 					sendGameDataToUser(playerList.get(i),"standardEvent");
+					System.out.print("standardevent gesendet");
 				}
 			}
 		}
@@ -820,14 +848,9 @@ public class HeimlichUndCo extends Game {
 			User host= getGameCreator();
 			if (user.equals(host)) {
 				isHost ="H";
-
-				System.out.println("an host geschickt "+ user.getName());
 			}
 			else if(!user.equals(host)) {
 				isHost ="C";
-
-				System.out.println("an client geschickt "+user.getName());
-
 			}
 			return isHost;
 		}
@@ -876,17 +899,22 @@ public class HeimlichUndCo extends Game {
 			
 			
 			//gameData ="1,0,0,1,0,1,0,green";
-			System.out.println("5");
+			
 			
 			
 			return gameData;
 		}
+
+		
+		
 		
 		int[] actualDataArray = getDataArray();
 		for (int i = 0; i < 15; i++) {
 			gameData += String.valueOf(actualDataArray[i]);
 			gameData += ",";
 		}
+
+		
 		
 		if (playerList.size() < 2) {
 			gameData += "Warte auf 2ten Spieler oder KI-Spieler..."; // Arrayelem 15
@@ -898,13 +926,13 @@ public class HeimlichUndCo extends Game {
 			// Ausgabe, welcher Agent auf welchem Platz ist
 			Collections.sort(agentList);
 			for (Agent a : agentList)
-				System.out.print( a.getColourString() + "  : " + a.getMarkerPosition() + ", ");
+				
 			for (int i = 0; i < agentList.size(); i++) {
 				gameData += agentList.get(i) + " ist mit " + agentList.get(i).getMarkerPosition()
 						+ " Punkten auf Platz " + (agentList.indexOf(agentList.get(i)) + 1) + "\n";// Arrayelem 15
 			}
 
-			System.out.println("bis hier hin4");
+			
 		} else if (playerTurn.equals(user)) {
 			gameData += "Du bist dran!"; // arrayelem 15
 		} else
@@ -912,7 +940,7 @@ public class HeimlichUndCo extends Game {
 
 		gameData += isHost(user);// Arrayelem16
 
-		System.out.println("gameData sent: "+ gameData);
+		
 		return gameData;
 	}
 }

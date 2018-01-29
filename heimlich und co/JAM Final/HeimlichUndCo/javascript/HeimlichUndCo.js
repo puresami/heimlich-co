@@ -4,15 +4,11 @@
     var Spieleranzahl =0;
     var arr;
     var zuege ;
+    
 
     var prev;
 
-    var Spieler1 = 0;
-    var Spieler2 = 0;
-    var Spieler3 = 0;
-    var Spieler4 = 0;
-    var Spieler5 = 0;
-    var Spieler6 = 0;
+    
     var Agentenanzahl = 0;
 
     var spieler= [0,0,0,0,0,0,0];
@@ -29,7 +25,7 @@
     window.onload = function () {
     	
     	sendDataToServer("HI");
-    	console.log("geladen");
+    //	console.log("geladen");
     	
     }
     	
@@ -40,9 +36,10 @@
         var stringFromServer = event.data;
         arr = stringFromServer.split(',');
          
-        console.log("start erhalten");
-        console.log(arr);
+       // console.log("start erhalten");
+       // console.log(arr);
         
+        console.log(arr[7]);
         startGame();
         starting(arr);
         
@@ -62,18 +59,18 @@
                 var str = arr[16];
                 arrFields = arr;
                 
-                
+                console.log("standardevent erhalten:   " + arrFields);
                 
                 if(playerMessage.includes("Du ")){
                           
-                	console.log("hallo");
+                	
                 	
                           document.getElementById("wuerfel").style.visibility= "visible";
                  
                           }
 
                 document.getElementById("status").innerHTML = playerMessage;
-                //updateBoard();
+                updateBoard();
             }
             
         });
@@ -191,7 +188,7 @@ addListener('CREATE', function(event){
         if(zuege == 0){
             
             
-            arrFields[17] = 0;
+            //arrFields[17] = 0;
             
             console.log("du bist fertig!");
 
@@ -245,6 +242,7 @@ addListener('CREATE', function(event){
         
      var color = arr[8];
         document.getElementById("Karte").style.backgroundImage = "url(/HeimlichUndCo/images/" + arr[7] + ".png)";
+        console.log("url(/HeimlichUndCo/images/" + arr[7] + ".png)");
       
  }
 
@@ -346,30 +344,35 @@ function fillpoints(){
     function updateBoard(){
 
         var t =1;
-
+     
         for(var i = 0; i<6; i++){
 
-     
-            var Drop =document.getElementById("drop"+t );
-               
-               document.getElementById("Feld"+arrFields[i]).appendChild(Drop);
 
+		if(arrFields[i]>0){
+		
+		
+		
+     
+            var Drop =document.getElementById("drop"+(i+1));
+               console.log("Feld  "+arrFields[i] +"  drop  " +(i+1)  );
+               document.getElementById("Feld"+arrFields[i]).appendChild(Drop);
+			
             t++;
-               
+            }   
   
         }
 
 
-        t=1;
+       // t=1;
 
 
-        for(var i =6; i<6+Spieleranzahl; i++){
+       // for(var i =6; i<6+Spieleranzahl; i++){
 
 
-            Punkte[i-6] = arrFields[i]
+         //   Punkte[i-6] = arrFields[i]
 
 
-        }
+      //  }
 
         fillpoints();
 
@@ -378,16 +381,25 @@ function fillpoints(){
 
     function sendGameData(){
 
-       arrFields[0] = Spielerpos[0] = parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
-       arrFields[1] = Spielerpos[1] = parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
-       arrFields[2] = Spielerpos[2] = parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
-       arrFields[3] = Spielerpos[3] = parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
-       arrFields[4] = Spielerpos[4] = parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
-       arrFields[5] = Spielerpos[5] = parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
-       arrFields[6] = Spielerpos[6] = parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
-       arrFields[7] = Spielerpos[7] = parseInt(document.getElementById("tresor").parentElement.getAttribute("number"));
+       arrFields[0] = Spielerpos[0] = parseInt(document.getElementById("drop1").parentElement.getAttribute("position"));
+       arrFields[1] = Spielerpos[1] = parseInt(document.getElementById("drop2").parentElement.getAttribute("position"));
+       arrFields[2] = Spielerpos[2] = parseInt(document.getElementById("drop3").parentElement.getAttribute("position"));
+       arrFields[3] = Spielerpos[3] = parseInt(document.getElementById("drop4").parentElement.getAttribute("position"));
+       arrFields[4] = Spielerpos[4] = parseInt(document.getElementById("drop5").parentElement.getAttribute("position"));
+       arrFields[5] = Spielerpos[5] = parseInt(document.getElementById("drop6").parentElement.getAttribute("position"));
+       arrFields[6] = Spielerpos[6] = parseInt(document.getElementById("drop7").parentElement.getAttribute("position"));
+       arrFields[7] = Spielerpos[7] = parseInt(document.getElementById("tresor").parentElement.getAttribute("position"));
 
-        sendDataToServer(arrFields);
+	if(zuege==0){
+	
+	sendDataToServer(arrFields+","+zuege);
+	
+	}else {
+	sendDataToServer(arrFields+","+1) 
+	
+	}
+	
+       
   
         }
 
