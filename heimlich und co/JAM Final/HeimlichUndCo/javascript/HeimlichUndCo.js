@@ -394,15 +394,32 @@ function fillpoints(){
 
 
     function sendGameData(){
+    	
+    	
+    	
+    	
+    	for(var i=0; i<=6; i++){
+    		
+    		if(document.getElementById("drop"+(i+1)).style.visibility === "visible"){
+    			
+    			arrFields[i] =  parseInt(document.getElementById("drop"+(i+1)).parentElement.getAttribute("position"));
+    			
+    			
+    		}
+    		
+    		
+    		
+    	}
+    	
 
-       arrFields[0] = Spielerpos[0] = parseInt(document.getElementById("drop1").parentElement.getAttribute("position"));
-       arrFields[1] = Spielerpos[1] = parseInt(document.getElementById("drop2").parentElement.getAttribute("position"));
-       arrFields[2] = Spielerpos[2] = parseInt(document.getElementById("drop3").parentElement.getAttribute("position"));
-       arrFields[3] = Spielerpos[3] = parseInt(document.getElementById("drop4").parentElement.getAttribute("position"));
-       arrFields[4] = Spielerpos[4] = parseInt(document.getElementById("drop5").parentElement.getAttribute("position"));
-       arrFields[5] = Spielerpos[5] = parseInt(document.getElementById("drop6").parentElement.getAttribute("position"));
-       arrFields[6] = Spielerpos[6] = parseInt(document.getElementById("drop7").parentElement.getAttribute("position"));
-       arrFields[7] = Spielerpos[7] = parseInt(document.getElementById("tresor").parentElement.getAttribute("position"));
+//       arrFields[0] =  parseInt(document.getElementById("drop1").parentElement.getAttribute("position"));
+//       arrFields[1] =  parseInt(document.getElementById("drop2").parentElement.getAttribute("position"));
+//       arrFields[2] =  parseInt(document.getElementById("drop3").parentElement.getAttribute("position"));
+//       arrFields[3] =  parseInt(document.getElementById("drop4").parentElement.getAttribute("position"));
+//       arrFields[4] =  parseInt(document.getElementById("drop5").parentElement.getAttribute("position"));
+//       arrFields[5] =  parseInt(document.getElementById("drop6").parentElement.getAttribute("position"));
+//       arrFields[6] =  parseInt(document.getElementById("drop7").parentElement.getAttribute("position"));
+       arrFields[7] =  parseInt(document.getElementById("tresor").parentElement.getAttribute("position"));
 
 	if(zuege==0){
 	
