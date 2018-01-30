@@ -284,7 +284,7 @@ background-repeat:no-repeat;
 }
 
 #drop1 {
-     
+    float: left;
     height: 30px;
     width: 30px;
     border-radius: 20px;
@@ -365,14 +365,10 @@ background-repeat:no-repeat;
     background: orange;
     visibility: hidden;
 }
-
-
-
-        
+       
 #drop7 {
     
     float: left;
-     
     height: 30px;
     width: 30px;
     border-radius: 20px;
@@ -410,7 +406,7 @@ background-repeat:no-repeat;
      width: 190;
     height: 300;
     
-    background-image: url(/images/green.png);
+    background-image: url(/HeimlichUndCo/images/green.png);
    
     border-radius: 20px;
     
@@ -431,16 +427,3 @@ background-repeat:no-repeat;
     
     
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

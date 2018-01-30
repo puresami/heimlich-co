@@ -1,5 +1,4 @@
-
-    var parent1;
+var parent1;
     var array = [];
     var Spieleranzahl =0;
     var arr;
@@ -171,8 +170,12 @@ addListener('CREATE', function(event){
     function drop(ev) {
     
     	
+    
+    	
+    	
 
         console.log(ev.target.getAttribute("number") + "minus" + prev + " = " + (ev.target.getAttribute("number") - prev)+ "<=" + zuege +"&&"+ prev +"<"+ ev.target.getAttribute("position") );
+        console.log("drop aufgerufen" );
 
         
         var target = parseInt(ev.target.getAttribute("position"));
@@ -375,7 +378,7 @@ function fillpoints(){
 
         var t =1;
      
-        for(var i = 0; i<6; i++){
+        for(var i = 0; i<=6; i++){
 
 
 		if(arrFields[i]>=0){
@@ -393,6 +396,41 @@ function fillpoints(){
                } else {
             	   
             	   document.getElementById("Feld"+arrFields[i]).appendChild(Drop);
+            	   
+            	   
+               }
+            	   
+            	   
+               
+            	   
+            	  
+            	   
+               
+               
+            var Drop2 =document.getElementById("drop"+(i+1));
+               console.log("Feld  "+arrFields[i] +"  drop  " +(i+1));
+               
+               if(arrFields[i]==0){
+            	   
+            	   document.getElementById("Feld12").appendChild(Drop2);
+            	   
+               } else {
+            	   
+            	   document.getElementById("Feld"+arrFields[i]).appendChild(Drop2);
+            	   
+            	   
+               }
+            	   
+            var Drop2 =document.getElementById("drop"+(i+1));
+               console.log("Feld  "+arrFields[i] +"  drop  " +(i+1));
+               
+               if(arrFields[i]==0){
+            	   
+            	   document.getElementById("Feld12").appendChild(Drop2);
+            	   
+               } else {
+            	   
+            	   document.getElementById("Feld"+arrFields[i]).appendChild(Drop2);
             	   
             	   
                }
