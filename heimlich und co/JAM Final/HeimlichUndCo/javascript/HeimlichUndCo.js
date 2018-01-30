@@ -383,9 +383,6 @@ function fillpoints(){
 
 		if(arrFields[i]>=0){
 		
-		
-		
-     
             var Drop =document.getElementById("drop"+(i+1));
                console.log("Feld  "+arrFields[i] +"  drop  " +(i+1));
                
@@ -400,53 +397,14 @@ function fillpoints(){
             	   
                }
             	   
-            	   
-               
-            	   
-            	  
-            	   
-               
-               
-            var Drop2 =document.getElementById("drop"+(i+1));
-               console.log("Feld  "+arrFields[i] +"  drop  " +(i+1));
-               
-               if(arrFields[i]==0){
-            	   
-            	   document.getElementById("Feld12").appendChild(Drop2);
-            	   
-               } else {
-            	   
-            	   document.getElementById("Feld"+arrFields[i]).appendChild(Drop2);
-            	   
-            	   
-               }
-            	   
-            var Drop2 =document.getElementById("drop"+(i+1));
-               console.log("Feld  "+arrFields[i] +"  drop  " +(i+1));
-               
-               if(arrFields[i]==0){
-            	   
-            	   document.getElementById("Feld12").appendChild(Drop2);
-            	   
-               } else {
-            	   
-            	   document.getElementById("Feld"+arrFields[i]).appendChild(Drop2);
-            	   
-            	   
-               }
-            	   
-            	   
-               
-            	   
-            	  
-            	   
-               
-               
-			
+            	
             t++;
             }   
   
         }
+        
+        var tres =document.getElementById("tresor");
+        document.getElementById("Feld"+arrFields[7]).appendChild(tres);
 
 
        // t=1;
