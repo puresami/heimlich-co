@@ -1,5 +1,4 @@
-
-    var parent1;
+var parent1;
     var array = [];
     var Spieleranzahl =0;
     var arr;
@@ -157,14 +156,6 @@ addListener('CREATE', function(event){
             ev.preventDefault();
 
         }
-        
-        
-       
-        
-        
-        
-        
-
 
     }
 
@@ -172,28 +163,53 @@ addListener('CREATE', function(event){
     function drag(ev) {
         ev.dataTransfer.setData("text", ev.target.id);
 
-        prev = ev.target.parentElement.getAttribute("number");
+        prev = parseInt(ev.target.parentElement.getAttribute("position"));
 
     }
 
     function drop(ev) {
+    
+    	
+    	
 
-        console.log(ev.target.getAttribute("number") - prev +" wert: "+ ev.target.getAttribute("number") + "minus" + prev + "Zuege " + zuege);
+        console.log("drop aufgerufen" );
 
-        if((ev.target.getAttribute("number") - prev) <= zuege && prev < ev.target.getAttribute("number")  ){
+        
+        var target = parseInt(ev.target.getAttribute("position"));
+        
+        var schritte =0;
+        
+        if (prev < target) {
+    		schritte = target - prev;
+    	}else if (prev > target){
+    		for (var i = prev; i <= 11; i++){
+    			schritte++;
+    		}
+    		
+    	for (var i = 0; i < target; i++){
+    		schritte++;
+    		}
+    	}
+    	
+        
+        
+//        (parseInt(target) - prev) <= parseInt(zuege) && prev < ev.target.getAttribute("position")
+        
+        if(schritte<=zuege ){
 
 
-
+        	console.log("reingesprungen");
             ev.preventDefault();
             var data = ev.dataTransfer.getData("text");
             ev.target.appendChild(document.getElementById(data));
 
             
 
-            zuege = zuege - (ev.target.getAttribute("number")-prev);
+            zuege = zuege - schritte;
+            
             sendGameData()
-        }
-
+        } 
+        
         
         
         if(ev.dataTransfer.getData("text") != "tresor"){
@@ -359,17 +375,35 @@ function fillpoints(){
 
         var t =1;
      
-        for(var i = 0; i<6; i++){
+        for(var i = 0; i<=6; i++){
 
 
-		if(arrFields[i]>0){
+		if(arrFields[i]>=0){
 		
 		
 		
      
-            var Drop =document.getElementById("drop"+(i+1));
-               console.log("Feld  "+arrFields[i] +"  drop  " +(i+1)  );
-               document.getElementById("Feld"+arrFields[i]).appendChild(Drop);
+            var Drop2 =document.getElementById("drop"+(i+1));
+               console.log("Feld  "+arrFields[i] +"  drop  " +(i+1));
+               
+               if(arrFields[i]==0){
+            	   
+            	   document.getElementById("Feld12").appendChild(Drop2);
+            	   
+               } else {
+            	   
+            	   document.getElementById("Feld"+arrFields[i]).appendChild(Drop2);
+            	   
+            	   
+               }
+            	   
+            	   
+               
+            	   
+            	  
+            	   
+               
+               
 			
             t++;
             }   
