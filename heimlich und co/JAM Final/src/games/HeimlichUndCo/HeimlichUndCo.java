@@ -109,91 +109,94 @@ public class HeimlichUndCo extends Game {
 		int fieldsToGo = rollDice();
 		int rolled = fieldsToGo;
 		Random fieldsgone = new Random();
-		
-		System.out.println("KI ist dran" );
-
+		System.out.println("Ai- turn begonnen");
 		// yellow=0,red=1,purple=2,blue=3,green=4,orange=5,grey=6
 		while (fieldsToGo > 0) {
 			int fieldsGone = fieldsgone.nextInt(6) + 1;
-			int agentToMove = agent.nextInt(agentList.size());
+			int agentToMove = agent.nextInt(7);
 
 			if (fieldsGone > fieldsToGo) {
 				fieldsGone = Math.abs(fieldsGone - fieldsToGo);
 			}
+			if (agentList.get(agentToMove) != null) {
+				if (rolled < fieldsToGo) {
+					switch (agentToMove) {
+					case 0: {
 
-			if (rolled < fieldsToGo) {
-				switch (agentToMove) {
-				case 0: {
-					
-					agentList.get(0).setAgentPosition(agentList.get(0).getAgentPosition() + fieldsGone);
-					fieldsToGo -= fieldsGone;
-					break;
-				}
-				case 1: {
-					
-					agentList.get(1).setAgentPosition(agentList.get(1).getAgentPosition() + fieldsGone);
-					fieldsToGo -= fieldsGone;
-					break;
-				}
-				case 2: {
-					
-					agentList.get(2).setAgentPosition(agentList.get(2).getAgentPosition() + fieldsGone);
-					fieldsToGo -= fieldsGone;
-					break;
-				}
-				case 3: {
-					
-					agentList.get(3).setAgentPosition(agentList.get(3).getAgentPosition() + fieldsGone);
-					fieldsToGo -= fieldsGone;
-					break;
-				}
-				case 4: {
-					
-					agentList.get(4).setAgentPosition(agentList.get(4).getAgentPosition() + fieldsGone);
-					fieldsToGo -= fieldsGone;
-					break;
-				}
-				case 5: {
-					
-					agentList.get(5).setAgentPosition(agentList.get(5).getAgentPosition() + fieldsGone);
-					fieldsToGo -= fieldsGone;
-					break;
-				}
-				case 6: {
-					
-					agentList.get(6).setAgentPosition(agentList.get(6).getAgentPosition() + fieldsGone);
-					fieldsToGo -= fieldsGone;
-					break;
-				}
-				default: {
-					throw new IllegalArgumentException("Error while AI-Turn");
-				}
-				}
+						agentList.get(0).setAgentPosition(agentList.get(0).getAgentPosition() + fieldsGone);
+						fieldsToGo -= fieldsGone;
+						break;
+					}
+					case 1: {
 
-			} else {
-				agentList.get(agentToMove).setAgentPosition(agentList.get(agentToMove).getAgentPosition() + rolled);
+						agentList.get(1).setAgentPosition(agentList.get(1).getAgentPosition() + fieldsGone);
+						fieldsToGo -= fieldsGone;
+						break;
+					}
+					case 2: {
+
+						agentList.get(2).setAgentPosition(agentList.get(2).getAgentPosition() + fieldsGone);
+						fieldsToGo -= fieldsGone;
+						break;
+					}
+					case 3: {
+
+						agentList.get(3).setAgentPosition(agentList.get(3).getAgentPosition() + fieldsGone);
+						fieldsToGo -= fieldsGone;
+						break;
+					}
+					case 4: {
+
+						agentList.get(4).setAgentPosition(agentList.get(4).getAgentPosition() + fieldsGone);
+						fieldsToGo -= fieldsGone;
+						break;
+					}
+					case 5: {
+
+						agentList.get(5).setAgentPosition(agentList.get(5).getAgentPosition() + fieldsGone);
+						fieldsToGo -= fieldsGone;
+						break;
+					}
+					case 6: {
+
+						agentList.get(6).setAgentPosition(agentList.get(6).getAgentPosition() + fieldsGone);
+						fieldsToGo -= fieldsGone;
+						break;
+					}
+					default: {
+						throw new IllegalArgumentException("Error while AI-Turn");
+					}
+					}
+
+				} else {
+					agentList.get(agentToMove).setAgentPosition(agentList.get(agentToMove).getAgentPosition() + rolled);
+				}
 			}
-			
-			
+			else agentToMove=agent.nextInt(7);
 		}
-		int[] dataarray=new int[15];
-		for(int i=0;i<7;i++) {
-			dataarray[i]=agentList.get(i).getAgentPosition();
-			dataarray[i+8]=agentList.get(i).getMarkerPosition();
+		System.out.println("Ai 2");
+		int[] dataarray = new int[15];
+		for (int i = 0; i < 7; i++) {
+			if (agentList.get(i)!=null)
+				dataarray[i] = agentList.get(i).getAgentPosition();
+				dataarray[i + 8] = agentList.get(i).getMarkerPosition();
 		}
 		for (int i = 0; i < agentList.size(); i++) {
-			if (agentList.get(i).getAgentPosition() == getSafePosition()) {
-				scoring();
+			if (agentList.get(i)!= null)
+				if (agentList.get(i).getAgentPosition() == getSafePosition()) {
+					scoring();
 			}
 		}
+		System.out.println("Ai 3");
 		Random tresor = new Random();
-		int safe=tresor.nextInt(12);
-		
+		int safe = tresor.nextInt(12);
+
 		ArrayList<Integer> excluded = new ArrayList<Integer>();
-		for(int i=0;i<agentList.size();i++) {
-			excluded.add(agentList.get(i).getAgentPosition());	
+		for (int i = 0; i < agentList.size(); i++) {
+			if (agentList.get(i)!= null)
+				excluded.add(agentList.get(i).getAgentPosition());
 		}
-		setSafePosition(generateSafePosition(safe,excluded));
+		setSafePosition(generateSafePosition(safe, excluded));
 		setDataArray(dataarray);
 	}
 
@@ -559,18 +562,18 @@ public class HeimlichUndCo extends Game {
 	
 			
 			this.gState = GameState.RUNNING;
-			for(int i=0;i<playerList.size();i++) {
-				if (!user.getName().contains("KI-")) {
-				for(int j =0; j<playerList.size();j++) {	
-			sendGameDataToUser(playerList.get(j),"START1");
-			
-				}
-				sendGameDataToClients("standardEvent");
+			for(User u: playerList) {
+				if (!u.getName().contains("KI-")) {
+					sendGameDataToUser(u,"START1");
 				
+					sendGameDataToUser(u,"standardEvent");
 				}
-				
 			}
-		}
+		
+				
+				}
+				
+			
 	}
 
 	@Override
@@ -591,9 +594,10 @@ public class HeimlichUndCo extends Game {
 	public void playerLeft(User user) {
 		playerList.remove(user);
 		setPlayerLeft(user.getName());
-		for(int i=0;i<playerList.size();i++) {
-			if (!user.getName().contains("KI-")) {
-		sendGameDataToClients("PLAYERLEFT");
+		for(User u: playerList) {
+			if (!u.getName().contains("KI-")) {
+				sendGameDataToUser(u,"PLAYERLEFT");
+			
 			}
 		}
 	}
@@ -622,21 +626,21 @@ public class HeimlichUndCo extends Game {
 	public void execute(User user, String gsonString) {
 		System.out.println(gsonString);
 		if (gsonString.equals("HI")) {
-		  sendGameDataToUser(user,"CREATE");
-		  
-		  aufruf++;
-		  
-		  
-		  return;
+			sendGameDataToUser(user, "CREATE");
+
+			aufruf++;
+
+			return;
 		}
+
 		if (this.gState == GameState.CLOSED)
 			return;
-		
 
 		if (gsonString.equals("CLOSE")) {
-			for(int i=0;i<playerList.size();i++) {
-				if (!user.getName().contains("KI-")) {
-			sendGameDataToClients("CLOSE");
+			for (User u : playerList) {
+				if (!u.getName().contains("KI-")) {
+					sendGameDataToUser(u, "CLOSE");
+
 				}
 			}
 			closeGame();
@@ -645,138 +649,128 @@ public class HeimlichUndCo extends Game {
 		if (gsonString.equals("OK")) {
 			System.out.println("Anzahl menschl. Spieler: " + humanPlayers);
 			System.out.println("aufruf= " + aufruf);
-			if(humanPlayers == aufruf) {
-				
-				
-				sendGameDataToClients("START1");
-				
+			if (humanPlayers == aufruf) {
+				this.gState = GameState.RUNNING;
+				for (User u : playerList) {
+					if (!u.getName().contains("KI-")) {
+						sendGameDataToUser(u, "START1");
 
-				sendGameDataToClients("standardEvent");
-				
-				
-				
+						sendGameDataToUser(u, "standardEvent");
+					}
+				}
 			}
 			return;
 		}
-		
-		
-		
 
 		if (gsonString.equals("RESTART")) {
 			initializeGame();
 			this.gState = GameState.RUNNING;
-			for(int i=0;i<playerList.size();i++) {
-				if (!user.getName().contains("KI-")) {
-			sendGameDataToClients("standardEvent");
+			for (int i = 0; i < playerList.size(); i++) {
+				for (User u : playerList) {
+					if (!user.getName().contains("KI-")) {
+						sendGameDataToUser(u, "standardEvent");
+					}
 				}
+				return;
 			}
-			return;
 		}
-		
-		
 		if (gsonString.contains("HUMANPLAYERCOUNT")) {
-			String[] strArray=gsonString.split(",");
-			
-			 humanPlayers=Integer.parseInt(strArray[1]);
-			
+			String[] strArray = gsonString.split(",");
+
+			humanPlayers = Integer.parseInt(strArray[1]);
+
 		}
-	
-		if (gsonString.contains("INITIALIZE")) {//sollte aufgerufen werden sobald alle menschlichen spieler gejoint sind
-			
+
+		if (gsonString.contains("INITIALIZE")) {// sollte aufgerufen werden sobald alle menschlichen spieler gejoint
+												// sind
+
 			for (int i = 0; i < 7; i++) {
 				colourList.add(i);
 			}
 			Collections.shuffle(colourList);
-			
-			
-			String[] strArray=gsonString.split(",");
-			
-			 humanPlayers=Integer.parseInt(strArray[1]);
-			 int aiPlayers=Integer.parseInt(strArray[2]);
-			 //TODO erst irgendwie menschliche Spieler in playerlist.. oder funktioniert das automatisch?
-			 if (p==false) {
-			 for(int i=1;i<=aiPlayers;i++) {
-				 User AI= new User("KI-"+i,"0000");
-				 playerList.add(AI);
-				 
-			 	}
-			 playerAmount=humanPlayers+aiPlayers;
-			 }
-			 p=true;
-			initializeGame();
-			//this.gState = GameState.RUNNING;
-//			for(int i=0;i<playerList.size();i++) {
-//					if (!user.getName().contains("KI-")) {
-//					
-//						sendGameDataToClients("START");
-//						System.out.println("Start gesendet");
-//					}
-//			}
-			return;
-		}
-		
-		if (gState == GameState.RUNNING) {
-			return;
-		}
-		/* PRO-Version
-		 * if (gsonString.contains("NOTES")) {
-			String[] strArray=gsonString.split(",");
-			for (int i=1;i<=7;i++) {
-				notes[i-1]=strArray[i];
+
+			String[] strArray = gsonString.split(",");
+
+			humanPlayers = Integer.parseInt(strArray[1]);
+			int aiPlayers = Integer.parseInt(strArray[2]);
+			// TODO erst irgendwie menschliche Spieler in playerlist.. oder funktioniert das
+			// automatisch?
+
+			for (int i = 1; i <= aiPlayers; i++) {
+				User AI = new User("KI-" + i, "0000");
+				playerList.add(AI);
+
 			}
-		}*/
-		if (!user.equals(playerTurn)) {
-			
-			
-			
-			
+			playerAmount = humanPlayers + aiPlayers;
+
+			initializeGame();
+
+			// for(int i=0;i<playerList.size();i++) {
+			// if (!user.getName().contains("KI-")) {
+			//
+			// sendGameDataToClients("START");
+			// System.out.println("Start gesendet");
+			// }
+			// }
 			return;
 		}
-		
-		
-		
-		if(user.getName().contains("KI-")) {
+		System.out.println("execc");
+		if (gState != GameState.RUNNING) {
+			return;
+		}
+		/*
+		 * PRO-Version if (gsonString.contains("NOTES")) { String[]
+		 * strArray=gsonString.split(","); for (int i=1;i<=7;i++) {
+		 * notes[i-1]=strArray[i]; } }
+		 */
+		System.out.println("exec1");
+		if (!user.equals(playerTurn)) {
+
+			return;
+		}
+
+		System.out.println("exec2");
+
+		if (user.getName().contains("KI-")) {
 			AITurn();
-			for(int i=0;i<playerList.size();i++) {
+			for (User u : playerList) {
 				if (!user.getName().contains("KI-")) {
-					sendGameDataToClients("standardEvent");
+					sendGameDataToUser(u, "standardEvent");
 				}
 			}
 			return;
 		}
-		
+
 		String[] strArray = gsonString.split(",");
-		int[] receiveddataArray = new int[16];	//0-6:Positionen der Agenten, 7 Tresorposition, 8-14 punktzahlen der agenten,
-		for (int i = 0; i < 15; i++) {			//15 playermessage(hier obsolet), 16 Host, 17 Zug vorbei(0) oder noch zuege übrig(1)
+		int[] receiveddataArray = new int[16]; // 0-6:Positionen der Agenten, 7 Tresorposition, 8-14 punktzahlen der
+												// agenten,
+		for (int i = 0; i < 15; i++) { // 15 playermessage(hier obsolet), 16 Host, 17 Zug vorbei(0) oder noch zuege
+										// übrig(1)
 			receiveddataArray[i] = Integer.parseInt(strArray[i]);
 		}
-//		receiveddataArray[15]=Integer.parseInt(strArray[17]);
+		// receiveddataArray[15]=Integer.parseInt(strArray[17]);
 		boolean changed = false;
 		int[] actualdataArray = getDataArray();
 
-		
-		for(int i=0;i<15;i++) {
-			if (actualdataArray[i]!=receiveddataArray[i]) {
+		for (int i = 0; i < 15; i++) {
+			if (actualdataArray[i] != receiveddataArray[i]) {
 				changed = true;
 			}
 		}
-		//System.out.println(changed);
-		
+		// System.out.println(changed);
+
 		if (changed == true) {
-			
-		
+
 			for (int i = 0; i < 7; i++) {
-				 if (agentList.get(i)!=null) {
-				agentList.get(i).setAgentPosition(receiveddataArray[i]);
-				agentList.get(i).setMarkerPosition(receiveddataArray[i + 8]);
-				 }
+				if (agentList.get(i) != null) {
+					agentList.get(i).setAgentPosition(receiveddataArray[i]);
+					agentList.get(i).setMarkerPosition(receiveddataArray[i + 8]);
+				}
 			}
-			
-			
 
 			for (int i = 8; i < 15; i++) {
 				if (receiveddataArray[i] == getSafePosition()) {
-					//System.out.println("Größe agentList: " + agentList.size());
+					// System.out.println("Größe agentList: " + agentList.size());
 					if (!alreadyScored) {
 						scoring();
 						alreadyScored = true;
@@ -784,69 +778,61 @@ public class HeimlichUndCo extends Game {
 				}
 			}
 
-			
 			if (gameOver()) {
 				System.out.println("The game is over.");
-				/*PRO-Version
-				 * for(int i=1;i<=7;i++) {
-					if (notes[i-1].equals(strArray[i])){
-						agentList.get(i-1).setMarkerPosition(agentList.get(-1).getMarkerPosition()+5);
-					}
-				}*/
+				/*
+				 * PRO-Version for(int i=1;i<=7;i++) { if (notes[i-1].equals(strArray[i])){
+				 * agentList.get(i-1).setMarkerPosition(agentList.get(-1).getMarkerPosition()+5)
+				 * ; } }
+				 */
 				this.gState = GameState.FINISHED;
 			}
-			
+
 			// playerTurn um eins nach vorn verschieben
-			if (strArray[17].equals("0")) {//keine zuege übrig
-				
-				//Iterator<User> it = playerList.iterator();
-				
-				
-				
-				
+			if (strArray[17].equals("0")) {// keine zuege übrig
+
+				// Iterator<User> it = playerList.iterator();
+
 				System.out.println("1playerTurn: " + playerTurn.getName());
 				int x = playerList.indexOf(playerTurn);
-				
-				System.out.println("index of playerturn "+ playerList.indexOf(playerTurn));
-				System.out.println("playerList size "+ playerList.size());
+
+				System.out.println("index of playerturn " + playerList.indexOf(playerTurn));
+				System.out.println("playerList size " + playerList.size());
 				x++;
-				
-				
-				if(playerList.size()>(x)) {
-					
-				
-				playerTurn = playerList.get(x);
-				System.out.println("2playerTurn: " + playerTurn.getName());
-				
-				}else {
-					
-					playerTurn= playerList.get(0);
+
+				if (playerList.size() > (x)) {
+
+					playerTurn = playerList.get(x);
+					System.out.println("2playerTurn: " + playerTurn.getName());
+
+				} else {
+
+					playerTurn = playerList.get(0);
 					System.out.println("3playerTurn: " + playerTurn.getName());
 				}
-				
-				
-				
 
-//				if (it.hasNext()) {
-//					System.out.println("Spieler ist dran : " + it.next().getName());
-//					setPlayerTurn(it.next());
-//					
-//				} else {// wenn playerlist durchlaufen wieder bei 0/Spieler 1 beginnen
-//					
-//					it = playerList.iterator();
-//					setPlayerTurn(it.next());
-//					
-//				}
+				// if (it.hasNext()) {
+				// System.out.println("Spieler ist dran : " + it.next().getName());
+				// setPlayerTurn(it.next());
+				//
+				// } else {// wenn playerlist durchlaufen wieder bei 0/Spieler 1 beginnen
+				//
+				// it = playerList.iterator();
+				// setPlayerTurn(it.next());
+				//
+				// }
 			}
-			
-			System.out.println("nicht empfangen");
+
 			setDataArray(receiveddataArray);
 
 			System.out.println("empfangen");
-			for(int i=0;i<playerList.size();i++) {
-				if (!user.getName().contains("KI-")) {
-					sendGameDataToUser(playerList.get(i),"standardEvent");
-					System.out.print("standardevent gesendet");
+			for (int i = 0; i < playerList.size(); i++) {
+				for (User u : playerList) {
+					if (!u.getName().contains("KI-")) {
+						;
+
+						sendGameDataToUser(u, "standardEvent");
+					}
 				}
 			}
 		}
@@ -855,7 +841,9 @@ public class HeimlichUndCo extends Game {
 	@Override
 	public String getGameData(String eventName, User user) {
 		String gameData = "";
-		
+//		if (user.getName().contains("KI-")) {
+//			execute(user,eventName);
+//		}
 		if (eventName.equals("CREATE")) {// für chris' seite direkt nach Spielerstellung
 			
 			String isHost="";
@@ -939,7 +927,7 @@ public class HeimlichUndCo extends Game {
 		if (this.gState == GameState.FINISHED) {
 			// Ausgabe, welcher Agent auf welchem Platz ist
 			Collections.sort(agentList);
-			for (Agent a : agentList)
+			
 				
 			for (int i = 0; i < agentList.size(); i++) {
 				gameData += agentList.get(i) + " ist mit " + agentList.get(i).getMarkerPosition()
