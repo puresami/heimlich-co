@@ -32,16 +32,6 @@ var parent1;
     }
     	
     	
-    addListener('FINISHED', function(event){
-    	var stringFromServer = event.data;
-        var status1 = stringFromServer.split(',');
-    	
-        document.getElementById("status").innerHTML = status1;
-    	
-    	
-       
-    });
-
     	
     
    addListener('START1', function(event){
@@ -57,6 +47,7 @@ var parent1;
         fillpoints();
         var sn = Spieleranzahl -2;
         initNotizen(sn);
+        
         
         document.getElementById("status").innerHTML = "Alle Spieler sind nun im Spiel, warte auf Spielstart!";
         
@@ -530,8 +521,9 @@ function startscreen(){
 	document.getElementById("Startscreen").style.visibility = "hidden";
 	document.getElementById("Game").style.visibility = "visible";
 	document.getElementById("Lobby").style.visibility = "hidden";
-	
-	var arraySpieler = ["Null", "Fatih", "Salim", "Rebekka", "Chris", "Janik", "Jannek", "Spieler 7"];
+}
+    
+    var arraySpieler = ["Null", "Fatih", "Salim", "Rebekka", "Chris", "Janik", "Jannek", "Spieler 7"];
 
     var arrayFarben = ["Null", "", "", "", "", "", "", ""];
 
@@ -579,7 +571,7 @@ function startscreen(){
 
         else {
 
-//Übertragung aller Farben da 7 Spieler
+//uebertragung aller Farben da 7 Spieler
 
             if (eingabe == 7) {
 
@@ -599,7 +591,7 @@ function startscreen(){
 
                 if (eingabe == 6) {
 
-//Übertragen von 6 + 1 Farben
+//uebertragen von 6 + 1 Farben
 
                     for (var zlB = 1; zlB<= value; zlB++) {
 
@@ -617,7 +609,7 @@ function startscreen(){
 
                 else {
 
-//Übertragung der Farben + 2 da 5 oder weniger Spieler
+//uebertragung der Farben + 2 da 5 oder weniger Spieler
 
                 for (var zlC = 1; zlC<= value; zlC++) {
 
@@ -665,13 +657,13 @@ function startscreen(){
 
 
 
-//Einfügen der Optionen in die Comboboxen
+//Einfuegen der Optionen in die Comboboxen
 
             anzFarben = arrayTempFarben.length;
 
 
 
-//Hinzufügen der Spieler
+//Hinzufuegen der Spieler
 
             for (var zlE = 1; zlE<= value; zlE++) {
 
@@ -682,7 +674,7 @@ function startscreen(){
 
 
 
-//Hinzufügen der Farben
+//Hinzufuegen der Farben
 
             for (var zlF = 1; zlF<= anzFarben-1; zlF++) {
 
@@ -725,4 +717,3 @@ function startscreen(){
 			document.getElementById("Notizblock").disabled = true;
 			alert("Gespeicherte Werte: " +arrayNotiz);   // zum Testen des Arrayinhalts
 		}
-}
