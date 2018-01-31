@@ -391,9 +391,9 @@ background-repeat:no-repeat;
 
 #Notizblock{
     position: absolute;
-   width: 200;
-    height: 300;
-    background-color: navajowhite;
+    width: 200px;
+    height: 300px;
+    background-image: url(/HeimlichUndCo/images/background.jpg);
     border-radius: 20px;
     
     
@@ -426,4 +426,16 @@ background-repeat:no-repeat;
     border-radius: 20px;
     
     
+}
+
+#NotizBody {
+
+        padding-top: 30px;
+
+}
+
+#NotizCombo {
+	
+	
+	
 }

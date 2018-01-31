@@ -54,10 +54,20 @@ var parent1;
         console.log(arr[7]);
         startGame();
         starting(arr);
+        fillpoints();
+        var sn = Spieleranzahl -2;
+        initNotizen(sn);
         
         document.getElementById("status").innerHTML = "Alle Spieler sind nun im Spiel, warte auf Spielstart!";
         
     });
+   
+   function initNotizen(value){
+	   
+	   console.log("Spielerzahl " + value);
+	   
+	   erstDrop(value);
+   }
 
 
   addListener('standardEvent', function(event){
@@ -520,4 +530,199 @@ function startscreen(){
 	document.getElementById("Startscreen").style.visibility = "hidden";
 	document.getElementById("Game").style.visibility = "visible";
 	document.getElementById("Lobby").style.visibility = "hidden";
+	
+	var arraySpieler = ["Null", "Fatih", "Salim", "Rebekka", "Chris", "Janik", "Jannek", "Spieler 7"];
+
+    var arrayFarben = ["Null", "", "", "", "", "", "", ""];
+
+    var arrayTempSpieler = ["Null"];
+
+    var arrayTempFarben = ["Null"];
+	
+	var arrayNotiz = [];
+
+
+
+    erstDrop = function(value) {
+    	
+    	if(version ==1){
+    		console.log("version: " + version);
+    		document.getElementById("speichernB").style.visibility = "visible";
+
+    	}
+    
+    	
+    	var gh = 1;
+    	for(var i =0; i<=6;i++){
+    		
+    		
+    		
+    		if(arrFields[i]>-1){
+    			
+    			arrayFarben[gh]=Farben[i];
+    			
+    			gh++;
+    		}
+    		
+    		
+    	}
+
+        var eingabe = value;
+
+        var selectWert = 1;
+
+        if (eingabe >= 8 || eingabe == 0)  {
+
+            alert("Fehlerhafte Spielerzahl");
+
+        }
+
+        else {
+
+//Übertragung aller Farben da 7 Spieler
+
+            if (eingabe == 7) {
+
+                for (var zlA = 1; zlA<= value; zlA++) {
+
+                    arrayTempSpieler.push(arraySpieler[zlA]);
+
+                    arrayTempFarben.push(arrayFarben[zlA]);
+
+                }
+
+               }
+
+
+
+            else {
+
+                if (eingabe == 6) {
+
+//Übertragen von 6 + 1 Farben
+
+                    for (var zlB = 1; zlB<= value; zlB++) {
+
+                    arrayTempSpieler.push(arraySpieler[zlB]);
+
+                    arrayTempFarben.push(arrayFarben[zlB]);
+
+                }
+
+                arrayTempFarben.push(arrayFarben[zlB]);
+
+                }
+
+
+
+                else {
+
+//Übertragung der Farben + 2 da 5 oder weniger Spieler
+
+                for (var zlC = 1; zlC<= value; zlC++) {
+
+                    arrayTempSpieler.push(arraySpieler[zlC]);
+
+                    arrayTempFarben.push(arrayFarben[zlC]);
+
+                }
+
+                arrayTempFarben.push(arrayFarben[zlC]);
+
+                zlC++;
+
+                arrayTempFarben.push(arrayFarben[zlC]);
+
+            }
+
+            }
+
+            for (var zlD = 1; zlD<= value; zlD++) {
+
+
+
+//Erstellen Combobox Spieler
+
+            var select1 = document.createElement("select");
+
+            select1.setAttribute('name', 'combo1');
+
+            select1.setAttribute('class', 'combospieler')
+
+            document.getElementById("NotizCombo").appendChild(select1);
+
+
+
+//Erstellen Combobox Farben
+
+            var select2 = document.createElement("select");
+
+            select2.setAttribute('name', 'combo2')
+
+            select2.setAttribute('class', 'combofarbe');
+
+            document.getElementById("NotizCombo").appendChild(select2);
+
+
+
+//Einfügen der Optionen in die Comboboxen
+
+            anzFarben = arrayTempFarben.length;
+
+
+
+//Hinzufügen der Spieler
+
+            for (var zlE = 1; zlE<= value; zlE++) {
+
+                select1.options[zlE] = new Option (arrayTempSpieler[zlE]);
+				select1.setAttribute('id', 's1');
+
+            }
+
+
+
+//Hinzufügen der Farben
+
+            for (var zlF = 1; zlF<= anzFarben-1; zlF++) {
+
+                select2.options[zlF] = new Option (arrayTempFarben[zlF]);
+
+                select2.options.selectedIndex = 1;
+
+
+
+            }
+
+//Auswahl des Spielers
+
+            select1.options.selectedIndex = selectWert;
+
+            selectWert++;
+
+            document.getElementById("NotizCombo").appendChild(document.createElement("br"));
+
+            }
+			
+
+        }
+
+        }
+
+		function saveNotizen() {
+			
+			spielerInfo = document.getElementsByClassName("combospieler");
+
+            farbInfo = document.getElementsByClassName("combofarbe");
+			
+			var x = spielerInfo.length;
+			
+			<!--Array arrayNotiz erstellt, die Spieler-Farbe Zuordnungen werden in diesem Array gespeichert; arrayNotiz = [[S1, F1], [S2, F2] usw] -->
+			for (var i = 0; i < x; i++){
+				arrayNotiz[i] = [spielerInfo[i].value + " " + farbInfo[i].value];
+			}
+//			var notizString = arrayNotiz.toString();
+			document.getElementById("Notizblock").disabled = true;
+			alert("Gespeicherte Werte: " +arrayNotiz);   // zum Testen des Arrayinhalts
+		}
 }
