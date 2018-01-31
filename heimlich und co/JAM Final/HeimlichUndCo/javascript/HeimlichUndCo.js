@@ -32,6 +32,16 @@ var parent1;
     }
     	
     	
+    addListener('FINISHED', function(event){
+    	var stringFromServer = event.data;
+        var status1 = stringFromServer.split(',');
+    	
+        document.getElementById("status").innerHTML = status1;
+    	
+    	
+       
+    });
+
     	
     
    addListener('START1', function(event){

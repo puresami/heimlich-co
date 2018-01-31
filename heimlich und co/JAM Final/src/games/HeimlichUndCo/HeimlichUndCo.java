@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+
+import com.google.common.primitives.Ints;
 
 import gameClasses.Game;
 import gameClasses.GameState;
@@ -32,8 +35,8 @@ public class HeimlichUndCo extends Game {
 	private ArrayList<Integer> colourList = new ArrayList<Integer>();
 	private int aufruf =0;
 	private boolean alreadyScored=false;
-	Iterator<User> it = playerList.iterator();
-	private boolean aiIsDone=true;
+
+	HashMap<String,String> hash=new HashMap<String,String>();
 
 	// PRO-Version
 	// private String[] notes;
@@ -110,7 +113,11 @@ public class HeimlichUndCo extends Game {
 		System.out.println("KI-zug beginnt");
 		Random Random1= new Random();
 		int r1= Random1.nextInt(6)+1;
-		
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		while(r1!=0) {
 			
 			Random Random2= new Random();
@@ -126,19 +133,14 @@ public class HeimlichUndCo extends Game {
 				agentList.get(r2).setAgentPosition(dataArray[r2]);
 				
 				if(dataArray[r2]==dataArray[7]) {
-					System.out.println("1");
+				
 					
 					int r4=Random1.nextInt(12);
 					
 					dataArray[7]=(dataArray[7]+r4)%12;
-					System.out.println("2");
-					ArrayList<Integer> excluded=new ArrayList<Integer>();
-					for (int i =0;i<agentList.size();i++) {
-						if(agentList.get(i)!=null) {
-							excluded.add(agentList.get(i).getAgentPosition());
-						}
-					}
-					generateSafePosition(dataArray[7],excluded);
+			
+					
+					generateSafePosition(dataArray[7]);
 					
 					for(int i = 0; i<agentList.size();i++) {
 						
@@ -159,29 +161,33 @@ public class HeimlichUndCo extends Game {
 				}
 				
 				
-			try {
-				TimeUnit.SECONDS.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				TimeUnit.SECONDS.sleep(1);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
 			
-			
-			for (User u : playerList) {
-				if (!u.getName().contains("KI-")) {
-					sendGameDataToUser(u, "standardEvent");
+				if (this.gState != GameState.FINISHED) {
+					for (User u : playerList) {
+						if (!u.getName().contains("KI-")) {
+							sendGameDataToUser(u, "standardEvent");
+						}
+					}
+
 				}
 			}
-	
-			}
-			
-			
 			
 			
 			
 			
 		}
-		incrementPlayerTurn();
-		System.out.println("KI-Zug fertig");
+		
+		if(gameOver()) {
+			return;
+		}
+
+			incrementPlayerTurn();
+			System.out.println("KI-Zug fertig");
 		
 	}
 		
@@ -193,18 +199,23 @@ public class HeimlichUndCo extends Game {
 		
 
 
-	public int generateSafePosition(int safe ,ArrayList<Integer> excluded) {
+	public int generateSafePosition(int safe) {
 	    Random rand = new Random();
 	    int random = rand.nextInt(12);
-	    
-	    if(!excluded.contains(safe)) {
-
-	    	return safe;
+	    int safe1=(safe+random)%12;
+	   int internDataArray[]=new int[7];
+	    for (int i=0;i<7;i++) {
+	    	internDataArray[i]=dataArray[i];
 	    }
+	    
+	   if(Ints.contains(dataArray,safe)) {
+		   System.out.println("generatesafeposition if-teil");
+	    	return safe1;
+	   }
 	    else {
-	
-	    	safe=(safe+random)%12;
-	    	return generateSafePosition(safe,excluded);
+	    	 System.out.println("generatesafeposition else -teil");
+	    	
+	    	return generateSafePosition(safe);
 	    }
 	}
 
@@ -269,17 +280,6 @@ public class HeimlichUndCo extends Game {
 		}
 		return sum;
 
-	}
-
-	public int rollDice() {
-
-		Random dice = new Random();
-		int numberRolled = -1;
-
-		numberRolled = 1 + dice.nextInt(6);
-		System.out.println("Rolled number:" + numberRolled);
-
-		return numberRolled;
 	}
 
 	public void scoring() {
@@ -356,21 +356,29 @@ public class HeimlichUndCo extends Game {
 				}
 			}
 		}
-		System.out.println("scoring ends:");
-		for (int i =0;i<dataArray.length;i++) {
-			System.out.print(dataArray[i]);
-			System.out.print(",");
-		
-		}
-		System.out.println("\n");
+//		System.out.println("scoring ends:");
+//		for (int i =0;i<dataArray.length;i++) {
+//			System.out.print(dataArray[i]);
+//			System.out.print(",");
+//		
+//		}
+//		System.out.println("\n");
 	}
 
 	public boolean gameOver() {
+		
 		boolean gameOver = false;
-		for (int i = 0; i < agentList.size(); i++) {
-			if (agentList.get(i) != null) {
-				if (agentList.get(i).getMarkerPosition() >= 42) {
+		for (int i = 8; i < 15; i++) {
+				if (dataArray[i]>=42) {
 					gameOver = true;
+				}
+		}
+		if (gameOver==true) {
+		
+			this.gState=GameState.FINISHED;
+			for (User u : playerList) {
+				if (!u.getName().contains("KI-")) {
+					sendGameDataToUser(u, "FINISHED");
 				}
 			}
 		}
@@ -397,13 +405,16 @@ public HashMap<String, String> assignColour() {
 		
 		
 		HashMap<String, String> hash = new HashMap<String, String>();
-		ArrayList<User> spieler = getPlayerList();
+		ArrayList<String> spieler = new ArrayList<String>();
+		for (int i=0; i<playerList.size();i++) {
+			
+			spieler.add(playerList.get(i).getName());
+		
+		}
 		String[] color = {"yellow", "red", "purple", "blue", "green", "orange", "gray"};
 		
 		Collections.shuffle(spieler);
-		for (int i=0;i<dataArray.length;i++) {
-			System.out.print(dataArray[i]+ ",");
-		}
+	
 		
 		int t =-1;
 		
@@ -413,16 +424,16 @@ public HashMap<String, String> assignColour() {
 			
 			if(dataArray[i]!=-1) {
 				t++;
-				System.out.println("abc");
+			
 				if(playerAmount == t) {
-					System.out.println("playeramount == t");
+				
 					
 					break;
 					
 				}
-				hash.put(spieler.get(t).getName(), color[i]);
+				hash.put(spieler.get(t), color[i]);
 				
-				System.out.println("abcd "+ playerAmount +" "+ t);
+
 				
 				
 				
@@ -431,7 +442,7 @@ public HashMap<String, String> assignColour() {
 			
 		}
 		
-		System.out.println("for fertig");
+
 		
 		
 		
@@ -629,34 +640,32 @@ public HashMap<String, String> assignColour() {
 			return ",NOTTHEHOST";
 	}
 
-	public void incrementPlayerTurn(){
+	public void incrementPlayerTurn() {
+		if (this.gState != GameState.FINISHED) {
+			int x = playerList.indexOf(playerTurn);
 
-		System.out.println("playerTurn zuvor: " + playerTurn.getName());
-		int x = playerList.indexOf(playerTurn);
+			x++;
 
-		x++;
+			if (playerList.size() > (x)) {
 
-		if (playerList.size() > (x)) {
+				playerTurn = playerList.get(x);
+				if (playerTurn.getName().contains("KI-")) {
+					AITurn();
+				}
 
-			playerTurn = playerList.get(x);
-			if (playerTurn.getName().contains("KI-")){
-				AITurn();
+			} else {
+
+				playerTurn = playerList.get(0);
+				if (playerTurn.getName().contains("KI-")) {
+					AITurn();
+				}
 			}
-			System.out.println("increment, Turn: " + playerTurn.getName());
-
-		} else {
-
-			playerTurn = playerList.get(0);
-			if (playerTurn.getName().contains("KI-")){
-				AITurn();
-			}
-			System.out.println("neudurchlauf der playerlist, Turn: " + playerTurn.getName());
 		}
 	}
 	
 	@Override
 	public void execute(User user, String gsonString) {
-		System.out.println("gsonString received: "+gsonString +"    by: " +user.getName());
+		//System.out.println("gsonString received: "+gsonString +"    by: " +user.getName());
 		if (gsonString.equals("HI")) {
 			sendGameDataToUser(user, "CREATE");
 
@@ -667,9 +676,8 @@ public HashMap<String, String> assignColour() {
 
 		if (this.gState == GameState.CLOSED)
 			return;
-		if (!aiIsDone) {
-			return;
-		}
+
+	
 		if (gsonString.equals("CLOSE")) {
 			for (User u : playerList) {
 				if (!u.getName().contains("KI-")) {
@@ -681,8 +689,7 @@ public HashMap<String, String> assignColour() {
 			return;
 		}
 		if (gsonString.equals("OK")) {
-			System.out.println("Anzahl menschl. Spieler: " + humanPlayers);
-			System.out.println("aufruf= " + aufruf);
+			
 			if (humanPlayers == aufruf) {
 				this.gState = GameState.RUNNING;
 				for (User u : playerList) {
@@ -727,8 +734,6 @@ public HashMap<String, String> assignColour() {
 
 			humanPlayers = Integer.parseInt(strArray[1]);
 			int aiPlayers = Integer.parseInt(strArray[2]);
-			// TODO erst irgendwie menschliche Spieler in playerlist.. oder funktioniert das
-			// automatisch?
 
 			for (int i = 1; i <= aiPlayers; i++) {
 				User AI = new User("KI-" + i, "0000");
@@ -738,14 +743,6 @@ public HashMap<String, String> assignColour() {
 			playerAmount = humanPlayers + aiPlayers;
 
 			initializeGame();
-
-			// for(int i=0;i<playerList.size();i++) {
-			// if (!user.getName().contains("KI-")) {
-			//
-			// sendGameDataToClients("START");
-			// System.out.println("Start gesendet");
-			// }
-			// }
 			return;
 		}
 	
@@ -767,11 +764,10 @@ public HashMap<String, String> assignColour() {
 		String[] strArray = gsonString.split(",");
 		int[] receiveddataArray = new int[16]; // 0-6:Positionen der Agenten, 7 Tresorposition, 8-14 punktzahlen der
 												// agenten,
-		for (int i = 0; i < 15; i++) { // 15 playermessage(hier obsolet), 16 Host, 17 Zug vorbei(0) oder noch zuege
-										// übrig(1)
-			receiveddataArray[i] = Integer.parseInt(strArray[i]);
+		for (int i = 0; i < 15; i++) { // 15 playermessage(hier obsolet), 16 Host, 17 Zug vorbei(0) oder noch zuege				
+			receiveddataArray[i] = Integer.parseInt(strArray[i]);										// übrig(1)
 		}
-		// receiveddataArray[15]=Integer.parseInt(strArray[17]);
+
 		boolean changed = false;
 		int[] actualdataArray = getDataArray();
 
@@ -780,7 +776,6 @@ public HashMap<String, String> assignColour() {
 				changed = true;
 			}
 		}
-		// System.out.println(changed);
 
 		if (changed == true) {
 
@@ -793,7 +788,6 @@ public HashMap<String, String> assignColour() {
 			alreadyScored=false;
 			for (int i = 8; i < 15; i++) {
 				if (receiveddataArray[i] == dataArray[7]) {
-					// System.out.println("Größe agentList: " + agentList.size());
 					if (!alreadyScored) {
 						scoring();
 						alreadyScored = true;
@@ -808,12 +802,21 @@ public HashMap<String, String> assignColour() {
 				 * agentList.get(i-1).setMarkerPosition(agentList.get(i-1).getMarkerPosition()+5)
 				 * ; } }
 				 */
-				this.gState = GameState.FINISHED;
+			// schon in gameover aufgerufen?
+//				this.gState = GameState.FINISHED;
+//				for (User u : playerList) {
+//					if (!u.getName().contains("KI-")) {
+//						sendGameDataToUser(u, "FINISHED");
+//					}
+//				}
+				return;
 			}
 
 			// playerTurn um eins nach vorn verschieben
 			if (strArray[17].equals("0")) {// keine zuege übrig
-				incrementPlayerTurn();
+				if (this.gState!=GameState.FINISHED) {
+					incrementPlayerTurn();
+				}
 			
 			}
 			
@@ -824,9 +827,10 @@ public HashMap<String, String> assignColour() {
 					
 					e.printStackTrace();
 				}
-			
+				
+				
 					AITurn();
-					
+				
 					
 //				for (User u : playerList) {
 //					if (!u.getName().contains("KI-")) {
@@ -835,10 +839,11 @@ public HashMap<String, String> assignColour() {
 //				}
 			}
 			
-	
-			for (User u : playerList) {
-				if (!u.getName().contains("KI-")) {
-					sendGameDataToUser(u, "standardEvent");
+			if (this.gState != GameState.FINISHED) {
+				for (User u : playerList) {
+					if (!u.getName().contains("KI-")) {
+						sendGameDataToUser(u, "standardEvent");
+					}
 				}
 			}
 		}
@@ -867,10 +872,29 @@ public HashMap<String, String> assignColour() {
 			return "CLOSE";
 		}
 		
+		if (eventName.contains("FINISHED")) {
+			System.out.println("gameover3");
+			 int winner = -1;
+			 for (int i =8;i<15;i++) {
+				 if(dataArray[i]>winner) {
+					 winner=i-8;
+				 }
+			 }
+	        gameData+="Winner: ";
+	        gameData+=playerList.get(winner).getName()+ ", ";
+			gameData+=hashmapToString(hash);
+			System.out.println(gameData);
+			return gameData;
+		}
+		
 		if (eventName.equals("START1")) {
 			
-			System.out.println("Start1");
-			HashMap<String,String> hash=assignColour();
+			for (int i =0;i<playerList.size();i++) {
+				System.out.println("vor assigncolour: " +playerList.get(i).getName()+ ", ");
+			}
+				
+			
+			 hash=assignColour();
 			
 			System.out.println(hashmapToString(hash));
 			//System.out.println("3");
@@ -888,7 +912,9 @@ public HashMap<String, String> assignColour() {
 //					test2[i] = Integer.toString(h);
 //				
 //			}
-//			
+		for (int i =0;i<playerList.size();i++) {
+			System.out.println(playerList.get(i).getName()+ ", ");
+		}
 			
 			
 			
@@ -908,7 +934,7 @@ public HashMap<String, String> assignColour() {
 			//gameData ="1,0,0,1,0,1,0,green";
 			
 			
-			
+			System.out.println("start1 gamedata:"+gameData);
 			return gameData;
 		}
 
@@ -928,26 +954,15 @@ public HashMap<String, String> assignColour() {
 			gameData += isHost(user); // Arrayelem16
 			return gameData;
 		}
-		
-		if (this.gState == GameState.FINISHED) {
-			// Ausgabe, welcher Agent auf welchem Platz ist
-			Collections.sort(agentList);
-			
-				
-			for (int i = 0; i < agentList.size(); i++) {
-				gameData += agentList.get(i) + " ist mit " + agentList.get(i).getMarkerPosition()
-						+ " Punkten auf Platz " + (agentList.indexOf(agentList.get(i)) + 1) + "\n";// Arrayelem 15
-			}
 
-			
-		} else if (playerTurn.equals(user)) {
+		 if (playerTurn.equals(user)) {
 			gameData += "Du bist dran!"; // arrayelem 15
 		} else
 			gameData += playerTurn.getName() + " ist dran!";// arrayelem 15
 
 		gameData += isHost(user);// Arrayelem16
 
-		
+		System.out.println("standardevent gamedata:"+gameData);
 		return gameData;
 	}
 }
