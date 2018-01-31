@@ -393,54 +393,53 @@ public class HeimlichUndCo extends Game {
 	    }
 	}
 	
-	public HashMap<String,String> assignColour() {
+public HashMap<String, String> assignColour() {
 		
 		
 		HashMap<String, String> hash = new HashMap<String, String>();
+		ArrayList<User> spieler = getPlayerList();
+		String[] color = {"yellow", "red", "purple", "blue", "green", "orange", "gray"};
+		
+		Collections.shuffle(spieler);
+		for (int i=0;i<dataArray.length;i++) {
+			System.out.print(dataArray[i]+ ",");
+		}
+		
+		int t =-1;
+		
+		
+		for (int i =0; i<7; i++) {
+			
+			
+			if(dataArray[i]!=-1) {
+				t++;
+				System.out.println("abc");
+				if(playerAmount == t) {
+					System.out.println("playeramount == t");
+					
+					break;
+					
+				}
+				hash.put(spieler.get(t).getName(), color[i]);
+				
+				System.out.println("abcd "+ playerAmount +" "+ t);
+				
+				
+				
+			}
+			
+			
+		}
+		
+		System.out.println("for fertig");
+		
+		
+		
+		return hash;
 	
-		for (int i = 0; i < playerList.size(); i++) {
-
-			String name = playerList.get(i).getName();
-			
-			int[] colourarr= {0,1,2,3,4,5,6};
-			shuffleArray(colourarr);
-			
-			int colourInt = colourarr[i];
-			
-			String colour;
-			switch (colourInt) {
-			case 0:
-				colour = "yellow";
-				break;
-			case 1:
-				colour = "red";
-				break;
-			case 2:
-				colour = "purple";
-				break;
-			case 3:
-				colour = "blue";
-				break;
-			case 4:
-				colour = "green";
-				break;
-			case 5:
-				colour = "orange";
-				break;
-			case 6:
-				colour = "gray";
-				break;
-			default:
-				colour = "Error while getting a String of the colour";
-			}
-
-			hash.put(name, colour);
-			}
-		
-		
-		
-		return hash; 
+	
 	}
+
 	public String intArrayToString(int[] intArr) {
 		String data = Arrays.toString(intArr);// .replaceAll("\\[|\\]|,|\\s", ""); für andere form, nötig?
 		return data;
@@ -870,9 +869,10 @@ public class HeimlichUndCo extends Game {
 		
 		if (eventName.equals("START1")) {
 			
-			
+			System.out.println("Start1");
 			HashMap<String,String> hash=assignColour();
 			
+			System.out.println(hashmapToString(hash));
 			//System.out.println("3");
 			
 //			String [] test = {"yellow","red","purple","blue","green","orange","gray"};

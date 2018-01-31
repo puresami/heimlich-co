@@ -418,3 +418,13 @@
 [2018-01-30 18:52:38.197] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
 [2018-01-30 18:56:00.916] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
 [2018-01-30 19:08:15.321] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-31 11:50:00.854] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-31 11:51:29.136] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-31 11:57:28.931] [IP: /10.7.230.39] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-31 11:59:36.813] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-31 12:01:41.536] [IP: /10.7.230.39] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-31 12:02:46.753] [IP: /10.7.230.39] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-31 12:12:37.211] [IP: /10.7.230.39] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-31 12:25:21.634] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
+[2018-01-31 12:26:51.4] [IP: /10.7.230.39] [LOGIN] Logging in user "jsch" succeeded
+[2018-01-31 12:28:34.383] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
