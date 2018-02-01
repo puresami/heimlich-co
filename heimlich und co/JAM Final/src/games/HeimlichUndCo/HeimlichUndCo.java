@@ -35,7 +35,9 @@ public class HeimlichUndCo extends Game {
 	private ArrayList<Integer> colourList = new ArrayList<Integer>();
 	private int aufruf =0;
 	private boolean alreadyScored=false;
+	private String[] color = {"yellow", "red", "purple", "blue", "green", "orange", "gray"};
 	
+	int [] proArray=new int[7];
 	int pro=0;
 
 	HashMap<String,String> hash=new HashMap<String,String>();
@@ -391,12 +393,37 @@ public class HeimlichUndCo extends Game {
 				}
 		}
 		if (gameOver==true) {
-		
+			System.out.println("gameover==true");
+			for(int i=0;i<dataArray.length;i++) {
+				System.out.print(dataArray[i]+",");
+			}
+			if(pro==1) {
+				for(int i=0;i<7;i++) {
+					dataArray [i+8]+= proArray[i];
+					
+						for(int j =0; j<agentList.size();j++) {
+							if(agentList.get(j)!= null && agentList.get(j).getColourString().equals(color[i]) ) {
+								agentList.get(j).setMarkerPosition(agentList.get(j).getMarkerPosition()+proArray[i]);
+								
+							}
+							
+						}
+						
+					
+				}
+			}
+			
+			System.out.println();
+			
 			this.gState=GameState.FINISHED;
 			for (User u : playerList) {
 				if (!u.getName().contains("KI-")) {
 					sendGameDataToUser(u, "FINISHED");
 				}
+			}
+			System.out.println("dataarray danach: ");
+			for(int i=0;i<dataArray.length;i++) {
+				System.out.print(dataArray[i]+",");
 			}
 		}
 		return gameOver;
@@ -428,7 +455,7 @@ public HashMap<String, String> assignColour() {
 			spieler.add(playerList.get(i).getName());
 		
 		}
-		String[] color = {"yellow", "red", "purple", "blue", "green", "orange", "gray"};
+		
 		
 		Collections.shuffle(spieler);
 	
@@ -769,12 +796,38 @@ public HashMap<String, String> assignColour() {
 		if (gState != GameState.RUNNING) {
 			return;
 		}
-		/*
-		 * PRO-Version if (gsonString.contains("NOTES")) { String[]
-		 * strArray=gsonString.split(","); 
-		 * for (int i=1;i<=7;i++) {
-		 * notes[i-1]=strArray[i]; } }
-		 */
+		
+		if (gsonString.contains("NOTIZ")) {
+			System.out.println("notizen anfang");
+			String[] noteArray = gsonString.split(",");
+			for (int i = 1; i < noteArray.length; i++) {
+				String[] str = noteArray[i].split(";");
+
+				for (int j = 0; j < playerList.size(); j++) {
+					if (hash.get(playerList.get(j).getName()).equals(str[1])
+							&& playerList.get(j).getName().equals(str[0])) {
+
+						String col = hash.get(user.getName());
+
+						for (int y = 0; y < 7; y++) {
+
+							if (col.equals(color[y])) {
+
+								proArray[y] += 5;
+
+							}
+						}
+						
+
+					}
+				}
+
+			}
+			System.out.println("proArray danach:");
+			for (int i=0;i<7;i++) {
+			System.out.print( proArray[i]+",");
+			}
+		}
 		
 		if (!user.equals(playerTurn)) {
 
@@ -946,6 +999,7 @@ public HashMap<String, String> assignColour() {
 			}
 			gameData+=hash.get(user.getName());
 			gameData+=",";
+			gameData+="null;";
 			for(int i =0;i<playerList.size();i++) {
 				gameData+=playerList.get(i).getName();
 				

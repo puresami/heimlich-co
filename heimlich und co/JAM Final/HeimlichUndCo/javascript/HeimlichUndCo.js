@@ -67,7 +67,7 @@ addListener('FINISHED', function(event){
         
         console.log(arr[7]);
         console.log(arr[8]);
-        arraySpieler+= ",";
+       // arraySpieler+= ",";
         arraySpieler = arr[8].split(';');
         console.log(arraySpieler);
         Spieleranzahl = arr[9];
@@ -562,7 +562,7 @@ function startscreen(){
 	document.getElementById("Lobby").style.visibility = "hidden";
 }
     
-    var arraySpieler = ["Null"];
+    var arraySpieler = [];
 
     var arrayFarben = ["Null", "", "", "", "", "", "", ""];
 
@@ -750,9 +750,13 @@ function startscreen(){
 			
 			<!--Array arrayNotiz erstellt, die Spieler-Farbe Zuordnungen werden in diesem Array gespeichert; arrayNotiz = [[S1, F1], [S2, F2] usw] -->
 			for (var i = 0; i < x; i++){
-				arrayNotiz[i] = [spielerInfo[i].value + " " + farbInfo[i].value];
+				arrayNotiz[i] = [spielerInfo[i].value + ";" + farbInfo[i].value];
 			}
 //			var notizString = arrayNotiz.toString();
 			document.getElementById("Notizblock").disabled = true;
-			alert("Gespeicherte Werte: " +arrayNotiz);   // zum Testen des Arrayinhalts
+			//alert("Gespeicherte Werte: " +arrayNotiz); 
+			
+			// zum Testen des Arrayinhalts
+			console.log("NOTIZ"+","+arrayNotiz);
+			sendDataToServer("NOTIZ"+","+arrayNotiz);
 		}
