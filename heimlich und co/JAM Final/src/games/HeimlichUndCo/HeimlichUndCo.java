@@ -890,29 +890,29 @@ public HashMap<String, String> assignColour() {
 				newAgentlist.add(agentList.get(i));
 			}
 		}
-			Collections.sort(newAgentlist);
-			
-			
-			for (int i =0;i<newAgentlist.size();i++) {
+		Collections.sort(newAgentlist);
+		
+		
+		for (int i =0;i<newAgentlist.size();i++) {
 
-				gameData += "Winner " + (i + 1) + ": ";
-				if (newAgentlist.get((newAgentlist.size() - 1) - i) != null) {
-					gameData += newAgentlist.get((newAgentlist.size() - 1) - i).getColourString();
+			gameData += "Platz " + (i + 1) + ": ";
+			if (newAgentlist.get((newAgentlist.size() - 1) - i) != null) {
+				gameData += newAgentlist.get((newAgentlist.size() - 1) - i).getColourStringGerman();
 
-					gameData += " with ";
+				gameData += " mit ";
 
-					gameData += newAgentlist.get((newAgentlist.size() - 1) - i).getMarkerPosition();
+				gameData += newAgentlist.get((newAgentlist.size() - 1) - i).getMarkerPosition();
 
-					gameData += " points, ";
-				}
+				gameData += " Punkten, ";
 			}
-			gameData+= "------";
-			System.out.println("hallo");
-			for (int i=0;i<newAgentlist.size();i++) {
-				if(newAgentlist.get(i)!=null) {
-			System.out.println(newAgentlist.get(i).getMarkerPosition());
-				}
+		}
+		gameData+= "### ";
+		System.out.println("hallo");
+		for (int i=0;i<newAgentlist.size();i++) {
+			if(newAgentlist.get(i)!=null) {
+		System.out.println(newAgentlist.get(i).getMarkerPosition());
 			}
+		}
 	      
 			gameData+=hashmapToString(hash);
 			

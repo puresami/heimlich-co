@@ -31,11 +31,26 @@ var parent1;
     	
     }
     	
-    addListener('FINISHED', function(event){
+addListener('FINISHED', function(event){
     	var stringFromServer = event.data;
-        var status1 = stringFromServer.split(',');
-    	
-        document.getElementById("status").innerHTML = status1;
+        var tmp = stringFromServer.split("###");
+        var tmp2 = tmp[0].split(',')
+    	    
+        var i = 0;
+        var text = "Das Spiel ist vorbei! <br> <br>";
+        while (tmp2[i]) {
+    			text += tmp2[i] + "<br>";
+   			 i++;
+		}
+        
+        document.getElementById("Game").style.opacity = "0.3";
+        document.getElementById("Spielsystem").style.opacity = "0.3";
+        document.getElementById("GameoverScreen").style.visibility= "visible";
+        
+        document.getElementById("Game").style.pointerEvents = "none";
+        
+        document.getElementById("goScoreboard").innerHTML = text;
+        document.getElementById("status").innerHTML = "";
     	
     	
        

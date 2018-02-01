@@ -508,3 +508,4 @@
 [2018-02-01 13:22:31.634] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
 [2018-02-01 13:33:41.671] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
 [2018-02-01 13:37:20.793] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
+[2018-02-01 13:52:07.434] [IP: /10.7.228.236] [LOGIN] Logging in user "cvogt" succeeded

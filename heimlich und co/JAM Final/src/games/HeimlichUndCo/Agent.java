@@ -79,6 +79,38 @@ public class Agent  implements Comparable<Agent>{
 		}
 		return colour;
 	}
+	
+public String getColourStringGerman() {
+		
+		String colour = "";
+		switch (getColour()) {
+		
+		case 0:
+			colour = "Gelb";
+			break;
+		case 1:
+			colour = "Rot";
+			break;
+		case 2:
+			colour = "Lila";
+			break;
+		case 3:
+			colour = "Blau";
+			break;
+		case 4:
+			colour = "Grün";
+			break;
+		case 5:
+			colour = "Orange";
+			break;
+		case 6:
+			colour = "Grau";
+			break;
+		default: 
+			colour="Error while getting a String of the colour";
+		}
+		return colour;
+	}
 
 	@Override
 	public int compareTo(Agent o) {

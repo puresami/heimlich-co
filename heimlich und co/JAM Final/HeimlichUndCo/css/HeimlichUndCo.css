@@ -1,3 +1,12 @@
+#GameoverScreen{
+	visibility: hidden;
+	position: absolute;
+	width: 500px;
+	height: 200px;
+	border-radius: 20px;
+
+}
+
 #Game{
 	visibility: hidden;
 }
