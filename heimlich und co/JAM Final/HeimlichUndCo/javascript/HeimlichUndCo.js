@@ -11,6 +11,8 @@ var Spielerpos = [0,0,0,0,0,0,0,0];
 var Punkte = [0,0,0,0,0,0,0]
 var arrFields = [0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0];
 var version =0;
+var FarbenGerman = ["Gelb", "Rot", "Lila", "Blau", "Gruen", "Orange", "Grau"];
+var tresPruef=0;
 
 window.onload = function () {
 	sendDataToServer("HI");
@@ -115,33 +117,93 @@ addListener('CREATE', function(event){
 
 
 // Drag and Drop for tresor
-function allowDropt(ev) {
-	ev.preventDefault();
-}
+//function allowDropt(ev) {
+//	ev.preventDefault();
+//}
 
 function dragt(ev) {
+	
+	if(zuege > 0 && (ev.dataTransfer.getData("text") != "tresor") ){
 	ev.dataTransfer.setData("text", ev.target.id);
     document.getElementById("tresor").setAttribute("draggable", "false");
+	}
 }
 
 function dropt(ev) {
+	if(zuege > 0 && (ev.dataTransfer.getData("text") != "tresor") ){
 	ev.preventDefault();
+	}
 }
 
 //Drag and Drop for Gamefigures
 function allowDrop(ev) {
-	if(zuege > 0 )
+	if((zuege > 0 && (ev.dataTransfer.getData("text") != "tresor")) || ((ev.dataTransfer.getData("text") == "tresor") && tresPruef==1 ))
 	{
 		ev.preventDefault();
 	}
+	
+	
+	
+	
+	
 }
 
 function drag(ev) {
+	
+	if(zuege > 0 && (ev.dataTransfer.getData("text") != "tresor") ){
 	ev.dataTransfer.setData("text", ev.target.id);
 	prev = parseInt(ev.target.parentElement.getAttribute("position"));
+	}
 }
 
 function drop(ev) {
+	if(ev.dataTransfer.getData("text") != "tresor")
+	{
+		if(ev.target.contains(tresor) )
+		{
+			
+			//tresPruef=1;
+			arrFields[8] = parseInt(arrFields[8]) + parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
+            arrFields[9] = parseInt(arrFields[9]) + parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
+        	arrFields[10] = parseInt(arrFields[10]) + parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
+    	    arrFields[11] = parseInt(arrFields[11]) + parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
+    	    arrFields[12] = parseInt(arrFields[12]) + parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
+    	    arrFields[13] = parseInt(arrFields[13]) + parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
+            arrFields[14] = parseInt(arrFields[14]) + parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
+            
+            tresPruef=1;
+            
+            for(var i= 8; i<15;i++){
+        		if(arrFields[i]<0){
+        			
+        			arrFields[i]=1;
+        			
+        		}
+        		
+        	}
+			fillpoints();
+			document.getElementById("tresor").setAttribute("draggable", "true");
+			
+			console.log(arrFields);
+		}
+
+	}
+	
+	if((ev.dataTransfer.getData("text") == "tresor") && tresPruef==1){
+		
+		console.log("tresorios");
+		ev.preventDefault();
+    	var data = ev.dataTransfer.getData("text");
+    	ev.target.appendChild(document.getElementById(data));
+		tresPruef=0;
+		sendGameData();
+		
+		
+	}
+	
+	
+	
+	
 	console.log(ev.target.getAttribute("number") + "minus" + prev + " = " + (ev.target.getAttribute("number") - prev)+ "<=" + zuege +"&&"+ prev +"<"+ ev.target.getAttribute("position") );
     console.log("drop aufgerufen" );
 	var target = parseInt(ev.target.getAttribute("position"));
@@ -161,7 +223,7 @@ function drop(ev) {
     		}
     	}
     	
-    	if(schritte<=zuege )
+    	if(schritte<=zuege && (ev.dataTransfer.getData("text") != "tresor")  )
     	{
 		console.log("reingesprungen");
         	ev.preventDefault();
@@ -170,31 +232,16 @@ function drop(ev) {
 		zuege = zuege - schritte;
  		if(playerMessage.includes("Du "))
  		{
+ 			
 			sendGameData();
 		}
 	} 
-	if(ev.dataTransfer.getData("text") != "tresor")
-	{
-		if(ev.target.contains(tresor) )
-		{
-			arrFields[8] = parseInt(arrFields[8]) + parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
-            arrFields[9] = parseInt(arrFields[9]) + parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
-        	arrFields[10] = parseInt(arrFields[10]) + parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
-    	    arrFields[11] = parseInt(arrFields[11]) + parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
-    	    arrFields[12] = parseInt(arrFields[12]) + parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
-    	    arrFields[13] = parseInt(arrFields[13]) + parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
-            arrFields[14] = parseInt(arrFields[14]) + parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
-			fillpoints();
-			document.getElementById("tresor").setAttribute("draggable", "true");
-			sendGameData();
-			console.log(arrFields);
-		}
-
-	}
+	
 	if(zuege == 0)
 	{
 		console.log("du bist fertig!");
         document.getElementById("wuerfel").style.visibility = "hidden";
+        sendGameData();
 	}
 	console.log(ev.dataTransfer.getData("text"));
 	die1.innerHTML = "Zuege: " + zuege;
@@ -234,7 +281,7 @@ function initBoard (Spieleranzahl){
 
 // Points setting for Colors
 function fillpoints(){
-	var FarbenGerman = ["Gelb", "Rot", "Lila", "Blau", "Gruen", "Orange", "Grau"];
+	
 	for(var i = 0; i<=6; i++ )
 	{
 		if (arr[i] == 1)
@@ -280,7 +327,18 @@ function sendGameData(){
 		}
 	}
 	arrFields[7] =  parseInt(document.getElementById("tresor").parentElement.getAttribute("position"));
-	if(zuege==0)
+	
+	for(var i= 8; i<15;i++){
+		if(arrFields[i]<0){
+			
+			arrFields[i]=0;
+			
+		}
+		
+		
+	}
+	
+	if(zuege==0 && tresPruef==0)
 	{
 		sendDataToServer(arrFields+","+zuege);
 		console.log("gesendet : "+arrFields+","+zuege);
@@ -326,6 +384,7 @@ function startGame(){
 	document.getElementById("Startscreen").style.visibility = "hidden";
 	document.getElementById("Game").style.visibility = "visible";
 	document.getElementById("Lobby").style.visibility = "hidden";
+	document.getElementById("Spielsystem").style.visibility = "visible";
 }
     
 var arraySpieler = [];
@@ -345,10 +404,12 @@ erstDrop = function(value) {
     	{
 		if(arrFields[i]>-1)
 		{
-			arrayFarben[gh]=Farben[i];
+			arrayFarben[gh]=FarbenGerman[i];
 			gh++;
     		}
 	}
+    	
+    	console.log(arrayFarben);
 	var eingabe = value;
 	var selectWert = 1;
 	if (eingabe >= 8 || eingabe == 0)  
@@ -406,7 +467,7 @@ erstDrop = function(value) {
             document.getElementById("NotizCombo").appendChild(select2);
 			
 			//Einfuegen der Optionen in die Comboboxen
-			anzFarben = arrayTempFarben.length;
+			anzFarben = arrayFarben.length;
 
 			//Hinzufuegen der Spieler
 			for (var zlE = 1; zlE<= value; zlE++) 
@@ -417,7 +478,7 @@ erstDrop = function(value) {
 			//Hinzufuegen der Farben
 			for (var zlF = 1; zlF<= anzFarben-1; zlF++) 
 			{
-				select2.options[zlF] = new Option (arrayTempFarben[zlF]);
+				select2.options[zlF] = new Option (arrayFarben[zlF]);
                 select2.options.selectedIndex = 1;
 			}
 
