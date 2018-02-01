@@ -51,11 +51,16 @@ var parent1;
        // console.log(arr);
         
         console.log(arr[7]);
+        console.log(arr[8]);
+        arraySpieler+= ",";
+        arraySpieler = arr[8].split(';');
+        console.log(arraySpieler);
+        Spieleranzahl = arr[9];
         startGame();
         starting(arr);
         fillpoints();
-        var sn = Spieleranzahl -2;
-        initNotizen(sn);
+         
+        initNotizen(Spieleranzahl);
         
         
         document.getElementById("status").innerHTML = "Alle Spieler sind nun im Spiel, warte auf Spielstart!";
@@ -380,7 +385,7 @@ function fillpoints(){
         
         if (arr[i] == 1){
             
-            Spieleranzahl += 1;
+            
             
             
             document.getElementById("p"+ (1+i)).style.visibility = "visible";
@@ -542,7 +547,7 @@ function startscreen(){
 	document.getElementById("Lobby").style.visibility = "hidden";
 }
     
-    var arraySpieler = ["Null", "Fatih", "Salim", "Rebekka", "Chris", "Janik", "Jannek", "Spieler 7"];
+    var arraySpieler = ["Null"];
 
     var arrayFarben = ["Null", "", "", "", "", "", "", ""];
 

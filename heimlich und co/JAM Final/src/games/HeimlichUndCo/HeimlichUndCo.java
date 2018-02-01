@@ -35,6 +35,8 @@ public class HeimlichUndCo extends Game {
 	private ArrayList<Integer> colourList = new ArrayList<Integer>();
 	private int aufruf =0;
 	private boolean alreadyScored=false;
+	
+	int pro=0;
 
 	HashMap<String,String> hash=new HashMap<String,String>();
 
@@ -750,6 +752,7 @@ public HashMap<String, String> assignColour() {
 
 			humanPlayers = Integer.parseInt(strArray[1]);
 			int aiPlayers = Integer.parseInt(strArray[2]);
+			pro=Integer.parseInt(strArray[3]);
 			playerAmount = humanPlayers + aiPlayers;
 			
 			for (int i = 1; i <= aiPlayers; i++) {
@@ -815,18 +818,8 @@ public HashMap<String, String> assignColour() {
 			setDataArray(receiveddataArray);
 			if (gameOver()) {
 				System.out.println("The game is over.");
-				/*
-				 * PRO-Version for(int i=1;i<=7;i++) { if (notes[i-1].equals(strArray[i])){
-				 * agentList.get(i-1).setMarkerPosition(agentList.get(i-1).getMarkerPosition()+5)
-				 * ; } }
-				 */
-			// schon in gameover aufgerufen?
-//				this.gState = GameState.FINISHED;
-//				for (User u : playerList) {
-//					if (!u.getName().contains("KI-")) {
-//						sendGameDataToUser(u, "FINISHED");
-//					}
-//				}
+			
+				
 				return;
 			}
 
@@ -937,21 +930,7 @@ public HashMap<String, String> assignColour() {
 			 hash=assignColour();
 			
 			System.out.println(hashmapToString(hash));
-			//System.out.println("3");
-			
-//			String [] test = {"yellow","red","purple","blue","green","orange","gray"};
-//			
-//			String[] test2 = new String[8];
-//			
-//			
-//			for(int i =0; i<test2.length-1; i++) {
-//				
-//				
-//						
-//					int h	= (int)((Math.random()) * 2);
-//					test2[i] = Integer.toString(h);
-//				
-//			}
+
 		for (int i =0;i<playerList.size();i++) {
 			System.out.println(playerList.get(i).getName()+ ", ");
 		}
@@ -965,13 +944,16 @@ public HashMap<String, String> assignColour() {
 				}
 				else gameData+=0+",";
 			}
-			
-			//System.out.println("4");
 			gameData+=hash.get(user.getName());
-			
-			
-			
-			//gameData ="1,0,0,1,0,1,0,green";
+			gameData+=",";
+			for(int i =0;i<playerList.size();i++) {
+				gameData+=playerList.get(i).getName();
+				
+				if(i<playerList.size()-1) {
+				gameData+=";";
+				}
+			}
+			gameData+=","+playerList.size();
 			
 			
 			System.out.println("start1 gamedata:"+gameData);
