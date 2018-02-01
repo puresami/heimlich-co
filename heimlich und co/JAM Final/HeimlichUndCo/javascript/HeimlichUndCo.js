@@ -41,16 +41,19 @@ addListener('FINISHED', function(event){
 addListener('START1', function(event){
 	var stringFromServer = event.data;
     arr = stringFromServer.split(',');
-    
-	console.log(arr[7]);
-    console.log(arr[8]);
+    version=arr[10];
+	console.log(arr[10]);
 	arraySpieler = arr[8].split(';');
-    console.log(arraySpieler);
+	
+	
+    //console.log(arraySpieler);
     Spieleranzahl = arr[9];
+    initNotizen(Spieleranzahl);
     startGame();
     starting(arr);
     fillpoints();
-	initNotizen(Spieleranzahl);
+    
+	
 
 	document.getElementById("status").innerHTML = "Alle Spieler sind nun im Spiel, warte auf Spielstart!";      
 });
@@ -175,12 +178,12 @@ function drop(ev) {
 		if(ev.target.contains(tresor) )
 		{
 			arrFields[8] = parseInt(arrFields[8]) + parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
-            	arrFields[9] = parseInt(arrFields[9]) + parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
-        	    arrFields[10] = parseInt(arrFields[10]) + parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
-    	        	arrFields[11] = parseInt(arrFields[11]) + parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
-	        	arrFields[12] = parseInt(arrFields[12]) + parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
-            	arrFields[13] = parseInt(arrFields[13]) + parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
-            	arrFields[14] = parseInt(arrFields[14]) + parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
+            arrFields[9] = parseInt(arrFields[9]) + parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
+        	arrFields[10] = parseInt(arrFields[10]) + parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
+    	    arrFields[11] = parseInt(arrFields[11]) + parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
+    	    arrFields[12] = parseInt(arrFields[12]) + parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
+    	    arrFields[13] = parseInt(arrFields[13]) + parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
+            arrFields[14] = parseInt(arrFields[14]) + parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
 			fillpoints();
 			document.getElementById("tresor").setAttribute("draggable", "true");
 			sendGameData();
@@ -199,8 +202,9 @@ function drop(ev) {
 
 //initialisieren der Spielerfiguren und der individuellen Spielerkarte
 function starting(arr){
-	for(var i =0; i<= arr.length-1 ; i++ )
+	for(var i =0; i<= 6 ; i++ )
 	{
+		console.log(arr[i]);
 		if(arr[i] == 1)
 		{
 			document.getElementById("drop"+(i+1) ).style.visibility= "visible";
@@ -208,7 +212,7 @@ function starting(arr){
 	}
 	var color = arr[8];
     document.getElementById("roll").src = "/HeimlichUndCo/images/" + arr[7] + ".png";
-    console.log("url(/HeimlichUndCo/images/" + arr[7] + ".png)");    
+   
  }
 
 // Cube
@@ -231,12 +235,14 @@ function initBoard (Spieleranzahl){
 // Points setting for Colors
 function fillpoints(){
 	var FarbenGerman = ["Gelb", "Rot", "Lila", "Blau", "Gruen", "Orange", "Grau"];
-	for(var i = 0; i<arr.length; i++ )
+	for(var i = 0; i<=6; i++ )
 	{
 		if (arr[i] == 1)
 		{
+			
+			console.log("p"+ (1+i));
 			document.getElementById("p"+ (1+i)).style.visibility = "visible";
-            	document.getElementById("p"+(i+1)).innerHTML = FarbenGerman[i] + " = " + arrFields[8+(i)];
+            document.getElementById("p"+(i+1)).innerHTML = FarbenGerman[i] + " = " + arrFields[8+(i)];
 		}
 	}
 }

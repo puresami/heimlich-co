@@ -740,7 +740,7 @@ public HashMap<String, String> assignColour() {
 				for (User u : playerList) {
 					if (!u.getName().contains("KI-")) {
 						sendGameDataToUser(u, "START1");
-
+					
 						sendGameDataToUser(u, "standardEvent");
 					}
 				}
@@ -936,6 +936,8 @@ public HashMap<String, String> assignColour() {
 			return "CLOSE";
 		}
 		
+		
+		
 		if (eventName.contains("FINISHED")) {
 		ArrayList<Agent> newAgentlist=new ArrayList<Agent>();
 		for(int i=0;i<agentList.size();i++) {
@@ -1008,6 +1010,7 @@ public HashMap<String, String> assignColour() {
 				}
 			}
 			gameData+=","+playerList.size();
+			gameData+=","+pro;
 			
 			
 			System.out.println("start1 gamedata:"+gameData);
