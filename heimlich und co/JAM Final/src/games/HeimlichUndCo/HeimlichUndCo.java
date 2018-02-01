@@ -228,36 +228,44 @@ public class HeimlichUndCo extends Game {
 				case 0: {
 					Agent yellowAgent = new Agent(0);
 					newAgentList.add(yellowAgent);
+					
 					break;
 				}
 				case 1: {
 					Agent redAgent = new Agent(1);
 					newAgentList.add(redAgent);
+					redAgent.setColour(1);
 					break;
 				}
 				case 2: {
 					Agent purpleAgent = new Agent(2);
 					newAgentList.add(purpleAgent);
+					purpleAgent.setColour(2);
+
 					break;
 				}
 				case 3: {
 					Agent blueAgent = new Agent(3);
 					newAgentList.add(blueAgent);
+					blueAgent.setColour(3);
 					break;
 				}
 				case 4: {
 					Agent greenAgent = new Agent(4);
 					newAgentList.add(greenAgent);
+					greenAgent.setColour(4);
 					break;
 				}
 				case 5: {
 					Agent orangeAgent = new Agent(5);
 					newAgentList.add(orangeAgent);
+					orangeAgent.setColour(5);
 					break;
 				}
 				case 6: {
-					Agent greyAgent = new Agent(6);
-					newAgentList.add(greyAgent);
+					Agent grayAgent = new Agent(6);
+					newAgentList.add(grayAgent);
+					grayAgent.setColour(6);
 					break;
 				}
 				default: {
@@ -270,6 +278,13 @@ public class HeimlichUndCo extends Game {
 			}
 		}
 		setAgentList(newAgentList);
+		
+//		for(int i = 0; i<agentList.size(); i++) {
+//			
+//			System.out.println(agentList.get(i).toString());
+//			
+//		}
+		
 		return agentList;
 	}
 
@@ -369,7 +384,7 @@ public class HeimlichUndCo extends Game {
 		
 		boolean gameOver = false;
 		for (int i = 8; i < 15; i++) {
-				if (dataArray[i]>=42) {
+				if (dataArray[i]>=2) {
 					gameOver = true;
 				}
 		}
@@ -443,18 +458,13 @@ public HashMap<String, String> assignColour() {
 		}
 		
 
-		
+		System.out.println("hashmap am ende von assigncolour: ");
+		hashmapToString(hash);
 		
 		
 		return hash;
 	
 	
-	}
-
-	public String intArrayToString(int[] intArr) {
-		String data = Arrays.toString(intArr);// .replaceAll("\\[|\\]|,|\\s", ""); für andere form, nötig?
-		return data;
-
 	}
 
 	public String hashmapToString(HashMap<String, String> hashmap) {
@@ -665,7 +675,7 @@ public HashMap<String, String> assignColour() {
 	
 	@Override
 	public void execute(User user, String gsonString) {
-		//System.out.println("gsonString received: "+gsonString +"    by: " +user.getName());
+		System.out.println("gsonString received: "+gsonString +"    by: " +user.getName());
 		if (gsonString.equals("HI")) {
 			sendGameDataToUser(user, "CREATE");
 
@@ -734,13 +744,14 @@ public HashMap<String, String> assignColour() {
 
 			humanPlayers = Integer.parseInt(strArray[1]);
 			int aiPlayers = Integer.parseInt(strArray[2]);
-
+			playerAmount = humanPlayers + aiPlayers;
+			
 			for (int i = 1; i <= aiPlayers; i++) {
 				User AI = new User("KI-" + i, "0000");
 				playerList.add(AI);
 
 			}
-			playerAmount = humanPlayers + aiPlayers;
+			
 
 			initializeGame();
 			return;
@@ -751,7 +762,8 @@ public HashMap<String, String> assignColour() {
 		}
 		/*
 		 * PRO-Version if (gsonString.contains("NOTES")) { String[]
-		 * strArray=gsonString.split(","); for (int i=1;i<=7;i++) {
+		 * strArray=gsonString.split(","); 
+		 * for (int i=1;i<=7;i++) {
 		 * notes[i-1]=strArray[i]; } }
 		 */
 		
@@ -852,7 +864,7 @@ public HashMap<String, String> assignColour() {
 	@Override
 	public String getGameData(String eventName, User user) {
 		String gameData = "";
-	
+	 System.out.println("eventname: "+ eventName);
 		if (eventName.equals("CREATE")) {// für chris' seite direkt nach Spielerstellung
 			
 			String isHost="";
@@ -873,22 +885,32 @@ public HashMap<String, String> assignColour() {
 		}
 		
 		if (eventName.contains("FINISHED")) {
-			System.out.println("gameover3");
-			 int winner = -1;
-			 for (int i =8;i<15;i++) {
-				 if(dataArray[i]>winner) {
-					 winner=i-8;
-				 }
-			 }
-	        gameData+="Winner: ";
-	        gameData+=playerList.get(winner).getName()+ ", ";
+		
+			Collections.sort(agentList);
+			
+			for (int i =0;i<agentList.size();i++) {
+
+				gameData+="Winner "+(i+1)+ ": ";
+			
+				gameData+=agentList.get((agentList.size()-1)-i).getColourString();
+				
+				gameData+=" with ";
+				
+				gameData+=agentList.get((agentList.size()-1)-i).getMarkerPosition();
+			
+				gameData+=" points, ";
+				
+			}
+			gameData+= "------";
+	      
 			gameData+=hashmapToString(hash);
-			System.out.println(gameData);
+			
+			System.out.println("gamedata finished: "+gameData);
 			return gameData;
 		}
 		
 		if (eventName.equals("START1")) {
-			
+			System.out.println("größe playerlist: "+playerList.size());
 			for (int i =0;i<playerList.size();i++) {
 				System.out.println("vor assigncolour: " +playerList.get(i).getName()+ ", ");
 			}
