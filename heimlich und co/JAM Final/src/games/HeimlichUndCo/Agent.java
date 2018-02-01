@@ -1,4 +1,4 @@
-package games.HeimlichUndCo;import java.util.Comparator;
+package games.HeimlichUndCo;
 
 public class Agent  implements Comparable<Agent>{
 	private int colour;

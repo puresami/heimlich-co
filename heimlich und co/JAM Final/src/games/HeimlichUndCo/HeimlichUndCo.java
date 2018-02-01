@@ -676,6 +676,12 @@ public HashMap<String, String> assignColour() {
 	@Override
 	public void execute(User user, String gsonString) {
 		System.out.println("gsonString received: "+gsonString +"    by: " +user.getName());
+		
+		if(this.gState==GameState.FINISHED) {
+			System.out.println("lastexecute");
+			return;
+		}
+		
 		if (gsonString.equals("HI")) {
 			sendGameDataToUser(user, "CREATE");
 
@@ -839,10 +845,10 @@ public HashMap<String, String> assignColour() {
 					
 					e.printStackTrace();
 				}
-				
+				if (this.gState!=GameState.FINISHED) {
 				
 					AITurn();
-				
+				}
 					
 //				for (User u : playerList) {
 //					if (!u.getName().contains("KI-")) {
@@ -885,23 +891,35 @@ public HashMap<String, String> assignColour() {
 		}
 		
 		if (eventName.contains("FINISHED")) {
-		
-			Collections.sort(agentList);
+		ArrayList<Agent> newAgentlist=new ArrayList<Agent>();
+		for(int i=0;i<agentList.size();i++) {
+			if (agentList.get(i)!= null) {
+				newAgentlist.add(agentList.get(i));
+			}
+		}
+			Collections.sort(newAgentlist);
 			
-			for (int i =0;i<agentList.size();i++) {
+			
+			for (int i =0;i<newAgentlist.size();i++) {
 
-				gameData+="Winner "+(i+1)+ ": ";
-			
-				gameData+=agentList.get((agentList.size()-1)-i).getColourString();
-				
-				gameData+=" with ";
-				
-				gameData+=agentList.get((agentList.size()-1)-i).getMarkerPosition();
-			
-				gameData+=" points, ";
-				
+				gameData += "Winner " + (i + 1) + ": ";
+				if (newAgentlist.get((newAgentlist.size() - 1) - i) != null) {
+					gameData += newAgentlist.get((newAgentlist.size() - 1) - i).getColourString();
+
+					gameData += " with ";
+
+					gameData += newAgentlist.get((newAgentlist.size() - 1) - i).getMarkerPosition();
+
+					gameData += " points, ";
+				}
 			}
 			gameData+= "------";
+			System.out.println("hallo");
+			for (int i=0;i<newAgentlist.size();i++) {
+				if(newAgentlist.get(i)!=null) {
+			System.out.println(newAgentlist.get(i).getMarkerPosition());
+				}
+			}
 	      
 			gameData+=hashmapToString(hash);
 			

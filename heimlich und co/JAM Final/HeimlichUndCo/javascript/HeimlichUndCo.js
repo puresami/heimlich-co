@@ -31,6 +31,15 @@ var parent1;
     	
     }
     	
+    addListener('FINISHED', function(event){
+    	var stringFromServer = event.data;
+        var status1 = stringFromServer.split(',');
+    	
+        document.getElementById("status").innerHTML = status1;
+    	
+    	
+       
+    });
     	
     	
     
@@ -63,14 +72,14 @@ var parent1;
 
   addListener('standardEvent', function(event){
             var stringFromServer = event.data;
-            var arr = stringFromServer.split(',');
+            var arrx = stringFromServer.split(',');
             console.log(arr);
 
-            if(arr.length==17){
-                for(var i=0; i<15; i++) { arrFields[i] = +arr[i]; }
-                playerMessage = arr[15];
-                var str = arr[16];
-                arrFields = arr;
+            if(arrx.length==17){
+                for(var i=0; i<15; i++) { arrFields[i] = +arrx[i]; }
+                playerMessage = arrx[15];
+                var str = arrx[16];
+                //arrFields = arrx;
                 
                 console.log("standardevent erhalten:   " + arrFields);
                 
@@ -221,7 +230,15 @@ addListener('CREATE', function(event){
 
             zuege = zuege - schritte;
             
-            sendGameData()
+            
+            if(playerMessage.includes("Du ")){
+            	
+            	
+            	sendGameData();
+            }
+            
+            
+            
         } 
         
         
@@ -242,7 +259,7 @@ addListener('CREATE', function(event){
 
                 document.getElementById("tresor").setAttribute("draggable", "true");
 
-               sendGameData()
+               sendGameData();
                 console.log(arrFields);
 
             }
@@ -257,7 +274,7 @@ addListener('CREATE', function(event){
             console.log("du bist fertig!");
             document.getElementById("wuerfel").style.visibility = "hidden";
             
-            sendGameData();
+            //sendGameData();
 
         }
 
@@ -310,12 +327,12 @@ addListener('CREATE', function(event){
         //arr = [1,1,1,0,0,0,0,"red"]
         //starting(arr);
         
-        //document.getElementById("wuerfel").style.visibility = "hidden";
+        document.getElementById("wuerfel").style.visibility = "hidden";
         
        // getparent(el);
          //updateBoard();
 
-        document.getElementById("b4").style.backgroundColor = "green";
+       
 
     }
 
@@ -363,7 +380,7 @@ function fillpoints(){
         
         if (arr[i] == 1){
             
-            Spieleranzahl += 1
+            Spieleranzahl += 1;
             
             
             document.getElementById("p"+ (1+i)).style.visibility = "visible";
@@ -465,9 +482,11 @@ function fillpoints(){
 	if(zuege==0){
 	
 	sendDataToServer(arrFields+","+zuege);
+	console.log("gesendet : "+arrFields+","+zuege);
 	
 	}else {
-	sendDataToServer(arrFields+","+1) 
+	sendDataToServer(arrFields+","+1)
+	console.log("gesendet : "+arrFields+","+1);
 	
 	}
 	
@@ -639,7 +658,7 @@ function startscreen(){
 
             select1.setAttribute('name', 'combo1');
 
-            select1.setAttribute('class', 'combospieler')
+            select1.setAttribute('class', 'combospieler');
 
             document.getElementById("NotizCombo").appendChild(select1);
 
@@ -649,7 +668,7 @@ function startscreen(){
 
             var select2 = document.createElement("select");
 
-            select2.setAttribute('name', 'combo2')
+            select2.setAttribute('name', 'combo2');
 
             select2.setAttribute('class', 'combofarbe');
 
