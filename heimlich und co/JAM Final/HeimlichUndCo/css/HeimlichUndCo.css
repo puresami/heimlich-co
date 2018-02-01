@@ -288,8 +288,8 @@ background-repeat:no-repeat;
     height: 30px;
     width: 30px;
     border-radius: 20px;
-    background: yellow;
-    visibility: hidden;
+	background-image:url(/HeimlichUndCo/images/spielfigur_gelb.gif);
+	visibility: hidden;
    ;
     
     
@@ -302,7 +302,7 @@ background-repeat:no-repeat;
     height: 30px;
     width: 30px;
     border-radius: 20px;
-    background: red;
+    background-image:url(/HeimlichUndCo/images/spielfigur_rot.gif);
     visibility: hidden;
 }
 
@@ -325,7 +325,7 @@ background-repeat:no-repeat;
     height: 30px;
     width: 30px;
     border-radius: 20px;
-    background: purple;
+    background-image:url(/HeimlichUndCo/images/spielfigur_lila.gif);
     visibility: hidden;
 }
 
@@ -337,7 +337,7 @@ background-repeat:no-repeat;
     height: 30px;
     width: 30px;
     border-radius: 20px;
-    background: blue;
+    background-image:url(/HeimlichUndCo/images/spielfigur_blau.gif);
     visibility: hidden;
 }
 
@@ -349,8 +349,8 @@ background-repeat:no-repeat;
     height: 30px;
     width: 30px;
     border-radius: 20px;
-    background: green;
-    visibility: hidden;
+	background-image:url(/HeimlichUndCo/images/spielfigur_gruen.gif);
+	visibility: hidden;
 }
 
 
@@ -362,7 +362,7 @@ background-repeat:no-repeat;
     height: 30px;
     width: 30px;
     border-radius: 20px;
-    background: orange;
+    background-image:url(/HeimlichUndCo/images/spielfigur_orange.gif);
     visibility: hidden;
 }
        
@@ -372,7 +372,7 @@ background-repeat:no-repeat;
     height: 30px;
     width: 30px;
     border-radius: 20px;
-    background: gray;
+    background-image:url(/HeimlichUndCo/images/spielfigur_grau.gif);
     visibility: hidden;
 
 }

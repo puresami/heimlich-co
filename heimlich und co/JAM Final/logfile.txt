@@ -491,3 +491,6 @@
 [2018-02-01 12:10:14.481] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
 [2018-02-01 12:11:35.504] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
 [2018-02-01 12:16:13.14] [IP: /10.7.230.39] [LOGIN] Logging in user "cvogt" succeeded
+[2018-02-01 12:36:16.496] [IP: /10.7.117.220] [REGISTER] Registering user "1" succeeded
+[2018-02-01 12:36:20.014] [IP: /10.7.117.220] [LOGIN] Logging in user "1" succeeded
+[2018-02-01 12:37:47.504] [IP: /10.7.117.220] [LOGOUT] Logging out user "1" succeeded; Session length: 1  Minutes
