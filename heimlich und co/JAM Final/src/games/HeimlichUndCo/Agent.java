@@ -1,6 +1,6 @@
-package games.HeimlichUndCo;
+package games.HeimlichUndCo;import java.util.Comparator;
 
-public class Agent implements Comparable<Agent>{
+public class Agent  implements Comparable<Agent>{
 	private int colour;
 	//yellow=0,red=1,purple=2,blue=3,green=4,orange=5,grey=6
 	private int agentPosition;
@@ -41,33 +41,49 @@ public class Agent implements Comparable<Agent>{
 	public void setAgentPosition(int agentPosition) {
 		this.agentPosition = agentPosition;
 	}
-
+	
 	@Override
-	public int compareTo(Agent arg0) {
+	public String toString() {
+		return "colour: "+ this.getColourString() + ", Position: "+ this.getAgentPosition()+",Points"+this.getMarkerPosition();
 		
-		return Integer.compare(this.getMarkerPosition(), arg0.getMarkerPosition());
 	}
 
 	public String getColourString() {
+	
 		String colour = "";
 		switch (getColour()) {
+		
 		case 0:
 			colour = "yellow";
+			break;
 		case 1:
 			colour = "red";
+			break;
 		case 2:
 			colour = "purple";
+			break;
 		case 3:
 			colour = "blue";
+			break;
 		case 4:
 			colour = "green";
+			break;
 		case 5:
 			colour = "orange";
+			break;
 		case 6:
-			colour = "grey";
+			colour = "gray";
+			break;
 		default: 
 			colour="Error while getting a String of the colour";
 		}
 		return colour;
 	}
+
+	@Override
+	public int compareTo(Agent o) {
+		
+		return Integer.compare(this.getMarkerPosition(), o.getMarkerPosition());
+	}
+
 }
