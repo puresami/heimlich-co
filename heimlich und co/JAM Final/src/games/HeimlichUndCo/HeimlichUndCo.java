@@ -388,7 +388,7 @@ public class HeimlichUndCo extends Game {
 		
 		boolean gameOver = false;
 		for (int i = 8; i < 15; i++) {
-				if (dataArray[i]>=2) {
+				if (dataArray[i]>=42) {
 					gameOver = true;
 				}
 		}
@@ -736,9 +736,11 @@ public HashMap<String, String> assignColour() {
 		if (gsonString.equals("OK")) {
 			
 			if (humanPlayers == aufruf) {
+				hash=assignColour();
 				this.gState = GameState.RUNNING;
 				for (User u : playerList) {
 					if (!u.getName().contains("KI-")) {
+						
 						sendGameDataToUser(u, "START1");
 					
 						sendGameDataToUser(u, "standardEvent");
@@ -859,15 +861,15 @@ public HashMap<String, String> assignColour() {
 					agentList.get(i).setMarkerPosition(receiveddataArray[i + 8]);
 				}
 			}
-			alreadyScored=false;
-			for (int i = 8; i < 15; i++) {
-				if (receiveddataArray[i] == dataArray[7]) {
-					if (!alreadyScored) {
-						scoring();
-						alreadyScored = true;
-					}
-				}
-			}
+//			alreadyScored=false;
+//			for (int i = 8; i < 15; i++) {
+//				if (receiveddataArray[i] == dataArray[7]) {
+//					if (!alreadyScored) {
+//						scoring();
+//						alreadyScored = true;
+//					}
+//				}
+//			}
 			setDataArray(receiveddataArray);
 			if (gameOver()) {
 				System.out.println("The game is over.");
@@ -982,7 +984,7 @@ public HashMap<String, String> assignColour() {
 			}
 				
 			
-			 hash=assignColour();
+			// hash=assignColour();
 			
 			System.out.println(hashmapToString(hash));
 
@@ -1033,8 +1035,10 @@ public HashMap<String, String> assignColour() {
 			gameData += isHost(user); // Arrayelem16
 			return gameData;
 		}
-
-		 if (playerTurn.equals(user)) {
+		if (this.gState==GameState.FINISHED) {
+			gameData+=" "; //Arrayelem 15
+		}
+		else  if (playerTurn.equals(user)) {
 			gameData += "Du bist dran!"; // arrayelem 15
 		} else
 			gameData += playerTurn.getName() + " ist dran!";// arrayelem 15
