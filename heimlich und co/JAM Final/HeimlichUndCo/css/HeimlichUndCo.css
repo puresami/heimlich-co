@@ -267,7 +267,7 @@ background-repeat:no-repeat;
    border-style: dashed;
     border-width: 2px;
     border-radius: 20px;
-    border-color: black;
+    border-color: white;
     
 }
 
@@ -280,7 +280,7 @@ background-repeat:no-repeat;
    border-style: dashed;
     border-width: 2px;
     border-radius: 20px;
-    border-color: black;
+    border-color: white;
 }
 
 #drop1 {
@@ -436,7 +436,15 @@ background-repeat:no-repeat;
 }
 
 #NotizCombo {
-	
+	position: absolute;
+	top: 60px;
 	background-image:url(/HeimlichUndCo/images/background.jpg);
-	
+	left: 30px;
+}
+
+#speichernB {
+	position: absolute;
+	top: 220px;
+	left: 60px;
+
 }
