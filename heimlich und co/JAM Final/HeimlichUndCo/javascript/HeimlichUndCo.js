@@ -125,63 +125,51 @@ addListener('CREATE', function(event){
 //function allowDropt(ev) {
 //	ev.preventDefault();
 //}
-function allowDropt(ev) {
-	if((zuege > 0 && (ev.dataTransfer.getData("text") == "tresor")) && tresPruef==1 )
-	{
-		ev.preventDefault();
-	}
-	
-	
-}
-function dragt(ev) {
-	
-	if(zuege > 0 && (ev.dataTransfer.getData("text") == "tresor") ){
-	ev.dataTransfer.setData("text", ev.target.id);
-    document.getElementById("tresor").setAttribute("draggable", "true");
-	}
-}
-
-function dropt(ev) {
-	if(zuege > 0 && (ev.dataTransfer.getData("text") == "tresor") ){
-	ev.preventDefault();
-	}
-}
 
 //Drag and Drop for Gamefigures
 function allowDrop(ev) {
-	if((zuege > 0 && (ev.dataTransfer.getData("text") != "tresor")) || ((ev.dataTransfer.getData("text") == "tresor") && tresPruef==1 ))
+	if(zuege > 0 && (ev.dataTransfer.getData("text") != "tresor"))
 	{
 		ev.preventDefault();
+		
 	}
-	
-	
-	
-	
-	
+	else 
+	{
+		console.log("reingesprungen3");
+		ev.preventDefault();
+		var data3 = ev.dataTransfer.getData("text");
+		//ev.target.appendChild(document.getElementById("tresor"));
+		
+	}
+
 }
 
 function drag(ev) {
 	
-	if(zuege > 0 && (ev.dataTransfer.getData("text") != "tresor") ){
-	ev.dataTransfer.setData("text", ev.target.id);
-	prev = parseInt(ev.target.parentElement.getAttribute("position"));
-	}
+	
+	 if(ev.dataTransfer.getData("text") == "tresor" ){
+		 console.log("reingesprungen2");
+		ev.dataTransfer.setData("text", ev.target.id);
+		tresPruef=0;
+		sendGameData();
+	    
+		}
+	 else if(zuege > 0 && (ev.dataTransfer.getData("text") != "tresor") ){
+			ev.dataTransfer.setData("text", ev.target.id);
+			prev = parseInt(ev.target.parentElement.getAttribute("position"));
+			
+			}
 }
 
 function drop(ev) {
+	
 	if(ev.dataTransfer.getData("text") != "tresor")
 	{
 		if(ev.target.contains(tresor) )
 		{
 			
 			//tresPruef=1;
-			arrFields[8] = parseInt(arrFields[8]) + parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
-            arrFields[9] = parseInt(arrFields[9]) + parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
-        	arrFields[10] = parseInt(arrFields[10]) + parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
-    	    arrFields[11] = parseInt(arrFields[11]) + parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
-    	    arrFields[12] = parseInt(arrFields[12]) + parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
-    	    arrFields[13] = parseInt(arrFields[13]) + parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
-            arrFields[14] = parseInt(arrFields[14]) + parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
+			
             
             tresPruef=1;
             
@@ -193,25 +181,25 @@ function drop(ev) {
         		}
         		
         	}
-			fillpoints();
-			document.getElementById("tresor").setAttribute("draggable", "true");
+			
+			
 			sendGameData();
 			console.log(arrFields);
 		}
 
 	}
 	
-	if((ev.dataTransfer.getData("text") == "tresor") && tresPruef==1){
-		
-		console.log("tresorios");
-		ev.preventDefault();
-    	var data = ev.dataTransfer.getData("text");
-    	ev.target.appendChild(document.getElementById(data));
-		tresPruef=0;
-		sendGameData();
-		
-		
-	}
+//	if((ev.dataTransfer.getData("text") == "tresor") && tresPruef==1){
+//		
+//		console.log("tresorios");
+//		ev.preventDefault();
+//    	var data = ev.dataTransfer.getData("text");
+//    	ev.target.appendChild(document.getElementById(data));
+//		tresPruef=0;
+//		sendGameData();
+//		
+//		
+//	}
 	
 	
 	
@@ -235,7 +223,7 @@ function drop(ev) {
     		}
     	}
     	
-    	if(schritte<=zuege && (ev.dataTransfer.getData("text") != "tresor")  )
+    	if(schritte<=zuege && (ev.dataTransfer.getData("text") != "tresor") && zuege != 0  )
     	{
 		console.log("reingesprungen");
         	ev.preventDefault();
@@ -247,7 +235,38 @@ function drop(ev) {
  			
 			sendGameData();
 		}
-	} 
+	}else if (tresPruef==1)  {
+		console.log("reingesprungen1");
+		ev.preventDefault();
+		var data5 = ev.dataTransfer.getData("text");
+		ev.target.appendChild(document.getElementById("tresor"));
+		arrFields[8] = parseInt(arrFields[8]) + parseInt(document.getElementById("drop1").parentElement.getAttribute("number"));
+        arrFields[9] = parseInt(arrFields[9]) + parseInt(document.getElementById("drop2").parentElement.getAttribute("number"));
+        arrFields[10] = parseInt(arrFields[10]) + parseInt(document.getElementById("drop3").parentElement.getAttribute("number"));
+	    arrFields[11] = parseInt(arrFields[11]) + parseInt(document.getElementById("drop4").parentElement.getAttribute("number"));
+	    arrFields[12] = parseInt(arrFields[12]) + parseInt(document.getElementById("drop5").parentElement.getAttribute("number"));
+	    arrFields[13] = parseInt(arrFields[13]) + parseInt(document.getElementById("drop6").parentElement.getAttribute("number"));
+        arrFields[14] = parseInt(arrFields[14]) + parseInt(document.getElementById("drop7").parentElement.getAttribute("number"));
+        
+        
+        for (var i = 8; i<=14; i++ ){
+        	
+        	if (arrFields[i]>=29){
+        		
+        		document.getElementById("speichernB").style.visibility = "hidden";
+        	
+        	}
+       
+        }
+        
+        
+        
+        
+        fillpoints();
+        tresPruef=0;
+		sendGameData();
+		
+		} 
 	
 	if(zuege == 0 )
 	{
@@ -327,6 +346,15 @@ function updateBoard(){
 	}
 	var tres =document.getElementById("tresor");
    	document.getElementById("Feld"+arrFields[7]).appendChild(tres);
+    for (var i = 8; i<=14; i++ ){
+    	
+    	if (arrFields[i]>=29){
+    		
+    		document.getElementById("speichernB").style.visibility = "hidden";
+    	
+    	}
+   
+    }
 	fillpoints();
 }
 
@@ -350,11 +378,11 @@ function sendGameData(){
 		
 	}
 	
-	if(zuege==0 )
+	if(zuege==0 && tresPruef==0 )
 	{
 		sendDataToServer(arrFields+","+zuege);
 		console.log("gesendet : "+arrFields+","+zuege);
-	}else 
+	}else if (tresPruef==0 && zuege == 0)
 	{
 	sendDataToServer(arrFields+","+1)
 	console.log("gesendet : "+arrFields+","+1);	
@@ -514,4 +542,5 @@ function saveNotizen() {
 	document.getElementById("Notizblock").disabled = true;
 	console.log("NOTIZ"+","+arrayNotiz);
 	sendDataToServer("NOTIZ"+","+arrayNotiz);
+	document.getElementById("speichernB").style.visibility = "hidden";
 }
