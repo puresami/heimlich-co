@@ -84,6 +84,11 @@ addListener('standardEvent', function(event){
 		{
 			document.getElementById("wuerfel").style.visibility= "visible";
 		}
+		if(zuege > 0)
+		{
+			document.getElementById("wuerfel").style.visibility= "hidden";
+		}
+		
 		document.getElementById("status").innerHTML = playerMessage;
 		updateBoard();
 	}
@@ -120,17 +125,24 @@ addListener('CREATE', function(event){
 //function allowDropt(ev) {
 //	ev.preventDefault();
 //}
-
+function allowDropt(ev) {
+	if((zuege > 0 && (ev.dataTransfer.getData("text") == "tresor")) && tresPruef==1 )
+	{
+		ev.preventDefault();
+	}
+	
+	
+}
 function dragt(ev) {
 	
-	if(zuege > 0 && (ev.dataTransfer.getData("text") != "tresor") ){
+	if(zuege > 0 && (ev.dataTransfer.getData("text") == "tresor") ){
 	ev.dataTransfer.setData("text", ev.target.id);
-    document.getElementById("tresor").setAttribute("draggable", "false");
+    document.getElementById("tresor").setAttribute("draggable", "true");
 	}
 }
 
 function dropt(ev) {
-	if(zuege > 0 && (ev.dataTransfer.getData("text") != "tresor") ){
+	if(zuege > 0 && (ev.dataTransfer.getData("text") == "tresor") ){
 	ev.preventDefault();
 	}
 }
@@ -183,7 +195,7 @@ function drop(ev) {
         	}
 			fillpoints();
 			document.getElementById("tresor").setAttribute("draggable", "true");
-			
+			sendGameData();
 			console.log(arrFields);
 		}
 
@@ -237,7 +249,7 @@ function drop(ev) {
 		}
 	} 
 	
-	if(zuege == 0)
+	if(zuege == 0 )
 	{
 		console.log("du bist fertig!");
         document.getElementById("wuerfel").style.visibility = "hidden";
@@ -338,7 +350,7 @@ function sendGameData(){
 		
 	}
 	
-	if(zuege==0 && tresPruef==0)
+	if(zuege==0 )
 	{
 		sendDataToServer(arrFields+","+zuege);
 		console.log("gesendet : "+arrFields+","+zuege);
