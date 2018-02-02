@@ -117,11 +117,11 @@ public class HeimlichUndCo extends Game {
 		System.out.println("KI-zug beginnt");
 		Random Random1= new Random();
 		int r1= Random1.nextInt(6)+1;
-		try {
-			TimeUnit.SECONDS.sleep(1);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			TimeUnit.SECONDS.sleep(2);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 		while(r1!=0) {
 			
 			Random Random2= new Random();
@@ -165,11 +165,11 @@ public class HeimlichUndCo extends Game {
 				}
 				
 				
-//			try {
-//				TimeUnit.SECONDS.sleep(1);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
+			try {
+				TimeUnit.SECONDS.sleep(2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			
 				if (this.gState != GameState.FINISHED) {
 					for (User u : playerList) {
@@ -657,6 +657,7 @@ public HashMap<String, String> assignColour() {
 			
 			}
 		}
+		closeGame();
 	}
 
 	@Override

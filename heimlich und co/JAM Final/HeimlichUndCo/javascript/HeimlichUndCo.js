@@ -410,7 +410,9 @@ function startscreen(){
 	}
 	else
 	{
-		document.getElementById("errorNoP").style.visibility = "visible";	
+		document.getElementById("errorNoP").style.visibility = "visible";
+		document.getElementById("errorSpieleranzahl").style.visibility = "hidden";
+		
 	}
 }
 
